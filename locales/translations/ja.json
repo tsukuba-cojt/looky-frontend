@@ -1,0 +1,97 @@
+{
+  "common": {
+    "nav": {
+      "try_on": "試着する",
+      "search": "見つける",
+      "collections": "コレクション",
+      "settings": "設定"
+    }
+  },
+  "top": {
+    "title": "Lookyへようこそ",
+    "description": "今日のあなたにぴったりのコーデ",
+    "signup": "新規登録",
+    "login": "ログイン"
+  },
+  "signup": {
+    "title": "新規登録",
+    "description": "アカウントを作成しましょう",
+    "email": "メールアドレス",
+    "invalid_email": "無効なメールアドレスです。",
+    "submit": "はじめる",
+    "or": "または",
+    "signup_with_provider": "{{provider}}で新規登録",
+    "already_have_an_account": "すでにアカウントをお持ちですか？",
+    "login": "ログイン",
+    "success": "確認メールを送信しました。受信トレイを確認してください。",
+    "error": "エラーが発生しました。もう一度お試しください。"
+  },
+  "login": {
+    "title": "ログイン",
+    "description": "アカウントにログインしましょう。",
+    "email": "メールアドレス",
+    "invalid_email": "無効なメールアドレスです。",
+    "submit": "ログイン",
+    "or": "または",
+    "login_with_provider": "{{provider}}でログイン",
+    "do_not_have_an_account": "すでにアカウントをお持ちですか？",
+    "signup": "新規登録",
+    "success": "確認メールを送信しました。受信トレイを確認してください。",
+    "error": "エラーが発生しました。もう一度お試しください。"
+  },
+  "verify": {
+    "title": "認証コード",
+    "description": "メールアドレスを確認しましょう",
+    "do_not_receive_code": "認証コードを届きませんか？",
+    "resend": "再送信",
+    "success": "確認メールを再送信しました。",
+    "error": "エラーが発生しました。もう一度お試しください。"
+  },
+  "onboarding": {
+    "tab1":{
+      "title": "自分の写真に服を着せる",
+      "description": "自分で実際に服を着る必要がなく、\n気軽に色々な服を試せます"
+    },
+    "tab2":{
+      "title": "スワイプ機能で好みの服を選別",
+      "description": "右左に画像をスワイプすることで、\n自分の好みの服が出てきやすくなります"
+    },
+    "tab3":{
+      "title": "自分に似合う服を見つけよう",
+      "description": "沢山試して、\n好みの服に出会いましょう"
+    },
+    "get_started": "はじめる", 
+    "next": "次へ"
+  },
+  "body": {
+    "intro": {
+      "title": "あなたの全身が写っている\n写真を登録しましょう",
+      "description": "※写真は後から変更できます",
+      "get_started": "撮影をはじめる"
+    },
+    "guide": {
+      "tab1": {
+        "title": "撮影のポイント",
+        "description": "背景はなるべくシンプルな場所で\n撮影しましょう"
+      },
+      "tab2": {
+        "title": "撮影のポイント",
+        "description": "全身のサイズは、画面内に表示されるガイドを\n参考にしましょう"
+      },
+      "tab3": {
+        "title": "撮影のポイント",
+        "description": "人に撮影してもらうか\nセルフタイマーを使って撮影しましょう"
+      },
+      "get_started": "はじめる", 
+      "next": "次へ",
+      "error": "カメラが許可されていません。設定からカメラの許可をしてください。" 
+    }
+  },
+  "camera": {
+    "placeholder": {
+      "title": "カメラへのアクセスが必要です",
+      "description": "カメラが許可されていません。以下のボタンをクリックして許可してください。"
+    },
+    "grant": "許可する"
+  }
+}

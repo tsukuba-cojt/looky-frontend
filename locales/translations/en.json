@@ -1,0 +1,97 @@
+{
+  "common": {
+    "nav": {
+      "try_on": "Try On",
+      "search": "Search",
+      "collections": "Collections",
+      "settings": "Settings"
+    }
+  },
+  "top": {
+    "title": "Welcome to Looky",
+    "description": "The perfect outfit for you today",
+    "signup": "Sign Up",
+    "login": "Log In"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "description": "Create your account.",
+    "email": "Email",
+    "invalid_email": "Invalid email address.",
+    "submit": "Sign up",
+    "or": "or",
+    "signup_with_provider": "Sign up with {{provider}}",
+    "login": "Log in",
+    "already_have_an_account": "Already have an account?",
+    "success": "Verification email sent. Please check your inbox.",
+    "error": "Something went wrong. Please try again."
+  },
+  "login": {
+    "title": "Log In",
+    "description": "Let's log in to your account.",
+    "email": "Email",
+    "invalid_email": "Invalid email address.",
+    "submit": "Log In",
+    "or": "or",
+    "login_with_provider": "Log in with {{provider}}",
+    "do_not_have_an_account": "Don't have an account yet?",
+    "signup": "Sign Up",
+    "success": "Verification email sent. Please check your inbox.",
+    "error": "Something went wrong. Please try again."
+  },
+  "verify": {
+    "title": "Verification",
+    "description": "Enter your verification code.",
+    "do_not_receive_code": "Did not receive the verification code?",
+    "resend": "Resend",
+    "success": "Verification email resent.",
+    "error": "Something went wrong. Please try again."
+  },
+  "onboarding": {
+    "tab1": {
+      "title": "Try On Clothes in Your Photos",
+      "description": "No need to physically wear clothes; easily try on various outfits."
+    },
+    "tab2": {
+      "title": "Curate Your Style with Swipes",
+      "description": "Swipe left or right to discover more clothes that match your preferences."
+    },
+    "tab3": {
+      "title": "Find Clothes That Suit You",
+      "description": "Experiment a lot and find outfits you love."
+    },
+    "get_started": "Get Started",
+    "next": "Next"
+  },
+  "body": {
+    "intro": {
+      "title": "Let's Upload a Full-Body Photo",
+      "description": "You can change the photo later.",
+      "get_started": "Get Started"
+    },
+    "guide": {
+      "tab1": {
+        "title": "Photo Tips",
+        "description": "Take the photo against as simple a background as possible."
+      },
+      "tab2": {
+        "title": "Photo Tips",
+        "description": "For a full-body shot, refer to the on-screen guide\nfor proper sizing."
+      },
+      "tab3": {
+        "title": "Photo Tips",
+        "description": "Ask someone to take the photo,\nor use the self-timer."
+      },
+      "get_started": "Get Started",
+      "next": "Next",
+      "error": "Camera access is not allowed. Please allow camera access in your settings."
+    }
+  },
+  "camera": {
+    "placeholder": {
+      "title": "Camera Access Required",
+      "description": "Camera access is not allowed. Please click the button below to enable it."
+    },
+    "grant": "Grant"
+  }
+}
