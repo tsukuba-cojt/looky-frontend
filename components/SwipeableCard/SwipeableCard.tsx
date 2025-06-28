@@ -22,6 +22,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import { Portal } from "tamagui";
 
 export type SwipableCardRef =
   | {

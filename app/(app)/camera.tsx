@@ -4,7 +4,7 @@ import {
   type FlashMode,
   useCameraPermissions,
 } from "expo-camera";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
@@ -15,11 +15,11 @@ import { Icons } from "@/components/Icons";
 const CameraPage = () => {
   const { t } = useTranslation("camera");
   const router = useRouter();
+  const { from } = useLocalSearchParams<{ from: string }>();
   const ref = useRef<CameraView>(null);
   const [isReady, setIsReady] = useState(false);
   const [facing, setFacing] = useState<CameraType>("back");
   const [flash, setFlash] = useState<FlashMode>("off");
-  const [_, setUri] = useState<string | null>(null);
   const [permission, requestPermission] = useCameraPermissions();
 
   const onReady = useCallback(() => {
@@ -33,9 +33,12 @@ const CameraPage = () => {
   const takePicture = useCallback(async () => {
     const picture = await ref.current?.takePictureAsync();
     if (picture) {
-      setUri(picture.uri);
+      router.push({
+        pathname: from,
+        params: { uri: picture.uri },
+      });
     }
-  }, []);
+  }, [router, from]);
 
   const toggleFlash = useCallback(() => {
     setFlash((prev) => (prev === "off" ? "on" : "off"));
