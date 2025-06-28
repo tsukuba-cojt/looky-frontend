@@ -1,3 +1,5 @@
+import { useIsFocused } from "@react-navigation/native";
+import { RotateCcw, ThumbsDown, ThumbsUp } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -15,7 +17,8 @@ import {
   useAnimatedReaction,
   useSharedValue,
 } from "react-native-reanimated";
-import { Portal, View } from "tamagui";
+import { Portal, View, XStack } from "tamagui";
+import { Button } from "@/components/Button";
 import { Skeleton } from "@/components/Skeleton";
 import {
   type SwipableCardRef,
@@ -76,6 +79,7 @@ const TryOnPage = () => {
   const onEndReachedThreadhold = 0.4;
   const activeIndex = useSharedValue(0);
   const length = useRef(data.length);
+  const focused = useIsFocused();
 
   useEffect(() => {
     length.current = data.length;
@@ -170,37 +174,52 @@ const TryOnPage = () => {
   );
 
   return (
-    <Portal flex={1} items="center" justify="center">
-      {data
-        .map((item, index) => {
-          return (
-            <SwipeableCard
-              key={index.toString()}
-              cardStyle={{
-                aspectRatio: 3 / 4,
-                width: "85%",
-              }}
-              index={index}
-              activeIndex={activeIndex}
-              ref={refs[index]}
-              onSwipeRight={() => {
-                console.log("right");
-              }}
-              onSwipeLeft={() => {
-                console.log("left");
-              }}
-              onSwipeTop={() => {
-                console.log("top");
-              }}
-              onSwipeBottom={() => {
-                console.log("bottom");
-              }}
-            >
-              <SwipableCardItem url={item.url} />
-            </SwipeableCard>
-          );
-        })
-        .reverse()}
+    <Portal opacity={focused ? 1 : 0}>
+      <View flex={1} items="center" justify="center" pt="$6" px="$6" gap="$6">
+        <View aspectRatio={3 / 4} w="100%">
+          {data
+            .map((item, index) => {
+              return (
+                <SwipeableCard
+                  key={index.toString()}
+                  cardStyle={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  index={index}
+                  activeIndex={activeIndex}
+                  ref={refs[index]}
+                  onSwipeRight={() => {
+                    console.log("right");
+                  }}
+                  onSwipeLeft={() => {
+                    console.log("left");
+                  }}
+                  onSwipeTop={() => {
+                    console.log("top");
+                  }}
+                  onSwipeBottom={() => {
+                    console.log("bottom");
+                  }}
+                >
+                  <SwipableCardItem url={item.url} />
+                </SwipeableCard>
+              );
+            })
+            .reverse()}
+        </View>
+        <XStack gap="$8">
+          <Button variant="outline" size="icon" h="$14" w="$14" rounded="$full">
+            <ThumbsUp size="$6" />
+          </Button>
+          <Button variant="outline" size="icon" h="$14" w="$14" rounded="$full">
+            <ThumbsDown size="$6" />
+          </Button>
+          <Button variant="outline" size="icon" h="$14" w="$14" rounded="$full">
+            <RotateCcw size="$6" />
+          </Button>
+        </XStack>
+      </View>
     </Portal>
   );
 };
