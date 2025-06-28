@@ -92,10 +92,8 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
                     value={value}
                     autoFocus={id === 0}
                     onChangeText={(code: string) => {
-                      console.log(code);
                       if (code.length === length) {
                         const digits = code.split("");
-                        console.log(digits);
                         digits.forEach((digit, index) => {
                           setValue(index.toString(), digit);
                         });

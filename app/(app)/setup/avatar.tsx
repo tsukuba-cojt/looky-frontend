@@ -1,5 +1,4 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { Image, UserRound } from "@tamagui/lucide-icons";
 import {
   Link,
   useLocalSearchParams,
@@ -23,6 +22,7 @@ import {
 } from "tamagui";
 import type { z } from "zod/v4";
 import { Button } from "@/components/Button";
+import { Icons } from "@/components/Icons";
 import { ImagePickerSheet } from "@/components/ImagePickerSheet";
 import { setupSchema } from "@/schemas/app";
 
@@ -100,7 +100,7 @@ const AvatarPage = () => {
                           justify="center"
                           bg="$mutedBackground"
                         >
-                          <UserRound
+                          <Icons.userRound
                             size="$20"
                             strokeWidth={1.5}
                             color="$mutedColor"
@@ -116,7 +116,7 @@ const AvatarPage = () => {
                         opacity={0.6}
                         rounded="$full"
                       >
-                        <Image size="$5" color="$primaryColor" />
+                        <Icons.image size="$5" color="$primaryColor" />
                         <VisuallyHidden>
                           <Text color="$primaryColor" fontSize="$sm">
                             {t("avatar.placeholder")}

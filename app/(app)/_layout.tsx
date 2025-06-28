@@ -20,11 +20,11 @@ const AppLayout = () => {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!user}>
+      <Stack.Protected guard={!!user}>
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="setup" />
       </Stack.Protected>
-      <Stack.Protected guard={!!user}>
+      <Stack.Protected guard={!user}>
         <Stack.Screen name="(tab)" />
       </Stack.Protected>
       <Stack.Screen name="camera" />
