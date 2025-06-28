@@ -9,6 +9,7 @@ import {
   RefreshCcw,
   Search,
   Shirt,
+  UserRound,
   Zap,
 } from "@tamagui/lucide-icons";
 
@@ -23,5 +24,6 @@ export const Icons = {
   refreshCcw: RefreshCcw,
   search: Search,
   shirt: Shirt,
+  userRound: UserRound,
   zap: Zap,
 };

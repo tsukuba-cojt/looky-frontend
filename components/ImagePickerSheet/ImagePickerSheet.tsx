@@ -1,10 +1,10 @@
-import { Camera, Image } from "@tamagui/lucide-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 import { Sheet, type SheetProps, YStack } from "tamagui";
 import { Button } from "../Button";
+import { Icons } from "../Icons";
 
 interface ImagePickerSheetProps extends SheetProps {
   onImagePicked: (uri: string) => void;
@@ -87,7 +87,7 @@ export const ImagePickerSheet = ({
             onPress={pickImage}
           >
             <Button.Icon>
-              <Image size="$5" />
+              <Icons.image size="$5" />
             </Button.Icon>
             <Button.Text>
               {t("image_picker_sheet.choose_from_library")}
@@ -100,7 +100,7 @@ export const ImagePickerSheet = ({
             onPress={takePhoto}
           >
             <Button.Icon>
-              <Camera size="$5" />
+              <Icons.camera size="$5" />
             </Button.Icon>
             <Button.Text>{t("image_picker_sheet.take_a_photo")}</Button.Text>
           </Button>
