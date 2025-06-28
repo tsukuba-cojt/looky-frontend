@@ -41,12 +41,6 @@ export const animations = createAnimations({
     stiffness: 120,
     mass: 1,
   },
-  tooltip: {
-    type: "spring",
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-  },
   pulse: {
     type: "timing",
     duration: 1000,

@@ -7,6 +7,7 @@ export const Input = styled(TamaguiInputFrame, {
   rounded: "$md",
   px: "$3",
   py: "$2",
+  fontSize: "$sm",
   boxShadow: "$shadow.sm",
   selectionColor: "$color",
 });

@@ -14,7 +14,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Toaster } from "sonner-native";
 import { SWRConfig } from "swr";
-import { TamaguiProvider } from "tamagui";
+import { PortalProvider, TamaguiProvider } from "tamagui";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthProvider";
 import { useAuth } from "@/hooks/useAuth";
@@ -86,13 +86,17 @@ const RootLayout = () => {
           defaultTheme={colorScheme === "dark" ? "dark" : "light"}
         >
           <ThemeProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <KeyboardProvider>
-                <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-                <RootNavigator />
-                <Toaster />
-              </KeyboardProvider>
-            </GestureHandlerRootView>
+            <PortalProvider shouldAddRootHost>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <KeyboardProvider>
+                  <StatusBar
+                    style={colorScheme === "dark" ? "light" : "dark"}
+                  />
+                  <RootNavigator />
+                  <Toaster />
+                </KeyboardProvider>
+              </GestureHandlerRootView>
+            </PortalProvider>
           </ThemeProvider>
         </TamaguiProvider>
       </SWRConfig>

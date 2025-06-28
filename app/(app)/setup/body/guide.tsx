@@ -8,13 +8,13 @@ import PagerView, {
   type PagerViewOnPageScrollEventData,
 } from "react-native-pager-view";
 import { toast } from "sonner-native";
-import { H1, Text, useTheme, View, YStack } from "tamagui";
+import { H1, Text, useTheme, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
 const GuidePage = () => {
-  const { t } = useTranslation("body");
+  const { t } = useTranslation("setup");
   const router = useRouter();
   const { width } = useWindowDimensions();
   const ref = useRef<PagerView>(null);
@@ -27,20 +27,20 @@ const GuidePage = () => {
     () => [
       {
         key: "1",
-        title: t("guide.tab1.title"),
-        description: t("guide.tab1.description"),
+        title: t("body.guide.tab1.title"),
+        description: t("body.guide.tab1.description"),
         icon: "",
       },
       {
         key: "2",
-        title: t("guide.tab2.title"),
-        description: t("guide.tab2.description"),
+        title: t("body.guide.tab2.title"),
+        description: t("body.guide.tab2.description"),
         icon: "",
       },
       {
         key: "3",
-        title: t("guide.tab3.title"),
-        description: t("guide.tab3.description"),
+        title: t("body.guide.tab3.title"),
+        description: t("body.guide.tab3.description"),
         icons: "",
       },
     ],
@@ -85,7 +85,7 @@ const GuidePage = () => {
         if (status === "granted") {
           router.push("/(app)/camera");
         } else {
-          toast.error(t("guide.error"));
+          toast.error(t("body.guide.error"));
         }
       }
     }
@@ -106,7 +106,7 @@ const GuidePage = () => {
           const _Icon = icon;
 
           return (
-            <YStack key={key} flex={1} items="center" pt="$36" gap="$16">
+            <YStack key={key} flex={1} items="center" pt="$32" gap="$16">
               <H1 fontSize="$2xl" fontWeight="$bold">
                 {title}
               </H1>
@@ -118,35 +118,34 @@ const GuidePage = () => {
           );
         })}
       </AnimatedPagerView>
-      <View>
-        <YStack position="absolute" b="$10" w="100%" px="$12">
-          <SlidingDot
-            data={data}
-            //@ts-ignore
-            scrollX={scrollX}
-            dotSize={8}
-            marginHorizontal={4}
-            dotStyle={{
-              backgroundColor: theme.mutedColor.val,
-              opacity: 0.2,
-            }}
-            slidingIndicatorStyle={{
-              backgroundColor: theme.primaryBackground.val,
-            }}
-            containerStyle={{
-              position: "absolute",
-              top: -30,
-            }}
-          />
-          <Button variant="primary" rounded="$radius.full" onPress={onNextPage}>
-            <Button.Text>
-              {currentIndex === data.length - 1
-                ? t("guide.get_started")
-                : t("guide.next")}
-            </Button.Text>
-          </Button>
-        </YStack>
-      </View>
+
+      <YStack position="absolute" b="$28" w="100%">
+        <SlidingDot
+          data={data}
+          //@ts-ignore
+          scrollX={scrollX}
+          dotSize={8}
+          marginHorizontal={4}
+          dotStyle={{
+            backgroundColor: theme.mutedColor.val,
+            opacity: 0.2,
+          }}
+          slidingIndicatorStyle={{
+            backgroundColor: theme.primaryBackground.val,
+          }}
+        />
+      </YStack>
+
+      <YStack w="100%" gap="$4" px="$8">
+        <Button variant="primary" onPress={onNextPage}>
+          <Button.Text>
+            {currentIndex === data.length - 1 ? t("get_started") : t("next")}
+          </Button.Text>
+        </Button>
+        <Button variant="link" onPress={() => router.push("/setup")}>
+          <Button.Text>{t("skip")}</Button.Text>
+        </Button>
+      </YStack>
     </SafeAreaView>
   );
 };

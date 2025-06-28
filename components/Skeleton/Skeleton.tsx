@@ -4,7 +4,7 @@ export const Skeleton = (props: ViewProps) => {
   return (
     <View
       animation="pulse"
-      rounded="$radius.md"
+      rounded="$md"
       enterStyle={{
         opacity: 0.5,
       }}
