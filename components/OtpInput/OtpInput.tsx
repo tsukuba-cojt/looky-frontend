@@ -63,7 +63,7 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
 
   return (
     <Form onSubmit={onSubmit}>
-      <XStack gap="$2.5" x={translateX} animation="quicker">
+      <XStack gap="$2.5" x={translateX} animation="quick">
         {Array(length)
           .fill(null)
           .map((_, id) => {
@@ -90,14 +90,17 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
                       bg: "$mutedBackground",
                     }}
                     value={value}
-                    maxLength={1}
                     autoFocus={id === 0}
                     onChangeText={(code: string) => {
+                      console.log(code)
                       if (code.length === length) {
                         const digits = code.split("");
+                        console.log(digits)
                         digits.forEach((digit, index) => {
                           setValue(index.toString(), digit);
                         });
+
+                        setFocus((length - 1).toString());
 
                         onSubmit();
                       } else {
