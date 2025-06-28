@@ -1,10 +1,16 @@
 {
   "common": {
-    "nav": {
+    "tab": {
       "try_on": "Try On",
       "search": "Search",
       "collections": "Collections",
       "settings": "Settings"
+    },
+    "image_picker_sheet": {
+      "choose_from_library": "Choose from library",
+      "take_a_photo": "Take a photo",
+      "cancel": "Cancel",
+    "error": "Camera access is not allowed. Please allow camera access in your settings."
     }
   },
   "top": {
@@ -61,30 +67,64 @@
       "description": "Experiment a lot and find outfits you love."
     },
     "get_started": "Get Started",
-    "next": "Next"
+    "next": "Next",
+    "skip": "Skip"
   },
-  "body": {
-    "intro": {
-      "title": "Let's Upload a Full-Body Photo",
-      "description": "You can change the photo later.",
-      "get_started": "Get Started"
+  "setup": {
+    "name": {
+      "title": "Enter your name",
+      "description": "This name will be visible to other users. You can change it later.",
+      "label": "Username",
+      "placeholder": "John Doe",
+      "too_short_name": "Username must be at least 3 characters long.",
+      "too_long_name": "Username must be 24 characters or less.",
+      "submit": "Next",
+      "skip": "Skip"
     },
-    "guide": {
-      "tab1": {
-        "title": "Photo Tips",
-        "description": "Take the photo against as simple a background as possible."
+    "gender": {
+      "title": "Select your gender",
+      "description": "This will be used to recommend clothing. You can change it later.",
+      "label": "Gender",
+      "placeholder": "Select your gender",
+      "man": "Male",
+      "woman": "Female",
+      "other": "Other",
+      "submit": "Next",
+      "skip": "Skip"
+    },
+    "avatar": {
+      "title": "Choose an avatar",
+      "description": "This avatar will be visible to other users. You can change it later.",
+      "label": "Avatar",
+      "submit": "Get Started",
+      "skip": "Skip",
+      "invalid_url": "Invalid image URL.",
+      "error": "Something went wrong. Please try again."
+    },
+    "body": {
+      "intro": {
+        "title": "Let's Upload a Full-Body Photo",
+        "description": "You can change the photo later.",
+        "get_started": "Get Started"
       },
-      "tab2": {
-        "title": "Photo Tips",
-        "description": "For a full-body shot, refer to the on-screen guide\nfor proper sizing."
-      },
-      "tab3": {
-        "title": "Photo Tips",
-        "description": "Ask someone to take the photo,\nor use the self-timer."
-      },
-      "get_started": "Get Started",
-      "next": "Next",
-      "error": "Camera access is not allowed. Please allow camera access in your settings."
+      "guide": {
+        "tab1": {
+          "title": "Photo Tips",
+          "description": "Take the photo against as simple a background as possible."
+        },
+        "tab2": {
+          "title": "Photo Tips",
+          "description": "For a full-body shot, refer to the on-screen guide\nfor proper sizing."
+        },
+        "tab3": {
+          "title": "Photo Tips",
+          "description": "Ask someone to take the photo,\nor use the self-timer."
+        },
+        "get_started": "Get Started",
+        "next": "Next",
+        "skip": "Skip",
+        "error": "Camera access is not allowed. Please allow camera access in your settings."
+      }
     }
   },
   "camera": {
@@ -93,5 +133,9 @@
       "description": "Camera access is not allowed. Please click the button below to enable it."
     },
     "grant": "Grant"
+  },
+  "crop": {
+    "done": "Done",
+    "cancel": "Cancel"
   }
 }

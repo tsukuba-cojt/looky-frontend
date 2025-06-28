@@ -5,24 +5,26 @@ import { Text, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
 const IntroPage = () => {
-  const { t } = useTranslation("body");
+  const { t } = useTranslation("setup");
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <YStack flex={1} items="center" justify="center" gap="$16">
         <Text fontSize="$2xl" fontWeight="$bold">
-          {t("intro.title")}
+          {t("body.intro.title")}
         </Text>
         {/* <Icon width={320} height={320} /> */}
         <Button
           variant="primary"
-          rounded="$radius.full"
+          rounded="$full"
           onPress={() => router.push("/(app)/setup/body/guide")}
         >
-          <Button.Text fontWeight="$bold">{t("intro.get_started")}</Button.Text>
+          <Button.Text fontWeight="$bold">
+            {t("body.intro.get_started")}
+          </Button.Text>
         </Button>
         <Text fontSize="$xs" color="$placeholderColor">
-          {t("intro.description")}
+          {t("body.intro.description")}
         </Text>
       </YStack>
     </SafeAreaView>

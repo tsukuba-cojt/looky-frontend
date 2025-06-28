@@ -1,5 +1,7 @@
 import {
   Camera,
+  Check,
+  ChevronDown,
   ChevronLeft,
   CircleUserRound,
   GalleryHorizontalEnd,
@@ -12,6 +14,8 @@ import {
 
 export const Icons = {
   camera: Camera,
+  check: Check,
+  chevronDown: ChevronDown,
   chevronLeft: ChevronLeft,
   circleUserRound: CircleUserRound,
   galleryHorizontalEnd: GalleryHorizontalEnd,

@@ -47,6 +47,7 @@ export default ({ config }: ConfigContext): ExtendedExpoConfig => ({
     favicon: "./assets/favicon.png",
   },
   plugins: [
+    "expo-image-picker",
     "expo-dev-client",
     "expo-web-browser",
     "expo-camera",

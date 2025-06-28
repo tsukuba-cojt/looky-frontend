@@ -13,21 +13,21 @@ export type Database = {
         Row: {
           category: string | null;
           created_at: string;
-          gender_flag: number;
+          gender_flag: number | null;
           id: number;
           image_url: string | null;
         };
         Insert: {
           category?: string | null;
           created_at?: string;
-          gender_flag: number;
+          gender_flag?: number | null;
           id?: number;
           image_url?: string | null;
         };
         Update: {
           category?: string | null;
           created_at?: string;
-          gender_flag?: number;
+          gender_flag?: number | null;
           id?: number;
           image_url?: string | null;
         };
@@ -35,21 +35,21 @@ export type Database = {
       };
       t_user: {
         Row: {
-          avator_url: string | null;
+          avatar_url: string | null;
           body_url: string | null;
           created_at: string;
           id: string;
           name: string;
         };
         Insert: {
-          avator_url?: string | null;
+          avatar_url?: string | null;
           body_url?: string | null;
           created_at?: string;
           id?: string;
           name: string;
         };
         Update: {
-          avator_url?: string | null;
+          avatar_url?: string | null;
           body_url?: string | null;
           created_at?: string;
           id?: string;

@@ -2,7 +2,7 @@ import { usePathname } from "expo-router";
 import { TabList, TabSlot, Tabs, TabTrigger } from "expo-router/ui";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Heading, Text, XStack, YStack } from "tamagui";
+import { Avatar, Heading, Text, XStack, YStack } from "tamagui";
 import { Icons } from "@/components/Icons";
 import { navConfig } from "@/config/nav";
 
@@ -23,6 +23,7 @@ const TabLayout = () => {
         <Heading>
           {t(navConfig.find((item) => item.href === pathname)?.key ?? "")}
         </Heading>
+        <Avatar></Avatar>
       </XStack>
       <TabSlot />
       <TabList asChild>
@@ -50,7 +51,7 @@ const TabLayout = () => {
                     color={isActive ? "$primaryBackground" : "$color"}
                     opacity={isActive ? 1 : 0.6}
                   >
-                    {t(`nav.${item.key}`)}
+                    {t(`tab.${item.key}`)}
                   </Text>
                 </YStack>
               </TabTrigger>
