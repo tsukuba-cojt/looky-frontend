@@ -36,9 +36,8 @@ const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
 
   return (
     <View
-      flex={1}
       overflow="hidden"
-      rounded="$radius.4xl"
+      rounded="$radius.3xl"
       position="relative"
       bg="$background"
     >
@@ -177,8 +176,8 @@ const TryOnPage = () => {
             <SwipeableCard
               key={index.toString()}
               cardStyle={{
-                width: "90%",
-                height: "70%",
+                aspectRatio: 3 / 4,
+                width: "85%",
               }}
               index={index}
               activeIndex={activeIndex}

@@ -33,21 +33,6 @@ AppState.addEventListener("change", (state) => {
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_700Bold,
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
 
   return (
     <AuthProvider>
@@ -105,8 +90,24 @@ const RootLayout = () => {
 };
 
 const RootNavigator = () => {
-  const { session } = useAuth();
+  const { session, isLoading } = useAuth();
   const isAuth = session !== null;
+
+  const [loaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_700Bold,
+  });
+
+  useEffect(() => {
+    if (loaded && !isLoading) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, isLoading]);
+
+  if (!loaded || isLoading) {
+    return null;
+  }
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

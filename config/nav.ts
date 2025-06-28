@@ -15,7 +15,7 @@ export const navConfig = [
     name: "collections",
     href: "/collections",
     key: "collections",
-    icon: "shirt",
+    icon: "grid2x2",
   },
   {
     name: "settings",
