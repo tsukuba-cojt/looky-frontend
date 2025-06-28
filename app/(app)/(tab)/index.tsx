@@ -15,7 +15,7 @@ import {
   useAnimatedReaction,
   useSharedValue,
 } from "react-native-reanimated";
-import { View } from "tamagui";
+import { Portal, View } from "tamagui";
 import { Skeleton } from "@/components/Skeleton";
 import {
   type SwipableCardRef,
@@ -40,6 +40,7 @@ const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
       rounded="$radius.3xl"
       position="relative"
       bg="$background"
+      boxShadow="$sm"
     >
       <Image
         style={{ width: "100%", height: "100%" }}
@@ -169,7 +170,7 @@ const TryOnPage = () => {
   );
 
   return (
-    <View flex={1} items="center" justify="center">
+    <Portal flex={1} items="center" justify="center">
       {data
         .map((item, index) => {
           return (
@@ -200,7 +201,7 @@ const TryOnPage = () => {
           );
         })
         .reverse()}
-    </View>
+    </Portal>
   );
 };
 

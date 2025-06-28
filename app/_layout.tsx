@@ -71,8 +71,8 @@ const RootLayout = () => {
           defaultTheme={colorScheme === "dark" ? "dark" : "light"}
         >
           <ThemeProvider>
-            <PortalProvider shouldAddRootHost>
-              <GestureHandlerRootView style={{ flex: 1 }}>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <PortalProvider shouldAddRootHost>
                 <KeyboardProvider>
                   <StatusBar
                     style={colorScheme === "dark" ? "light" : "dark"}
@@ -80,8 +80,8 @@ const RootLayout = () => {
                   <RootNavigator />
                   <Toaster />
                 </KeyboardProvider>
-              </GestureHandlerRootView>
-            </PortalProvider>
+              </PortalProvider>
+            </GestureHandlerRootView>
           </ThemeProvider>
         </TamaguiProvider>
       </SWRConfig>
