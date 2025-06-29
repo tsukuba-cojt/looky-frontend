@@ -159,15 +159,15 @@ const TryOnPage = () => {
     };
   }, [swipeLeft, swipeRight, swipeBack, swipeTop, swipeBottom]);
 
-  const onEndReacted = useCallback(() => {}, []);
+  const onEndReached = useCallback(() => {}, []);
 
   useAnimatedReaction(
     () =>
       activeIndex.value >=
       length.current - onEndReachedThreadhold * length.current,
     (isEndReached: boolean) => {
-      if (isEndReached && onEndReacted) {
-        runOnJS(onEndReacted)();
+      if (isEndReached && onEndReached) {
+        runOnJS(onEndReached)();
       }
     },
     [data],
