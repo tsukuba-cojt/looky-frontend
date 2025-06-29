@@ -71,7 +71,7 @@ looky-frontend/
 ├── locales/            # 国際化
 ├── schemas/            # スキーマ
 ├── theme/              # テーマ
-├── types/              # 型定義
+└── types/              # 型定義
 ```
 
 <br>
