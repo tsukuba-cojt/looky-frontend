@@ -165,8 +165,8 @@ const TryOnPage = () => {
     () =>
       activeIndex.value >=
       length.current - onEndReachedThreadhold * length.current,
-    (isEndReaced: boolean) => {
-      if (isEndReaced && onEndReacted) {
+    (isEndReached: boolean) => {
+      if (isEndReached && onEndReacted) {
         runOnJS(onEndReacted)();
       }
     },
