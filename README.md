@@ -1,4 +1,4 @@
-## Looky
+# Looky
 
 ![version](https://img.shields.io/badge/version-1.0.0-red.svg)
 ![platform](https://img.shields.io/badge/platform-ios%20|%20android-orange.svg)
@@ -20,6 +20,8 @@ Lookyは、[Campus OJT](https://tsukuba-cojt.github.io/)のプロジェクトと
 
 > [!CAUTION]
 > Lookyの機能は現在開発中であり、仕様は今後変更される可能性があります。
+
+<br>
 
 ## 🔧 Usage
 
