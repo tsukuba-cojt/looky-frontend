@@ -1,4 +1,5 @@
 import { useCameraPermissions } from "expo-camera";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,7 +9,7 @@ import PagerView, {
   type PagerViewOnPageScrollEventData,
 } from "react-native-pager-view";
 import { toast } from "sonner-native";
-import { H1, Text, useTheme, YStack } from "tamagui";
+import { H1, Text, useTheme, View, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
@@ -29,19 +30,19 @@ const GuidePage = () => {
         key: "1",
         title: t("body.guide.tab1.title"),
         description: t("body.guide.tab1.description"),
-        icon: "",
+        icon: require("../../../../assets/images/dummy.png"),
       },
       {
         key: "2",
         title: t("body.guide.tab2.title"),
         description: t("body.guide.tab2.description"),
-        icon: "",
+        icon: require("../../../../assets/images/dummy.png"),
       },
       {
         key: "3",
         title: t("body.guide.tab3.title"),
         description: t("body.guide.tab3.description"),
-        icons: "",
+        icon: require("../../../../assets/images/dummy.png"),
       },
     ],
     [t],
@@ -78,12 +79,22 @@ const GuidePage = () => {
       ref.current?.setPage(currentIndex + 1);
     } else {
       if (permission?.granted) {
-        router.push("/(app)/camera");
+        router.push({
+          pathname: "/camera",
+          params: {
+            from: "/setup/confirm",
+          },
+        });
       } else {
         const { status } = await requestPermission();
 
         if (status === "granted") {
-          router.push("/(app)/camera");
+          router.push({
+            pathname: "/camera",
+            params: {
+              from: "/setup/confirm",
+            },
+          });
         } else {
           toast.error(t("body.guide.error"));
         }
@@ -92,7 +103,7 @@ const GuidePage = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
       <AnimatedPagerView
         initialPage={0}
         ref={ref}
@@ -103,23 +114,45 @@ const GuidePage = () => {
         }}
       >
         {data.map(({ key, title, description, icon }) => {
-          const _Icon = icon;
-
           return (
-            <YStack key={key} flex={1} items="center" pt="$32" gap="$16">
-              <H1 fontSize="$2xl" fontWeight="$bold">
-                {title}
-              </H1>
-              {/* <Icon width={320} height={320} /> */}
-              <YStack gap="$6" items="center" justify="center">
-                <Text text="center">{description}</Text>
+            <YStack key={key} flex={1} items="center" pt={48} gap="$12">
+              <YStack gap="$6">
+                <H1 text="center" fontSize="$2xl" fontWeight="$bold">
+                  {t("body.guide.tips")}
+                </H1>
+                <View
+                  w={300}
+                  h={300}
+                  bg="$primaryBackground"
+                  rounded="$full"
+                  overflow="hidden"
+                >
+                  <Image
+                    style={{
+                      width: "100%",
+                      height: "150%",
+                      transform: [{ translateY: 60 }],
+                    }}
+                    source={icon}
+                    contentFit="contain"
+                    transition={200}
+                  />
+                </View>
+              </YStack>
+              <YStack gap="$6">
+                <H1 fontSize="$2xl" fontWeight="$bold">
+                  {title}
+                </H1>
+                <Text text="center" color="$mutedColor">
+                  {description}
+                </Text>
               </YStack>
             </YStack>
           );
         })}
       </AnimatedPagerView>
 
-      <YStack position="absolute" b="$28" w="100%">
+      <YStack position="absolute" b="$32" w="100%">
         <SlidingDot
           data={data}
           //@ts-ignore
@@ -139,11 +172,23 @@ const GuidePage = () => {
       <YStack w="100%" gap="$4" px="$8">
         <Button variant="primary" onPress={onNextPage}>
           <Button.Text>
-            {currentIndex === data.length - 1 ? t("get_started") : t("next")}
+            {currentIndex === data.length - 1
+              ? t("body.guide.get_started")
+              : t("body.guide.next")}
           </Button.Text>
         </Button>
-        <Button variant="link" onPress={() => router.push("/setup")}>
-          <Button.Text>{t("skip")}</Button.Text>
+        <Button
+          variant="link"
+          onPress={() =>
+            router.push({
+              pathname: "/camera",
+              params: {
+                from: "/setup/confirm",
+              },
+            })
+          }
+        >
+          <Button.Text>{t("body.guide.skip")}</Button.Text>
         </Button>
       </YStack>
     </SafeAreaView>

@@ -15,8 +15,11 @@ import { Icons } from "@/components/Icons";
 const CameraPage = () => {
   const { t } = useTranslation("camera");
   const router = useRouter();
-  const { from } = useLocalSearchParams<{ from: string }>();
+  const { from, ...params } = useLocalSearchParams<
+    { from: string } & Record<string, string>
+  >();
   const ref = useRef<CameraView>(null);
+  const paramsRef = useRef(params);
   const [isReady, setIsReady] = useState(false);
   const [facing, setFacing] = useState<CameraType>("back");
   const [flash, setFlash] = useState<FlashMode>("off");
@@ -35,7 +38,7 @@ const CameraPage = () => {
     if (picture) {
       router.push({
         pathname: from,
-        params: { uri: picture.uri },
+        params: { ...paramsRef.current, uri: picture.uri },
       });
     }
   }, [router, from]);
@@ -82,6 +85,7 @@ const CameraPage = () => {
     <View flex={1} bg="black">
       <CameraView
         ref={ref}
+        ratio="4:3"
         style={{ flex: 1, width: "100%" }}
         facing={facing}
         flash={flash}

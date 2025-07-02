@@ -38,6 +38,7 @@ export type Database = {
           avatar_url: string | null;
           body_url: string | null;
           created_at: string;
+          gender: string | null;
           id: string;
           name: string;
         };
@@ -45,6 +46,7 @@ export type Database = {
           avatar_url?: string | null;
           body_url?: string | null;
           created_at?: string;
+          gender?: string | null;
           id?: string;
           name: string;
         };
@@ -52,6 +54,7 @@ export type Database = {
           avatar_url?: string | null;
           body_url?: string | null;
           created_at?: string;
+          gender?: string | null;
           id?: string;
           name?: string;
         };

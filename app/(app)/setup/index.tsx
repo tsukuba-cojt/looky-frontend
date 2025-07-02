@@ -1,6 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Link, useRouter } from "expo-router";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
@@ -17,6 +17,7 @@ type FormData = z.infer<typeof nameSchema>;
 const NamePage = () => {
   const { t } = useTranslation("setup");
   const router = useRouter();
+  const { setValue } = useFormContext<FormData>();
   const {
     control,
     handleSubmit,
@@ -26,10 +27,8 @@ const NamePage = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    router.push({
-      pathname: "/setup/gender",
-      params: { name: data.name },
-    });
+    router.push("/setup/gender");
+    setValue("name", data.name);
 
     Keyboard.dismiss();
   };
@@ -42,9 +41,7 @@ const NamePage = () => {
             <H1 fontSize="$2xl" fontWeight="bold">
               {t("name.title")}
             </H1>
-            <Text fontSize="$md" color="$mutedColor">
-              {t("name.description")}
-            </Text>
+            <Text color="$mutedColor">{t("name.description")}</Text>
           </YStack>
           <Form
             flex={1}
