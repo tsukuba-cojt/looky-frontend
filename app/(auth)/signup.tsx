@@ -2,7 +2,11 @@ import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Link, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import {
+  Keyboard,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { toast } from "sonner-native";
 import { Form, H1, Spinner, Text, View, XStack, YStack } from "tamagui";
 import type { z } from "zod/v4";
