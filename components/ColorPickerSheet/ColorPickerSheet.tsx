@@ -36,7 +36,7 @@ export const ColorPickerSheet = ({
   onColorChange,
   ...props
 }: ColorPickerSheetProps) => {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation("discover");
   const [position, setPosition] = useState(0);
 
   return (

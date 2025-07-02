@@ -6,9 +6,9 @@ export const navConfig = [
     icon: "galleryHorizontalEnd",
   },
   {
-    name: "search",
-    href: "/search",
-    key: "search",
+    name: "discover",
+    href: "/discover",
+    key: "discover",
     icon: "search",
   },
   {

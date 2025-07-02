@@ -2,7 +2,7 @@
   "common": {
     "tab": {
       "try_on": "試着する",
-      "search": "見つける",
+      "discover": "見つける",
       "collections": "コレクション",
       "settings": "設定"
     },
@@ -151,7 +151,7 @@
     "done": "完了",
     "cancel": "キャンセル"
   },
-  "search": {
+  "discover": {
     "placeholder": "検索する",
     "label": {
       "gender": "性別",
@@ -187,7 +187,11 @@
       "black": "黒",
       "white": "白"
     },
-    "close": "閉じる"
+    "close": "閉じる",
+    "search": {
+      "history": "履歴",
+      "clear": "クリア"
+    }
   },
   "settings": {
     "title": "設定",

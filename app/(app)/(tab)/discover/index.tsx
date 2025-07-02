@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, XStack, YStack } from "tamagui";
@@ -17,8 +18,8 @@ const data = Array.from({ length: 40 }, (_, i) => ({
   url: `https://picsum.photos/1200/900?random=${i + 1}`,
 }));
 
-const SearchPage = () => {
-  const { t } = useTranslation("search");
+const DiscoverPage = () => {
+  const { t } = useTranslation("discover");
   const [gender, setGender] = useState<Gender>();
   const [category, setCategory] = useState<Category>();
   const [color, setColor] = useState<Color>();
@@ -31,14 +32,17 @@ const SearchPage = () => {
         <YStack gap="$4" px="$8">
           <XStack items="center" gap="$4">
             <XStack position="relative" items="center" shrink={1}>
-              <Input
-                placeholder={t("placeholder")}
-                rounded="$full"
-                borderWidth={0}
-                pl="$9"
-                boxShadow="none"
-                bg="$mutedBackground"
-              />
+              <Link href="/discover/search" asChild>
+                <Input
+                  readOnly
+                  placeholder={t("placeholder")}
+                  rounded="$full"
+                  borderWidth={0}
+                  pl="$9"
+                  boxShadow="none"
+                  bg="$mutedBackground"
+                />
+              </Link>
               <Icons.search
                 position="absolute"
                 l="$3"
@@ -144,4 +148,4 @@ const SearchPage = () => {
     </>
   );
 };
-export default SearchPage;
+export default DiscoverPage;

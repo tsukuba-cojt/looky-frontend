@@ -34,7 +34,9 @@ const TabLayout = () => {
         justify="space-between"
       >
         <H1 fontSize="$2xl" lineHeight="$2xl" fontWeight="$bold">
-          {t(`tab.${navConfig.find((item) => item.href === pathname)?.key}`)}
+          {t(
+            `tab.${navConfig.find((item) => item.href === `/${pathname.split("/")[1]}`)?.key}`,
+          )}
         </H1>
         {isLoading ? (
           <Skeleton w="$9" h="$9" rounded="$full" />

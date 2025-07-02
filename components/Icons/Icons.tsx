@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleUserRound,
+  Clock,
   GalleryHorizontalEnd,
   Grid2x2,
   Image,
@@ -19,6 +20,7 @@ import {
   ThumbsDown,
   ThumbsUp,
   UserRound,
+  X,
   Zap,
 } from "@tamagui/lucide-icons";
 
@@ -31,6 +33,7 @@ export const Icons = {
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   circleUserRound: CircleUserRound,
+  clock: Clock,
   galleryHorizontalEnd: GalleryHorizontalEnd,
   grid2x2: Grid2x2,
   image: Image,
@@ -43,5 +46,6 @@ export const Icons = {
   thumbsDown: ThumbsDown,
   thumbsUp: ThumbsUp,
   userRound: UserRound,
+  x: X,
   zap: Zap,
 };

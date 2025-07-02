@@ -2,7 +2,7 @@
   "common": {
     "tab": {
       "try_on": "Try On",
-      "search": "Search",
+      "discover": "Discover",
       "collections": "Collections",
       "settings": "Settings"
     },
@@ -148,7 +148,7 @@
     "done": "Done",
     "cancel": "Cancel"
   },
-  "search": {
+  "discover": {
     "placeholder": "Search",
     "label": {
       "gender": "Gender",
@@ -184,7 +184,11 @@
       "black": "Black",
       "white": "White"
     },
-    "close": "Close"
+    "close": "Close",
+    "search": {
+      "history": "History",
+      "clear": "Clear"
+    }
   },
   "settings": {
     "title": "Settings",

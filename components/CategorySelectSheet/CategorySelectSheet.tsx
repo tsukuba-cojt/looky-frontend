@@ -1,3 +1,4 @@
+import { createId } from "@paralleldrive/cuid2";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Label, Sheet, type SheetProps, XStack } from "tamagui";
@@ -17,7 +18,7 @@ export const CategorySelectSheet = ({
   onCategoryChange,
   ...props
 }: CategorySelectSheetProps) => {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation("discover");
   const [position, setPosition] = useState(0);
 
   return (
@@ -51,20 +52,20 @@ export const CategorySelectSheet = ({
           px="$2"
           gap="$4"
         >
-          {categories.map((category, index) => (
-            <XStack key={index.toString()} gap="$2">
-              <RadioGroup.Item id={`category-${index}`} value={category}>
-                <RadioGroup.Indicator />
-              </RadioGroup.Item>
-              <Label
-                flex={1}
-                htmlFor={`category-${index}`}
-                fontWeight="$medium"
-              >
-                {t(`category.${category}`)}
-              </Label>
-            </XStack>
-          ))}
+          {categories.map((category, index) => {
+            const id = createId();
+
+            return (
+              <XStack key={index.toString()} gap="$2">
+                <RadioGroup.Item id={id} value={category}>
+                  <RadioGroup.Indicator />
+                </RadioGroup.Item>
+                <Label flex={1} htmlFor={id} fontWeight="$medium">
+                  {t(`category.${category}`)}
+                </Label>
+              </XStack>
+            );
+          })}
         </RadioGroup>
         <Button variant="ghost" onPress={() => props.onOpenChange?.(false)}>
           <Button.Text>{t("close")}</Button.Text>
