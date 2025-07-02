@@ -80,7 +80,7 @@ const OnboardingPage = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
       <AnimatedPagerView
         initialPage={0}
         ref={ref}
@@ -92,24 +92,26 @@ const OnboardingPage = () => {
       >
         {data.map(({ key, title, description, icon }) => {
           return (
-            <YStack key={key} flex={1} items="center" pt="$32" gap="$12">
+            <YStack key={key} flex={1} items="center" pt="$24" gap="$12">
               <Image
                 style={{ width: 300, height: 300 }}
                 source={icon}
                 transition={200}
               />
-              <YStack gap="$6" items="center" justify="center">
+              <YStack gap="$6">
                 <H1 fontSize="$2xl" fontWeight="$bold">
                   {title}
                 </H1>
-                <Text text="center">{description}</Text>
+                <Text text="center" color="$mutedColor">
+                  {description}
+                </Text>
               </YStack>
             </YStack>
           );
         })}
       </AnimatedPagerView>
 
-      <YStack position="absolute" b="$28" w="100%">
+      <YStack position="absolute" b="$32" w="100%">
         <SlidingDot
           data={data}
           //@ts-ignore

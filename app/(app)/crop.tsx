@@ -1,5 +1,5 @@
 import { SaveFormat, useImageManipulator } from "expo-image-manipulator";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, useWindowDimensions } from "react-native";
@@ -23,6 +23,7 @@ const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 const CropPage = () => {
   const { t } = useTranslation("crop");
+  const router = useRouter();
   const { uri, from } = useLocalSearchParams<{ uri: string; from: string }>();
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();

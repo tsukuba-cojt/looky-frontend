@@ -1,5 +1,4 @@
 import { useIsFocused } from "@react-navigation/native";
-import { RotateCcw, ThumbsDown, ThumbsUp } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
 import {
   createRef,
@@ -17,6 +16,7 @@ import {
 } from "react-native-reanimated";
 import { Portal, View, XStack } from "tamagui";
 import { Button } from "@/components/Button";
+import { Icons } from "@/components/Icons";
 import { Skeleton } from "@/components/Skeleton";
 import {
   type SwipableCardRef,
@@ -36,7 +36,7 @@ const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
   return (
     <View
       overflow="hidden"
-      rounded="$radius.3xl"
+      rounded="$3xl"
       position="relative"
       bg="$background"
       boxShadow="$sm"
@@ -46,7 +46,6 @@ const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
       <Image
         style={{ width: "100%", height: "100%" }}
         source={url}
-        contentFit="cover"
         transition={200}
       />
     </View>
@@ -204,17 +203,17 @@ const TryOnPage = () => {
             onPress={swipeRight}
           >
             <Button.Icon>
-              <ThumbsUp size="$6" />
+              <Icons.thumbsUp size="$6" />
             </Button.Icon>
           </Button>
           <Button variant="ghost" size="icon" w="$6" h="$6" onPress={swipeLeft}>
             <Button.Icon>
-              <ThumbsDown size="$6" />
+              <Icons.thumbsDown size="$6" />
             </Button.Icon>
           </Button>
           <Button variant="ghost" size="icon" w="$6" h="$6" onPress={swipeBack}>
             <Button.Icon>
-              <RotateCcw size="$6" />
+              <Icons.rotateCcw size="$6" />
             </Button.Icon>
           </Button>
         </XStack>

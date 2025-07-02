@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { toast } from "sonner-native";
@@ -10,6 +10,7 @@ import { signInWithEmail, verifyOtp } from "@/lib/auth";
 
 const VerifyPage = () => {
   const { t } = useTranslation("verify");
+  const router = useRouter();
   const { email } = useLocalSearchParams<{ email: string }>();
 
   const onEnter = (code: number) => {

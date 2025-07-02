@@ -5,7 +5,7 @@ export const setupSchema = z.object({
     .string()
     .min(3, { message: "too_short_name" })
     .max(128, { message: "too_long_name" }),
-  gender: z.enum(["man", "woman", "other"]),
-  avatarUrl: z.url("invalid_url"),
-  bodyUrl: z.url("invalid_url").optional(),
+  gender: z.enum(["man", "woman", "other"]).optional(),
+  avatarUrl: z.string().optional(),
+  bodyUrl: z.string(),
 });

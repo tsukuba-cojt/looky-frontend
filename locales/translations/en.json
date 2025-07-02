@@ -71,6 +71,7 @@
     "skip": "Skip"
   },
   "setup": {
+    "unset": "Unset",
     "name": {
       "title": "Enter your name",
       "description": "This name will be visible to other users. You can change it later.",
@@ -103,27 +104,36 @@
     },
     "body": {
       "intro": {
-        "title": "Let's Upload a Full-Body Photo",
-        "description": "You can change the photo later.",
+        "title": "Upload yourr Full-Body Photo",
+        "description": "This full-body photo of you to try on clothes.",
+        "note": "You can change the photo later.",
         "get_started": "Get Started"
       },
       "guide": {
+        "tips": "Photo Tips",
         "tab1": {
-          "title": "Photo Tips",
-          "description": "Take the photo against as simple a background as possible."
+          "title": "Use a simple background",
+          "description": "Try to take the photo in front of a simple, uncluttered background."
         },
         "tab2": {
-          "title": "Photo Tips",
-          "description": "For a full-body shot, refer to the on-screen guide\nfor proper sizing."
+          "title": "Stay within the frame",
+          "description": "Make sure your entire body fits within the on-screen frame."
         },
         "tab3": {
-          "title": "Photo Tips",
-          "description": "Ask someone to take the photo,\nor use the self-timer."
+          "title": "Use the self-timer",
+          "description": "Set up your phone and use the self-timer to take the photo."
         },
         "get_started": "Get Started",
         "next": "Next",
         "skip": "Skip",
         "error": "Camera access is not allowed. Please allow camera access in your settings."
+      },
+      "confirm": {
+        "title": "Are you satisfied with this photo?",
+        "description": "",
+        "done": "Done",
+        "redo": "Redo",
+        "error": "Something went wrong. Please try again."
       }
     }
   },
@@ -147,7 +157,7 @@
       "title": "Sign Out",
       "description": "Are you sure you want to sign out?",
       "cancel": "Cancel",
-      "confirm": "Sign Out"
+      "continue": "Continue"
     },
     "success": "You have successfully signed out.",
     "error": "Something went wrong. Please try again."

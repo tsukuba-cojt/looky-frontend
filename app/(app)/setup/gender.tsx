@@ -1,7 +1,7 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
@@ -29,8 +29,8 @@ type FormData = z.infer<typeof genderSchema>;
 const GenderPage = () => {
   const { t } = useTranslation("setup");
   const router = useRouter();
-  const { name } = useLocalSearchParams<{ name?: string }>();
   const [position, setPosition] = useState(0);
+  const { setValue } = useFormContext<FormData>();
   const {
     control,
     handleSubmit,
@@ -40,10 +40,8 @@ const GenderPage = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    router.push({
-      pathname: "/setup/avatar",
-      params: { name, gender: data.gender },
-    });
+    router.push("/setup/avatar");
+    setValue("gender", data.gender);
 
     Keyboard.dismiss();
   };
@@ -56,9 +54,7 @@ const GenderPage = () => {
             <H1 fontSize="$2xl" fontWeight="bold">
               {t("gender.title")}
             </H1>
-            <Text fontSize="$md" color="$mutedColor">
-              {t("gender.description")}
-            </Text>
+            <Text color="$mutedColor">{t("gender.description")}</Text>
           </YStack>
           <Form
             flex={1}
@@ -118,8 +114,9 @@ const GenderPage = () => {
                       <Select.Viewport>
                         <Select.Group>
                           <Select.Label />
-                          {genderSchema.shape.gender.options.map(
-                            (option, index) => {
+                          {genderSchema.shape.gender
+                            .unwrap()
+                            .options.map((option, index) => {
                               const isActive = value === option;
 
                               return (
@@ -152,8 +149,7 @@ const GenderPage = () => {
                                   </Select.ItemIndicator>
                                 </Select.Item>
                               );
-                            },
-                          )}
+                            })}
                         </Select.Group>
                       </Select.Viewport>
                       <Select.ScrollDownButton />

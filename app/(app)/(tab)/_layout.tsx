@@ -3,7 +3,7 @@ import { Link, usePathname } from "expo-router";
 import { TabList, TabSlot, Tabs, TabTrigger } from "expo-router/ui";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Avatar, Heading, Text, XStack, YStack } from "tamagui";
+import { Avatar, H1, Text, XStack, YStack } from "tamagui";
 import { Icons } from "@/components/Icons";
 import { Skeleton } from "@/components/Skeleton";
 import { navConfig } from "@/config/nav";
@@ -33,24 +33,21 @@ const TabLayout = () => {
         items="center"
         justify="space-between"
       >
-        <Heading fontSize="$2xl" lineHeight="$2xl" fontWeight="$bold">
+        <H1 fontSize="$2xl" lineHeight="$2xl" fontWeight="$bold">
           {t(`tab.${navConfig.find((item) => item.href === pathname)?.key}`)}
-        </Heading>
+        </H1>
         {isLoading ? (
           <Skeleton w="$9" h="$9" rounded="$full" />
         ) : (
           <Link href="/settings" asChild>
             <Avatar circular size="$9">
-              <Avatar.Image
-                accessibilityLabel="avatar"
-                src={user?.avatar_url || undefined}
-              />
+              <Avatar.Image src={user?.avatar_url || undefined} />
               <Avatar.Fallback
                 items="center"
                 justify="center"
                 bg="$mutedBackground"
               >
-                {user?.name.charAt(0).toUpperCase() ?? ""}
+                <Text>{user?.name.charAt(0).toUpperCase() ?? ""}</Text>
               </Avatar.Fallback>
             </Avatar>
           </Link>

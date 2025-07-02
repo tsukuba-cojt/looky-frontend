@@ -5,8 +5,8 @@ import {
   usePathname,
   useRouter,
 } from "expo-router";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useState } from "react";
+import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -33,32 +33,23 @@ const AvatarPage = () => {
   const { t } = useTranslation("setup");
   const router = useRouter();
   const pathname = usePathname();
-  const { name, gender, uri } = useLocalSearchParams<{
-    name?: string;
-    gender: z.infer<typeof setupSchema.shape.gender>;
-    uri?: string;
-  }>();
+  const { uri } = useLocalSearchParams<{ uri?: string }>();
   const [isOpen, setIsOpen] = useState(false);
+  const { setValue } = useFormContext<FormData>();
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<FormData>({
     resolver: standardSchemaResolver(avatarUrlSchema),
+    defaultValues: {
+      avatarUrl: uri,
+    },
   });
 
-  useEffect(() => {
-    if (uri) {
-      setValue("avatarUrl", uri);
-    }
-  }, [uri, setValue]);
-
   const onSubmit = (data: FormData) => {
-    router.push({
-      pathname: "/setup/body",
-      params: { name, gender, avatarUrl: data.avatarUrl },
-    });
+    router.push("/setup/body");
+    setValue("avatarUrl", data.avatarUrl);
   };
 
   return (
