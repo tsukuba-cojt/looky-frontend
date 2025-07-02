@@ -137,5 +137,19 @@
   "crop": {
     "done": "Done",
     "cancel": "Cancel"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "signout": {
+      "title": "Sign Out",
+      "description": "Are you sure you want to sign out?",
+      "cancel": "Cancel",
+      "confirm": "Sign Out"
+    },
+    "success": "You have successfully signed out.",
+    "error": "Something went wrong. Please try again."
   }
 }

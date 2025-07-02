@@ -137,5 +137,19 @@
   "crop": {
     "done": "完了",
     "cancel": "キャンセル"
+  },
+  "settings": {
+    "title": "設定",
+    "language": "言語",
+    "theme": "テーマ",
+    "notifications": "通知",
+    "signout": {
+      "title": "サインアウト",
+      "description": "本当にサインアウトしますか？",
+      "cancel": "キャンセル",
+      "confirm": "サインアウト"
+    },
+    "success": "サインアウトしました。",
+    "error": "エラーが発生しました。もう一度お試しください。"
   }
 }
