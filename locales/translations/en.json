@@ -148,6 +148,44 @@
     "done": "Done",
     "cancel": "Cancel"
   },
+  "search": {
+    "placeholder": "Search",
+    "label": {
+      "gender": "Gender",
+      "category": "Category",
+      "color": "Color"
+    },
+    "gender": {
+      "man": "Man",
+      "woman": "Woman",
+      "other": "Other"
+    },
+    "category": {
+      "tops": "Tops",
+      "bottoms": "Bottoms",
+      "outwear": "Outerwear",
+      "dresses": "Dresses"
+    },
+    "color": {
+      "red": "Red",
+      "pink": "Pink",
+      "purple": "Purple",
+      "indigo": "Indigo",
+      "blue": "Blue",
+      "cyan": "Cyan",
+      "teal": "Teal",
+      "green": "Green",
+      "lime": "Lime",
+      "yellow": "Yellow",
+      "amber": "Amber",
+      "orange": "Orange",
+      "brown": "Brown",
+      "gray": "Gray",
+      "black": "Black",
+      "white": "White"
+    },
+    "close": "Close"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",

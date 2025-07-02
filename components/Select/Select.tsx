@@ -1,4 +1,4 @@
-import { styled, Select as TamaguiSelect } from "tamagui";
+import { styled, Select as TamaguiSelect, withStaticProperties } from "tamagui";
 
 const SelectTrigger = styled(TamaguiSelect.Trigger, {
   name: "SelectTrigger",
@@ -11,7 +11,6 @@ const SelectTrigger = styled(TamaguiSelect.Trigger, {
   boxShadow: "$shadow.sm",
 });
 
-const Select = TamaguiSelect;
-Select.Trigger = SelectTrigger;
-
-export { Select };
+export const Select = withStaticProperties(TamaguiSelect, {
+  Trigger: SelectTrigger,
+});

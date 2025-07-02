@@ -25,7 +25,7 @@ import {
 
 const data = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
-  url: `https://picsum.photos/1200/800?random=${i + 1}`,
+  url: `https://picsum.photos/1200/900?random=${i + 1}`,
 }));
 
 interface SwipableCardItemProps {

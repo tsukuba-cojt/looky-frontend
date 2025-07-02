@@ -14,8 +14,8 @@ export const ImagePickerSheet = ({
   onImagePicked,
   ...props
 }: ImagePickerSheetProps) => {
-  const [position, setPosition] = useState(0);
   const { t } = useTranslation("common");
+  const [position, setPosition] = useState(0);
 
   const takePhoto = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
