@@ -1,7 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import { RotateCcw, ThumbsDown, ThumbsUp } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   createRef,
   type RefObject,
@@ -10,7 +9,6 @@ import {
   useImperativeHandle,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import {
   runOnJS,
@@ -35,8 +33,6 @@ interface SwipableCardItemProps {
 }
 
 const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
-  const [isLoading, setIsLoading] = useState(true);
-
   return (
     <View
       overflow="hidden"
@@ -45,31 +41,14 @@ const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
       bg="$background"
       boxShadow="$sm"
     >
+      <View position="absolute" inset={0} bg="$background" />
+      <Skeleton position="absolute" inset={0} />
       <Image
         style={{ width: "100%", height: "100%" }}
         source={url}
         contentFit="cover"
         transition={200}
-        onLoadEnd={() => setIsLoading(false)}
       />
-      {isLoading ? (
-        <>
-          <View position="absolute" inset={0} bg="$background" z="$20" />
-          <Skeleton position="absolute" inset={0} z="$20" />
-        </>
-      ) : (
-        <LinearGradient
-          colors={["transparent", "rgba(0,0,0,0.4)"]}
-          locations={[0, 1]}
-          start={{ x: 0, y: 0.6 }}
-          end={{ x: 0, y: 1 }}
-          style={{
-            position: "absolute",
-            inset: 0,
-          }}
-          pointerEvents="none"
-        />
-      )}
     </View>
   );
 };
@@ -208,15 +187,35 @@ const TryOnPage = () => {
             })
             .reverse()}
         </View>
-        <XStack gap="$8">
-          <Button variant="outline" size="icon" h="$14" w="$14" rounded="$full">
-            <ThumbsUp size="$6" />
+        <XStack
+          gap="$10"
+          borderWidth={1}
+          borderColor="$borderColor"
+          px="$8"
+          py="$4"
+          bg="$background"
+          rounded="$full"
+        >
+          <Button
+            variant="ghost"
+            size="icon"
+            w="$6"
+            h="$6"
+            onPress={swipeRight}
+          >
+            <Button.Icon>
+              <ThumbsUp size="$6" />
+            </Button.Icon>
           </Button>
-          <Button variant="outline" size="icon" h="$14" w="$14" rounded="$full">
-            <ThumbsDown size="$6" />
+          <Button variant="ghost" size="icon" w="$6" h="$6" onPress={swipeLeft}>
+            <Button.Icon>
+              <ThumbsDown size="$6" />
+            </Button.Icon>
           </Button>
-          <Button variant="outline" size="icon" h="$14" w="$14" rounded="$full">
-            <RotateCcw size="$6" />
+          <Button variant="ghost" size="icon" w="$6" h="$6" onPress={swipeBack}>
+            <Button.Icon>
+              <RotateCcw size="$6" />
+            </Button.Icon>
           </Button>
         </XStack>
       </View>
