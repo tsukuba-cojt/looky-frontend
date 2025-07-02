@@ -1,3 +1,4 @@
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,9 +8,6 @@ import PagerView, {
   type PagerViewOnPageScrollEventData,
 } from "react-native-pager-view";
 import { H1, Text, useTheme, YStack } from "tamagui";
-import Onboarding1 from "@/assets/images/onboarding1.svg";
-import Onboarding2 from "@/assets/images/onboarding2.svg";
-import Onboarding3 from "@/assets/images/onboarding3.svg";
 import { Button } from "@/components/Button";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
@@ -29,19 +27,19 @@ const OnboardingPage = () => {
         key: "1",
         title: t("tab1.title"),
         description: t("tab1.description"),
-        icon: Onboarding1,
+        icon: require("../../assets/images/onboarding1.png"),
       },
       {
         key: "2",
         title: t("tab2.title"),
         description: t("tab2.description"),
-        icon: Onboarding2,
+        icon: require("../../assets/images/onboarding2.png"),
       },
       {
         key: "3",
         title: t("tab3.title"),
         description: t("tab3.description"),
-        icon: Onboarding3,
+        icon: require("../../assets/images/onboarding3.png"),
       },
     ],
     [t],
@@ -93,11 +91,13 @@ const OnboardingPage = () => {
         }}
       >
         {data.map(({ key, title, description, icon }) => {
-          const Icon = icon;
-
           return (
-            <YStack key={key} flex={1} items="center" pt="$32" gap="$16">
-              <Icon width={320} height={320} />
+            <YStack key={key} flex={1} items="center" pt="$32" gap="$12">
+              <Image
+                style={{ width: 300, height: 300 }}
+                source={icon}
+                transition={200}
+              />
               <YStack gap="$6" items="center" justify="center">
                 <H1 fontSize="$2xl" fontWeight="$bold">
                   {title}
