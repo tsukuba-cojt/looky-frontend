@@ -151,6 +151,44 @@
     "done": "完了",
     "cancel": "キャンセル"
   },
+  "search": {
+    "placeholder": "検索する",
+    "label": {
+      "gender": "性別",
+      "category": "カテゴリー",
+      "color": "カラー"
+    },
+    "gender": {
+      "man": "男性",
+      "woman": "女性",
+      "other": "その他"
+    },
+    "category": {
+      "tops": "トップス",
+      "bottoms": "ボトムス",
+      "outwear": "アウター",
+      "dresses": "ワンピース"
+    },
+    "color": {
+      "red": "赤",
+      "pink": "ピンク",
+      "purple": "紫",
+      "indigo": "インディゴ",
+      "blue": "青",
+      "cyan": "シアン",
+      "teal": "ティール",
+      "green": "緑",
+      "lime": "ライム",
+      "yellow": "黄色",
+      "amber": "琥珀",
+      "orange": "オレンジ",
+      "brown": "茶色",
+      "gray": "グレー",
+      "black": "黒",
+      "white": "白"
+    },
+    "close": "閉じる"
+  },
   "settings": {
     "title": "設定",
     "language": "言語",

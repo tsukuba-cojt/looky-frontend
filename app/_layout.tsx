@@ -3,6 +3,7 @@ import "@/locales";
 import {
   Inter_400Regular,
   Inter_500Medium,
+  Inter_600SemiBold,
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
@@ -96,6 +97,7 @@ const RootNavigator = () => {
   const [loaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
+    Inter_600SemiBold,
     Inter_700Bold,
   });
 

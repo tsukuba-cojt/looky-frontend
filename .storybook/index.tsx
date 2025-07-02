@@ -4,6 +4,7 @@ import { useColorScheme } from "react-native";
 import {
   Inter_400Regular,
   Inter_500Medium,
+  Inter_600SemiBold,
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
@@ -22,6 +23,7 @@ const StorybookUIRoot = () => {
   const [loaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
+    Inter_600SemiBold,
     Inter_700Bold,
   });
 
