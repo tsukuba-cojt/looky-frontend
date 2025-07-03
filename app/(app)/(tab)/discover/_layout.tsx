@@ -13,7 +13,7 @@ const DiscoverLayout = () => {
       <Stack.Screen
         name="filter"
         options={{
-          presentation: "modal"
+          presentation: "modal",
         }}
       />
     </Stack>
