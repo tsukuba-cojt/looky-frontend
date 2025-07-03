@@ -26,6 +26,7 @@ const AppLayout = () => {
       </Stack.Protected>
       <Stack.Protected guard={!!user}>
         <Stack.Screen name="(tab)" />
+        <Stack.Screen name="details/[id]" />
       </Stack.Protected>
       <Stack.Screen name="camera" />
       <Stack.Screen name="crop" />

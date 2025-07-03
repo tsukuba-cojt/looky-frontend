@@ -1,6 +1,8 @@
+import { createId } from "@paralleldrive/cuid2";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Label, Sheet, type SheetProps, XStack } from "tamagui";
+import { genders } from "@/constants";
 import type { Gender } from "@/types";
 import { Button } from "../Button";
 import { RadioGroup } from "../RadioGroup";
@@ -10,14 +12,12 @@ interface GenderSelectSheetProps extends SheetProps {
   onGenderChange: (gender: Gender) => void;
 }
 
-const genders = ["man", "woman", "other"];
-
 export const GenderSelectSheet = ({
   gender,
   onGenderChange,
   ...props
 }: GenderSelectSheetProps) => {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation("common");
   const [position, setPosition] = useState(0);
 
   return (
@@ -51,16 +51,20 @@ export const GenderSelectSheet = ({
           px="$2"
           gap="$4"
         >
-          {genders.map((gender, index) => (
-            <XStack key={index.toString()} gap="$2">
-              <RadioGroup.Item id={`gender-${index}`} value={gender}>
-                <RadioGroup.Indicator />
-              </RadioGroup.Item>
-              <Label flex={1} htmlFor={`gender-${index}`} fontWeight="$medium">
-                {t(`gender.${gender}`)}
-              </Label>
-            </XStack>
-          ))}
+          {genders.map((item, index) => {
+            const id = createId();
+
+            return (
+              <XStack key={index.toString()} gap="$2">
+                <RadioGroup.Item id={id} value={item}>
+                  <RadioGroup.Indicator />
+                </RadioGroup.Item>
+                <Label flex={1} htmlFor={id} fontWeight="$medium">
+                  {t(`gender.${item}`)}
+                </Label>
+              </XStack>
+            );
+          })}
         </RadioGroup>
         <Button variant="ghost" onPress={() => props.onOpenChange?.(false)}>
           <Button.Text>{t("close")}</Button.Text>

@@ -1,7 +1,9 @@
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TouchableOpacity } from "react-native";
 import { View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { CategorySelectSheet } from "@/components/CategorySelectSheet";
@@ -17,8 +19,8 @@ const data = Array.from({ length: 40 }, (_, i) => ({
   url: `https://picsum.photos/1200/900?random=${i + 1}`,
 }));
 
-const SearchPage = () => {
-  const { t } = useTranslation("search");
+const DiscoverPage = () => {
+  const { t } = useTranslation("discover");
   const [gender, setGender] = useState<Gender>();
   const [category, setCategory] = useState<Category>();
   const [color, setColor] = useState<Color>();
@@ -31,14 +33,17 @@ const SearchPage = () => {
         <YStack gap="$4" px="$8">
           <XStack items="center" gap="$4">
             <XStack position="relative" items="center" shrink={1}>
-              <Input
-                placeholder={t("placeholder")}
-                rounded="$full"
-                borderWidth={0}
-                pl="$9"
-                boxShadow="none"
-                bg="$mutedBackground"
-              />
+              <Link href="/discover/search" asChild>
+                <Input
+                  readOnly
+                  placeholder={t("placeholder")}
+                  rounded="$full"
+                  borderWidth={0}
+                  pl="$9"
+                  boxShadow="none"
+                  bg="$mutedBackground"
+                />
+              </Link>
               <Icons.search
                 position="absolute"
                 l="$3"
@@ -50,7 +55,7 @@ const SearchPage = () => {
           </XStack>
           <XStack gap="$2">
             <Button
-              variant="secondary"
+              variant="outline"
               h="$8"
               pr="$2"
               pl="$3"
@@ -59,13 +64,13 @@ const SearchPage = () => {
               boxShadow="none"
               onPress={() => open("gender")}
             >
-              <Button.Text fontSize="$sm">{t("label.gender")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("gender")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
             </Button>
             <Button
-              variant="secondary"
+              variant="outline"
               h="$8"
               pr="$2"
               pl="$3"
@@ -74,13 +79,13 @@ const SearchPage = () => {
               boxShadow="none"
               onPress={() => open("category")}
             >
-              <Button.Text fontSize="$sm">{t("label.category")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("category")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
             </Button>
             <Button
-              variant="secondary"
+              variant="outline"
               h="$8"
               pr="$2"
               pl="$3"
@@ -89,7 +94,7 @@ const SearchPage = () => {
               boxShadow="none"
               onPress={() => open("color")}
             >
-              <Button.Text fontSize="$sm">{t("label.color")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("color")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
@@ -99,30 +104,56 @@ const SearchPage = () => {
         <FlashList
           numColumns={2}
           data={data}
-          estimatedItemSize={236}
+          estimatedItemSize={240}
           contentContainerStyle={{
             paddingHorizontal: 16,
           }}
           renderItem={({ item }) => (
-            <View p="$1.5">
-              <View
-                w="100%"
-                aspectRatio={3 / 4}
-                rounded="$2xl"
-                boxShadow="$sm"
-                overflow="hidden"
-                bg="$mutedBackground"
-              >
-                <Image
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  source={item.url}
-                  transition={200}
-                />
-              </View>
-            </View>
+            <Link
+              href={{
+                pathname: "/details/[id]",
+                params: { id: item.id },
+              }}
+              asChild
+            >
+              <TouchableOpacity activeOpacity={0.6}>
+                <View p="$1.5">
+                  <View
+                    position="relative"
+                    w="100%"
+                    aspectRatio={3 / 4}
+                    rounded="$2xl"
+                    boxShadow="$sm"
+                    overflow="hidden"
+                    bg="$mutedBackground"
+                  >
+                    <Image
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      source={item.url}
+                      transition={200}
+                    />
+                    <View position="absolute" b={8} r={8}>
+                      <TouchableOpacity activeOpacity={0.6}>
+                        <View
+                          p="$2"
+                          items="center"
+                          justify="center"
+                          bg="black"
+                          rounded="$full"
+                          opacity={0.8}
+                          boxShadow="$shadow.xl"
+                        >
+                          <Icons.heart size="$4" color="white" />
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Link>
           )}
         />
       </YStack>
@@ -144,4 +175,4 @@ const SearchPage = () => {
     </>
   );
 };
-export default SearchPage;
+export default DiscoverPage;

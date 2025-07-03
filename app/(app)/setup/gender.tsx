@@ -21,6 +21,7 @@ import type { z } from "zod/v4";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { Select } from "@/components/Select";
+import { genders } from "@/constants";
 import { setupSchema } from "@/schemas/app";
 
 const genderSchema = setupSchema.pick({ gender: true });
@@ -114,42 +115,38 @@ const GenderPage = () => {
                       <Select.Viewport>
                         <Select.Group>
                           <Select.Label />
-                          {genderSchema.shape.gender
-                            .unwrap()
-                            .options.map((option, index) => {
-                              const isActive = value === option;
+                          {genders.map((option, index) => {
+                            const isActive = value === option;
 
-                              return (
-                                <Select.Item
-                                  key={index.toString()}
-                                  index={index}
-                                  value={option}
-                                  w="100%"
-                                  rounded="$sm"
-                                  pl="$2"
-                                  pr="$8"
-                                  py="$1.5"
-                                  bg={
-                                    isActive
-                                      ? "$accentBackground"
-                                      : "transparent"
+                            return (
+                              <Select.Item
+                                key={index.toString()}
+                                index={index}
+                                value={option}
+                                w="100%"
+                                rounded="$sm"
+                                pl="$2"
+                                pr="$8"
+                                py="$1.5"
+                                bg={
+                                  isActive ? "$accentBackground" : "transparent"
+                                }
+                                select="none"
+                              >
+                                <Select.ItemText
+                                  color={
+                                    isActive ? "$accentColor" : "$mutedColor"
                                   }
-                                  select="none"
+                                  fontSize="$sm"
                                 >
-                                  <Select.ItemText
-                                    color={
-                                      isActive ? "$accentColor" : "$mutedColor"
-                                    }
-                                    fontSize="$sm"
-                                  >
-                                    {t(`gender.${option}`)}
-                                  </Select.ItemText>
-                                  <Select.ItemIndicator marginLeft="auto">
-                                    <Icons.check size="$4" />
-                                  </Select.ItemIndicator>
-                                </Select.Item>
-                              );
-                            })}
+                                  {t(`gender.${option}`)}
+                                </Select.ItemText>
+                                <Select.ItemIndicator marginLeft="auto">
+                                  <Icons.check size="$4" />
+                                </Select.ItemIndicator>
+                              </Select.Item>
+                            );
+                          })}
                         </Select.Group>
                       </Select.Viewport>
                       <Select.ScrollDownButton />

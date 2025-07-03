@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { Sheet, type SheetProps, Text, View, YStack } from "tamagui";
+import { colors } from "@/constants";
 import type { Color } from "@/types";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
@@ -12,31 +13,12 @@ interface ColorPickerSheetProps extends SheetProps {
   onColorChange: (color: Color) => void;
 }
 
-const colors = {
-  red: "#E53935",
-  pink: "#D81B60",
-  purple: "#8E24AA",
-  indigo: "#3949AB",
-  blue: "#1E88E5",
-  cyan: "#00ACC1",
-  teal: "#00897B",
-  green: "#43A047",
-  lime: "#C0CA33",
-  yellow: "#FDD835",
-  amber: "#FFB300",
-  orange: "#FB8C00",
-  brown: "#6D4C41",
-  gray: "#757575",
-  black: "#000000",
-  white: "#FFFFFF",
-} as const;
-
 export const ColorPickerSheet = ({
   color,
   onColorChange,
   ...props
 }: ColorPickerSheetProps) => {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation("common");
   const [position, setPosition] = useState(0);
 
   return (
@@ -68,7 +50,7 @@ export const ColorPickerSheet = ({
             contentContainerStyle={{ paddingHorizontal: 16 }}
             scrollEnabled={false}
             numColumns={4}
-            estimatedItemSize={34}
+            estimatedItemSize={32}
             data={Object.entries(colors)}
             renderItem={({ item: [key, value] }) => (
               <View flex={1} p="$2" items="center">

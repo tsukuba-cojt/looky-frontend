@@ -187,31 +187,46 @@ const TryOnPage = () => {
             .reverse()}
         </View>
         <XStack
-          gap="$10"
+          gap="$6"
           borderWidth={1}
           borderColor="$borderColor"
-          px="$8"
-          py="$4"
+          px="$6"
+          py="$2"
           bg="$background"
           rounded="$full"
         >
           <Button
             variant="ghost"
             size="icon"
-            w="$6"
-            h="$6"
+            w="$12"
+            h="$12"
+            circular
             onPress={swipeRight}
           >
             <Button.Icon>
               <Icons.thumbsUp size="$6" />
             </Button.Icon>
           </Button>
-          <Button variant="ghost" size="icon" w="$6" h="$6" onPress={swipeLeft}>
+          <Button
+            variant="ghost"
+            size="icon"
+            w="$12"
+            h="$12"
+            circular
+            onPress={swipeLeft}
+          >
             <Button.Icon>
               <Icons.thumbsDown size="$6" />
             </Button.Icon>
           </Button>
-          <Button variant="ghost" size="icon" w="$6" h="$6" onPress={swipeBack}>
+          <Button
+            variant="ghost"
+            size="icon"
+            w="$12"
+            h="$12"
+            circular
+            onPress={swipeBack}
+          >
             <Button.Icon>
               <Icons.rotateCcw size="$6" />
             </Button.Icon>
