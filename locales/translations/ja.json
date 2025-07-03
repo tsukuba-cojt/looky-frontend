@@ -23,6 +23,35 @@
       "outwear": "アウター",
       "dresses": "ワンピース"
     },
+    "subcategory": {
+      "tops": {
+        "label": "トップス",
+        "t_shirts": "Tシャツ",
+        "blouses": "ブラウス",
+        "tank_tops": "タンクトップ",
+        "polos": "ポロシャツ",
+        "tunics": "チュニック",
+        "hoodies": "パーカー"
+      },
+      "bottoms": {
+        "label": "ボトムス",
+        "jeans": "ジーンズ",
+        "pants": "パンツ",
+        "shorts": "ショートパンツ",
+        "leggings": "レギンス",
+        "skirts": "スカート",
+        "capris": "カプリパンツ"
+      },
+      "dresses": {
+        "label": "ワンピース",
+        "casual_dresses": "カジュアルワンピース",
+        "evening_dresses": "イブニングドレス",
+        "cocktail_dresses": "カクテルドレス",
+        "summer_dresses": "サマードレス",
+        "maxi_dresses": "マキシドレス",
+        "shirt_dresses": "シャツワンピース"
+      }
+    },
     "color": {
       "red": "赤",
       "pink": "ピンク",
@@ -186,13 +215,15 @@
   "discover": {
     "title": "見つける",
     "placeholder": "検索する",
-    "gender": "性別",
-    "category": "カテゴリー",
-    "color": "カラー",
-    "search": {
-      "history": "履歴",
-      "clear": "クリア"
-    }
+    "genders": "性別",
+    "categories": "カテゴリー",
+    "subcategories": "サブカテゴリー",
+    "colors": "カラー",
+    "history": "履歴",
+    "filter": "絞り込む",
+    "not_selected": "未選択",
+    "search": "検索する",
+    "clear": "クリア"
   },
   "collections": {
     "title": "コレクション",

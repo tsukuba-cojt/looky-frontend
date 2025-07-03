@@ -15,10 +15,12 @@ const SearchPage = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <YStack flex={1} pt="$4" gap="$8">
-        <XStack px="$8" items="center" gap="$4">
-          <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
-            <Icons.chevronLeft size="$6" />
-          </TouchableOpacity>
+        <XStack px="$6" items="center" gap="$2">
+          <View w="$9">
+            <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
+              <Icons.chevronLeft size="$6" />
+            </TouchableOpacity>
+          </View>
           <XStack position="relative" items="center" shrink={1}>
             <Input
               autoFocus
@@ -36,7 +38,7 @@ const SearchPage = () => {
               color="$mutedColor"
             />
           </XStack>
-          <Button variant="ghost" size="icon" w="$6" h="$6" circular>
+          <Button variant="ghost" size="icon" w="$9" h="$9" circular>
             <Button.Icon>
               <Icons.slidersHorizontal size="$5" />
             </Button.Icon>
@@ -44,9 +46,9 @@ const SearchPage = () => {
         </XStack>
         <YStack flex={1} gap="$4">
           <XStack px="$8" items="center" justify="space-between">
-            <Text fontWeight="$bold">{t("search.history")}</Text>
+            <Text fontWeight="$bold">{t("history")}</Text>
             <TouchableOpacity activeOpacity={0.6}>
-              <Text color="$mutedColor">{t("search.clear")}</Text>
+              <Text color="$mutedColor">{t("clear")}</Text>
             </TouchableOpacity>
           </XStack>
           <FlashList
