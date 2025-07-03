@@ -163,7 +163,6 @@
         "requirement1": "全身がカメラに収まっている",
         "requirement2": "カメラに対して正面を向いている",
         "requirement3": "背景に他の人や物が写っていない",
-        "requirement4": "明るい場所で撮影されている",
         "done": "完了",
         "redo": "やり直す",
         "error": "エラーが発生しました。もう一度お試しください。"
@@ -206,9 +205,11 @@
   },
   "settings": {
     "title": "設定",
+    "profile": "プロフィール",
+    "style": "スタイル",
     "language": "言語",
     "theme": "テーマ",
-    "notifications": "通知",
+    "policy": "利用規約",
     "signout": {
       "title": "サインアウト",
       "description": "本当にサインアウトしますか？",

@@ -102,10 +102,6 @@ const ConfirmPage = () => {
               <Icons.checkCircle size="$3.5" color="$primaryBackground" />
               <Text color="$mutedColor">{t("body.confirm.requirement3")}</Text>
             </XStack>
-            <XStack gap="$1" items="center">
-              <Icons.checkCircle size="$3.5" color="$primaryBackground" />
-              <Text color="$mutedColor">{t("body.confirm.requirement4")}</Text>
-            </XStack>
           </YStack>
         </YStack>
         <YStack gap="$3">
