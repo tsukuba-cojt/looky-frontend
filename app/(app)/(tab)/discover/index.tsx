@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { TouchableOpacity } from "react-native";
 import { View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { CategorySelectSheet } from "@/components/CategorySelectSheet";
@@ -108,25 +109,51 @@ const DiscoverPage = () => {
             paddingHorizontal: 16,
           }}
           renderItem={({ item }) => (
-            <View p="$1.5">
-              <View
-                w="100%"
-                aspectRatio={3 / 4}
-                rounded="$2xl"
-                boxShadow="$sm"
-                overflow="hidden"
-                bg="$mutedBackground"
-              >
-                <Image
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  source={item.url}
-                  transition={200}
-                />
-              </View>
-            </View>
+            <Link
+              href={{
+                pathname: "/details/[id]",
+                params: { id: item.id },
+              }}
+              asChild
+            >
+              <TouchableOpacity activeOpacity={0.6}>
+                <View p="$1.5">
+                  <View
+                    position="relative"
+                    w="100%"
+                    aspectRatio={3 / 4}
+                    rounded="$2xl"
+                    boxShadow="$sm"
+                    overflow="hidden"
+                    bg="$mutedBackground"
+                  >
+                    <Image
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      source={item.url}
+                      transition={200}
+                    />
+                    <View position="absolute" b={8} r={8}>
+                      <TouchableOpacity activeOpacity={0.6}>
+                        <View
+                          p="$2"
+                          items="center"
+                          justify="center"
+                          bg="black"
+                          rounded="$full"
+                          opacity={0.8}
+                          boxShadow="$shadow.xl"
+                        >
+                          <Icons.heart size="$4" color="white" />
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Link>
           )}
         />
       </YStack>

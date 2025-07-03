@@ -17,7 +17,7 @@ const SearchPage = () => {
       <YStack flex={1} pt="$4" gap="$8">
         <XStack px="$8" items="center" gap="$4">
           <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
-            <Icons.chevronLeft size="$5" />
+            <Icons.chevronLeft size="$6" />
           </TouchableOpacity>
           <XStack position="relative" items="center" shrink={1}>
             <Input
@@ -36,9 +36,11 @@ const SearchPage = () => {
               color="$mutedColor"
             />
           </XStack>
-          <TouchableOpacity activeOpacity={0.6}>
-            <Icons.slidersHorizontal size="$5" />
-          </TouchableOpacity>
+          <Button variant="ghost" size="icon" w="$6" h="$6" circular>
+            <Button.Icon>
+              <Icons.slidersHorizontal size="$5" />
+            </Button.Icon>
+          </Button>
         </XStack>
         <YStack flex={1} gap="$4">
           <XStack px="$8" items="center" justify="space-between">

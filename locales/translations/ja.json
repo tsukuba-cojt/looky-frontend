@@ -181,7 +181,11 @@
     "done": "完了",
     "cancel": "キャンセル"
   },
+  "try_on": {
+    "title": "試着する"
+  },
   "discover": {
+    "title": "見つける",
     "placeholder": "検索する",
     "gender": "性別",
     "category": "カテゴリー",
@@ -192,6 +196,7 @@
     }
   },
   "collections": {
+    "title": "コレクション",
     "like": {
       "title": "いいねしたコーデ"
     },
@@ -212,5 +217,8 @@
     },
     "success": "サインアウトしました。",
     "error": "エラーが発生しました。もう一度お試しください。"
+  },
+  "details": {
+    "try_on": "試着する"
   }
 }

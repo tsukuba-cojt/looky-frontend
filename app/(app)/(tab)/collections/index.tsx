@@ -69,4 +69,5 @@ const LikePage = () => {
     </YStack>
   );
 };
+
 export default LikePage;

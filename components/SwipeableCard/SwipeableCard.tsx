@@ -175,7 +175,7 @@ export const SwipeableCard = memo(
         return {
           opacity,
           position: "absolute",
-          zIndex: -index,
+          zIndex: 50 - index,
           transform: [
             { rotate: `${rotateX.value}rad` },
             { scale },
