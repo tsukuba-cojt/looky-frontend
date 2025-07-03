@@ -159,7 +159,9 @@
       },
       "confirm": {
         "title": "Are you satisfied with this photo?",
-        "description": "",
+        "requirement1": "Your entire body fits within the frame.",
+        "requirement2": "You are facing the camera directly.",
+        "requirement3": "No other people or objects are visible in the background.",
         "done": "Done",
         "redo": "Redo",
         "error": "Something went wrong. Please try again."
@@ -202,9 +204,11 @@
   },
   "settings": {
     "title": "Settings",
+    "profile": "Profile",
+    "style": "Style",
     "language": "Language",
     "theme": "Theme",
-    "notifications": "Notifications",
+    "policy": "Policy",
     "signout": {
       "title": "Sign Out",
       "description": "Are you sure you want to sign out?",
