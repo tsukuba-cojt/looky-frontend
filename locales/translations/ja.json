@@ -11,7 +11,37 @@
       "take_a_photo": "写真を撮る",
       "cancel": "キャンセル",
       "error": "カメラへのアクセスが許可されていません。設定からカメラのアクセスを許可してください。"
-    }
+    },
+    "gender": {
+      "man": "男性",
+      "woman": "女性",
+      "other": "その他"
+    },
+    "category": {
+      "tops": "トップス",
+      "bottoms": "ボトムス",
+      "outwear": "アウター",
+      "dresses": "ワンピース"
+    },
+    "color": {
+      "red": "赤",
+      "pink": "ピンク",
+      "purple": "紫",
+      "indigo": "インディゴ",
+      "blue": "青",
+      "cyan": "シアン",
+      "teal": "ティール",
+      "green": "緑",
+      "lime": "ライム",
+      "yellow": "黄色",
+      "amber": "琥珀",
+      "orange": "オレンジ",
+      "brown": "茶色",
+      "gray": "グレー",
+      "black": "黒",
+      "white": "白"
+    },
+    "close": "閉じる"
   },
   "top": {
     "title": "Lookyへようこそ",
@@ -153,44 +183,20 @@
   },
   "discover": {
     "placeholder": "検索する",
-    "label": {
-      "gender": "性別",
-      "category": "カテゴリー",
-      "color": "カラー"
-    },
-    "gender": {
-      "man": "男性",
-      "woman": "女性",
-      "other": "その他"
-    },
-    "category": {
-      "tops": "トップス",
-      "bottoms": "ボトムス",
-      "outwear": "アウター",
-      "dresses": "ワンピース"
-    },
-    "color": {
-      "red": "赤",
-      "pink": "ピンク",
-      "purple": "紫",
-      "indigo": "インディゴ",
-      "blue": "青",
-      "cyan": "シアン",
-      "teal": "ティール",
-      "green": "緑",
-      "lime": "ライム",
-      "yellow": "黄色",
-      "amber": "琥珀",
-      "orange": "オレンジ",
-      "brown": "茶色",
-      "gray": "グレー",
-      "black": "黒",
-      "white": "白"
-    },
-    "close": "閉じる",
+    "gender": "性別",
+    "category": "カテゴリー",
+    "color": "カラー",
     "search": {
       "history": "履歴",
       "clear": "クリア"
+    }
+  },
+  "collections": {
+    "like": {
+      "title": "いいねしたコーデ"
+    },
+    "mine": {
+      "title": "あなたのコーデ"
     }
   },
   "settings": {

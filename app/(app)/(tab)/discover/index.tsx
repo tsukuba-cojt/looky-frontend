@@ -54,7 +54,7 @@ const DiscoverPage = () => {
           </XStack>
           <XStack gap="$2">
             <Button
-              variant="secondary"
+              variant="outline"
               h="$8"
               pr="$2"
               pl="$3"
@@ -63,13 +63,13 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("gender")}
             >
-              <Button.Text fontSize="$sm">{t("label.gender")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("gender")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
             </Button>
             <Button
-              variant="secondary"
+              variant="outline"
               h="$8"
               pr="$2"
               pl="$3"
@@ -78,13 +78,13 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("category")}
             >
-              <Button.Text fontSize="$sm">{t("label.category")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("category")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
             </Button>
             <Button
-              variant="secondary"
+              variant="outline"
               h="$8"
               pr="$2"
               pl="$3"
@@ -93,7 +93,7 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("color")}
             >
-              <Button.Text fontSize="$sm">{t("label.color")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("color")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
@@ -103,7 +103,7 @@ const DiscoverPage = () => {
         <FlashList
           numColumns={2}
           data={data}
-          estimatedItemSize={236}
+          estimatedItemSize={240}
           contentContainerStyle={{
             paddingHorizontal: 16,
           }}

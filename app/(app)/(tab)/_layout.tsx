@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar, H1, Text, XStack, YStack } from "tamagui";
 import { Icons } from "@/components/Icons";
 import { Skeleton } from "@/components/Skeleton";
-import { navConfig } from "@/config/nav";
+import { tabs } from "@/constants";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
 
@@ -35,7 +35,7 @@ const TabLayout = () => {
       >
         <H1 fontSize="$2xl" lineHeight="$2xl" fontWeight="$bold">
           {t(
-            `tab.${navConfig.find((item) => item.href === `/${pathname.split("/")[1]}`)?.key}`,
+            `tab.${tabs.find((item) => item.href === `/${pathname.split("/")[1]}`)?.key}`,
           )}
         </H1>
         {isLoading ? (
@@ -64,8 +64,8 @@ const TabLayout = () => {
           items="center"
           justify="space-between"
         >
-          {navConfig.map((item) => {
-            const isActive = pathname === item.href;
+          {tabs.map((item) => {
+            const isActive = item.href === `/${pathname.split("/")[1]}`;
             const Icon = Icons[item.icon as keyof typeof Icons];
 
             return (

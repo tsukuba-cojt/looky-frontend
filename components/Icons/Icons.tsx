@@ -1,4 +1,6 @@
 import {
+  ArrowDownWideNarrow,
+  ArrowUpWideNarrow,
   Bell,
   Camera,
   Check,
@@ -25,6 +27,8 @@ import {
 } from "@tamagui/lucide-icons";
 
 export const Icons = {
+  arrowDownWideNarrow: ArrowDownWideNarrow,
+  arrowUpWideNarrow: ArrowUpWideNarrow,
   bell: Bell,
   camera: Camera,
   check: Check,

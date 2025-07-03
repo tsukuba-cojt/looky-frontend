@@ -1,19 +1,6 @@
-export type Gender = "man" | "woman" | "other";
-export type Category = "tops" | "bottoms" | "outwear" | "dresses";
-export type Color =
-  | "red"
-  | "pink"
-  | "purple"
-  | "indigo"
-  | "blue"
-  | "cyan"
-  | "teal"
-  | "green"
-  | "lime"
-  | "yellow"
-  | "amber"
-  | "orange"
-  | "brown"
-  | "gray"
-  | "black"
-  | "white";
+import type { categories, colors, genders, subcategories } from "@/constants";
+
+export type Gender = (typeof genders)[number];
+export type Category = (typeof categories)[number];
+export type Subcategory = typeof subcategories;
+export type Color = keyof typeof colors;

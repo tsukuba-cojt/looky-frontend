@@ -2,6 +2,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Label, Sheet, type SheetProps, XStack } from "tamagui";
+import { categories } from "@/constants";
 import type { Category } from "@/types";
 import { Button } from "../Button";
 import { RadioGroup } from "../RadioGroup";
@@ -11,14 +12,12 @@ interface CategorySelectSheetProps extends SheetProps {
   onCategoryChange: (category: Category) => void;
 }
 
-const categories = ["tops", "bottoms", "outwear", "dresses"];
-
 export const CategorySelectSheet = ({
   category,
   onCategoryChange,
   ...props
 }: CategorySelectSheetProps) => {
-  const { t } = useTranslation("discover");
+  const { t } = useTranslation("common");
   const [position, setPosition] = useState(0);
 
   return (
@@ -52,16 +51,16 @@ export const CategorySelectSheet = ({
           px="$2"
           gap="$4"
         >
-          {categories.map((category, index) => {
+          {categories.map((item, index) => {
             const id = createId();
 
             return (
               <XStack key={index.toString()} gap="$2">
-                <RadioGroup.Item id={id} value={category}>
+                <RadioGroup.Item id={id} value={item}>
                   <RadioGroup.Indicator />
                 </RadioGroup.Item>
                 <Label flex={1} htmlFor={id} fontWeight="$medium">
-                  {t(`category.${category}`)}
+                  {t(`category.${item}`)}
                 </Label>
               </XStack>
             );

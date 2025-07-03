@@ -10,8 +10,37 @@
       "choose_from_library": "Choose from library",
       "take_a_photo": "Take a photo",
       "cancel": "Cancel",
-    "error": "Camera access is not allowed. Please allow camera access in your settings."
-    }
+      "error": "Camera access is not allowed. Please allow camera access in your settings."
+    },
+    "gender": {
+      "man": "Man",
+      "woman": "Woman",
+      "other": "Other"
+    },
+    "category": {
+      "tops": "Tops",
+      "bottoms": "Bottoms",
+      "dresses": "Dresses"
+    },
+    "color": {
+      "red": "Red",
+      "pink": "Pink",
+      "purple": "Purple",
+      "indigo": "Indigo",
+      "blue": "Blue",
+      "cyan": "Cyan",
+      "teal": "Teal",
+      "green": "Green",
+      "lime": "Lime",
+      "yellow": "Yellow",
+      "amber": "Amber",
+      "orange": "Orange",
+      "brown": "Brown",
+      "gray": "Gray",
+      "black": "Black",
+      "white": "White"
+    },
+    "close": "Close"
   },
   "top": {
     "title": "Welcome to Looky",
@@ -150,44 +179,20 @@
   },
   "discover": {
     "placeholder": "Search",
-    "label": {
-      "gender": "Gender",
-      "category": "Category",
-      "color": "Color"
-    },
-    "gender": {
-      "man": "Man",
-      "woman": "Woman",
-      "other": "Other"
-    },
-    "category": {
-      "tops": "Tops",
-      "bottoms": "Bottoms",
-      "outwear": "Outerwear",
-      "dresses": "Dresses"
-    },
-    "color": {
-      "red": "Red",
-      "pink": "Pink",
-      "purple": "Purple",
-      "indigo": "Indigo",
-      "blue": "Blue",
-      "cyan": "Cyan",
-      "teal": "Teal",
-      "green": "Green",
-      "lime": "Lime",
-      "yellow": "Yellow",
-      "amber": "Amber",
-      "orange": "Orange",
-      "brown": "Brown",
-      "gray": "Gray",
-      "black": "Black",
-      "white": "White"
-    },
-    "close": "Close",
+    "gender": "Gender",
+    "category": "Category",
+    "color": "Color",
     "search": {
       "history": "History",
       "clear": "Clear"
+    }
+  },
+  "collections": {
+    "like": {
+      "title": "Liked Outfits"
+    },
+    "mine": {
+      "title": "My Outfits"
     }
   },
   "settings": {

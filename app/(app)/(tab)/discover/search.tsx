@@ -52,6 +52,7 @@ const SearchPage = () => {
             contentContainerStyle={{
               paddingHorizontal: 24,
             }}
+            estimatedItemSize={64}
             renderItem={({ item }) => (
               <Link href="/discover" asChild>
                 <Button my="$2" px="$2" variant="ghost">
