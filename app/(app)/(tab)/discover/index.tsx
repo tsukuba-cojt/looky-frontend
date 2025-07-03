@@ -31,7 +31,7 @@ const DiscoverPage = () => {
     <>
       <YStack flex={1} pt="$4" gap="$4">
         <YStack gap="$4" px="$8">
-          <XStack items="center" gap="$4">
+          <XStack items="center" gap="$2">
             <XStack position="relative" items="center" shrink={1}>
               <Link href="/discover/search" asChild>
                 <Input
@@ -51,7 +51,13 @@ const DiscoverPage = () => {
                 color="$mutedColor"
               />
             </XStack>
-            <Icons.slidersHorizontal size="$5" />
+            <Link href="/discover/filter" asChild>
+              <Button variant="ghost" size="icon" w="$9" h="$9" circular>
+                <Button.Icon>
+                  <Icons.slidersHorizontal size="$5" />
+                </Button.Icon>
+              </Button>
+            </Link>
           </XStack>
           <XStack gap="$2">
             <Button
@@ -64,7 +70,7 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("gender")}
             >
-              <Button.Text fontSize="$sm">{t("gender")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("genders")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
@@ -79,7 +85,7 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("category")}
             >
-              <Button.Text fontSize="$sm">{t("category")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("categories")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
@@ -94,7 +100,7 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("color")}
             >
-              <Button.Text fontSize="$sm">{t("color")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("colors")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>

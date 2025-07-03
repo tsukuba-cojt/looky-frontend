@@ -10,6 +10,12 @@ const DiscoverLayout = () => {
           presentation: "fullScreenModal",
         }}
       />
+      <Stack.Screen
+        name="filter"
+        options={{
+          presentation: "modal"
+        }}
+      />
     </Stack>
   );
 };

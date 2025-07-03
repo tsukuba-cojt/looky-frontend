@@ -47,13 +47,12 @@ export const ColorPickerSheet = ({
       >
         <Sheet.ScrollView>
           <FlashList
-            contentContainerStyle={{ paddingHorizontal: 16 }}
+            contentContainerStyle={{ paddingHorizontal: 12 }}
             scrollEnabled={false}
             numColumns={4}
-            estimatedItemSize={32}
             data={Object.entries(colors)}
             renderItem={({ item: [key, value] }) => (
-              <View flex={1} p="$2" items="center">
+              <View flex={1} p="$3" items="center">
                 <TouchableOpacity
                   activeOpacity={0.6}
                   onPress={() => onColorChange(key as Color)}

@@ -22,6 +22,35 @@
       "bottoms": "Bottoms",
       "dresses": "Dresses"
     },
+    "subcategory": {
+      "tops": {
+        "label": "Tops",
+        "t_shirts": "T-Shirts",
+        "blouses": "Blouses",
+        "tank_tops": "Tank Tops",
+        "polos": "Polos",
+        "tunics": "Tunics",
+        "hoodies": "Hoodies"
+      },
+      "bottoms": {
+        "label": "Bottoms",
+        "jeans": "Jeans",
+        "pants": "Pants",
+        "shorts": "Shorts",
+        "leggings": "Leggings",
+        "skirts": "Skirts",
+        "capris": "Capri Pants"
+      },
+      "dresses": {
+        "label": "Dresses",
+        "casual_dresses": "Casual Dresses",
+        "evening_dresses": "Evening Dresses",
+        "cocktail_dresses": "Cocktail Dresses",
+        "summer_dresses": "Summer Dresses",
+        "maxi_dresses": "Maxi Dresses",
+        "shirt_dresses": "Shirt Dresses"
+      }
+    },
     "color": {
       "red": "Red",
       "pink": "Pink",
@@ -184,14 +213,16 @@
   },
   "discover": {
     "title": "Discover",
-    "placeholder": "Search",
-    "gender": "Gender",
-    "category": "Category",
-    "color": "Color",
-    "search": {
-      "history": "History",
-      "clear": "Clear"
-    }
+    "placeholder": "Search...",
+    "genders": "Gender",
+    "categories": "Category",
+    "subcategories": "Subcategory",
+    "colors": "Color",
+    "history": "History",
+    "filter": "Filter",
+    "not_selected": "Not selected",
+    "search": "Search",
+    "clear": "Clear"
   },
   "collections": {
     "title": "Collections",
