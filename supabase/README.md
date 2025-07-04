@@ -1,6 +1,8 @@
 # Supabase Edge Functions
 Supabase Edge Functionsで提供する3つのエンドポイントについてまとめます。
 
+<br />
+
 ## エンドポイント一覧
 
 | Method | Path | Name | 概要 |
@@ -17,6 +19,8 @@ Supabase Edge Functionsで提供する3つのエンドポイントについて�
 ### Overview
 S3にファイルをアップロードするための署名付きURLを生成します。
 
+<br />
+
 ### Body
 ```jsonc
 {
@@ -26,6 +30,8 @@ S3にファイルをアップロードするための署名付きURLを生成し
 }
 ```
 
+<br />
+
 ### Response
 
 | Status | Body | 説明 |
@@ -33,9 +39,12 @@ S3にファイルをアップロードするための署名付きURLを生成し
 | 200 | `{ "url": "string" }` | 署名付きURL |
 | 400 | `{ "error": "string" }` | エラーメッセージ |
 
+<br />
+
 > [!WARNING]
 > URLの有効期限は3600秒に設定しています。
 
+<br />
 <br />
 
 ## `/generate`
@@ -43,11 +52,15 @@ S3にファイルをアップロードするための署名付きURLを生成し
 ### Overview
 ユーザ ID に基づいて、バックエンドへ服の推薦された画像を生成するリクエストを送ります。
 
+<br />
+
 ### Header
 
 | Header | 例 | 説明 |
 | ------ | ---- | ---- |
 | Authorization | `Bearer <JWT>` | セッショントークン |
+
+<br />
 
 ### Response
 
@@ -57,11 +70,14 @@ S3にファイルをアップロードするための署名付きURLを生成し
 | 400 | `{ "error": "string" }` | エラーメッセージ |
 
 <br />
+<br />
 
 ## `/download`
 
 ### Overview
 S3からファイルをダウンロードするための署名付きURLを生成します。
+
+<br />
 
 ### Body
 ```jsonc
@@ -71,12 +87,16 @@ S3からファイルをダウンロードするための署名付きURLを生成
 }
 ```
 
+<br />
+
 ### Response
 
 | Status | Body | 説明 |
 | ------ | ---- | ---- |
 | 200 | `{ "url": "string" }` | 生成した署名付き URL |
 | 400 | `{ "error": "string" }` | バリデーションエラー等 |
+
+<br />
 
 > [!WARNING]
 > URLの有効期限は3600秒に設定しています。
