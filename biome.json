@@ -13,7 +13,8 @@
       "./**/*.js",
       "./**/*.jsx",
       "!**/node_modules/**",
-      "!**/.storybook/**"
+      "!**/.storybook/**",
+      "!**/supabase/**"
     ]
   },
   "formatter": {
