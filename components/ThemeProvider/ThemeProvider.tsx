@@ -3,12 +3,12 @@ import {
   ThemeProvider as ReactNavitationThemeProvider,
 } from "@react-navigation/native";
 import type { ReactNode } from "react";
-import { useColorScheme } from "react-native";
 import { useTheme } from "tamagui";
+import { useThemeStore } from "@/stores/useThemeStore";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const theme = useTheme();
-  const colorScheme = useColorScheme();
+  const resolvedTheme = useThemeStore((state) => state.resolvedTheme);
 
   return (
     <ReactNavitationThemeProvider
@@ -21,7 +21,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
           border: theme.borderColor.val,
           notification: theme.background.val,
         },
-        dark: colorScheme === "dark",
+        dark: resolvedTheme() === "dark",
         fonts: DefaultTheme.fonts,
       }}
     >

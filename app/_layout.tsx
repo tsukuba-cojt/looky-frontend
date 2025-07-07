@@ -10,7 +10,7 @@ import {
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { AppState, type AppStateStatus, useColorScheme } from "react-native";
+import { AppState, type AppStateStatus } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Toaster } from "sonner-native";
@@ -20,6 +20,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
+import { useThemeStore } from "@/stores/useThemeStore";
 import { config } from "@/tamagui.config";
 
 SplashScreen.preventAutoHideAsync();
@@ -33,7 +34,7 @@ AppState.addEventListener("change", (state) => {
 });
 
 const RootLayout = () => {
-  const colorScheme = useColorScheme();
+  const resolvedTheme = useThemeStore((state) => state.resolvedTheme);
 
   return (
     <AuthProvider>
@@ -67,17 +68,12 @@ const RootLayout = () => {
           },
         }}
       >
-        <TamaguiProvider
-          config={config}
-          defaultTheme={colorScheme === "dark" ? "dark" : "light"}
-        >
+        <TamaguiProvider config={config} defaultTheme={resolvedTheme()}>
           <ThemeProvider>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <PortalProvider shouldAddRootHost>
                 <KeyboardProvider>
-                  <StatusBar
-                    style={colorScheme === "dark" ? "light" : "dark"}
-                  />
+                  <StatusBar style={resolvedTheme()} />
                   <RootNavigator />
                   <Toaster />
                 </KeyboardProvider>

@@ -8,11 +8,11 @@ import { colors } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 import type { Color } from "@/types";
 
-const ColorsPage = () => {
+const ColorPage = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const query = useSearchQueryStore((state) => state.query);
-  const setQuery = useSearchQueryStore().setQuery;
+  const setQuery = useSearchQueryStore((state) => state.setQuery)
 
   return (
     <View flex={1} pt="$4">
@@ -56,4 +56,4 @@ const ColorsPage = () => {
     </View>
   );
 };
-export default ColorsPage;
+export default ColorPage;

@@ -11,6 +11,20 @@ const SelectTrigger = styled(TamaguiSelect.Trigger, {
   boxShadow: "$shadow.sm",
 });
 
+const SelectGroup = styled(TamaguiSelect.Group, {
+  name: "SelectGroup",
+  gap: "$1",
+});
+
+const SelectItem = styled(TamaguiSelect.Item, {
+  name: "SelectItem",
+  rounded: "$sm",
+  px: "$3",
+  py: "$2",
+});
+
 export const Select = withStaticProperties(TamaguiSelect, {
   Trigger: SelectTrigger,
+  Group: SelectGroup,
+  Item: SelectItem,
 });

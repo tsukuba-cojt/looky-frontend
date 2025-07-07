@@ -4,9 +4,30 @@ import { genders } from "@/constants";
 export const setupSchema = z.object({
   name: z
     .string()
-    .min(3, { message: "too_short_name" })
-    .max(128, { message: "too_long_name" }),
+    .min(3, { message: "too_short_error" })
+    .max(128, { message: "too_long_error" }),
   gender: z.enum(genders).optional(),
   avatarUrl: z.string().optional(),
   bodyUrl: z.string(),
+});
+
+export const profileSchema = z.object({
+  name: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined ? "required_error" : "invalid_type_error",
+    })
+    .min(3, { message: "too_short_error" })
+    .max(128, {
+      message: "too_long_error",
+    }),
+  gender: z.enum(genders),
+  email: z.email({ message: "invalid_email_error" }),
+  height: z
+    .number({
+      error: (issue) =>
+        issue.input === undefined ? "required_error" : "invalid_type_error",
+    })
+    .min(0, { message: "too_short_height" })
+    .max(250, { message: "too_long_height" }),
 });

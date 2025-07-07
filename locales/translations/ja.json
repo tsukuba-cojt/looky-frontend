@@ -82,7 +82,7 @@
     "title": "新規登録",
     "description": "アカウントを作成しましょう",
     "email": "メールアドレス",
-    "invalid_email": "無効なメールアドレスです。",
+    "invalid_email_error": "無効なメールアドレスです。",
     "submit": "はじめる",
     "or": "または",
     "signup_with_provider": "{{provider}}で新規登録",
@@ -95,7 +95,7 @@
     "title": "ログイン",
     "description": "アカウントにログインしましょう。",
     "email": "メールアドレス",
-    "invalid_email": "無効なメールアドレスです。",
+    "invalid_email_error": "無効なメールアドレスです。",
     "submit": "ログイン",
     "or": "または",
     "login_with_provider": "{{provider}}でログイン",
@@ -136,8 +136,8 @@
       "description": "他のユーザーに公開されるお名前です。後から変更することもできます。",
       "label": "ユーザー名",
       "placeholder": "山田太郎",
-      "too_short_name": "ユーザー名は3文字以上で入力してください。",
-      "too_long_name": "ユーザー名は24文字以内で入力してください。",
+      "too_short_error": "ユーザー名は3文字以上で入力してください。",
+      "too_long_error": "ユーザー名は24文字以内で入力してください。",
       "submit": "次へ",
       "skip": "スキップ"
     },
@@ -215,10 +215,10 @@
   "discover": {
     "title": "見つける",
     "placeholder": "検索する",
-    "genders": "性別",
-    "categories": "カテゴリー",
-    "subcategories": "サブカテゴリー",
-    "colors": "カラー",
+    "gender": "性別",
+    "category": "カテゴリー",
+    "subcategory": "サブカテゴリー",
+    "color": "カラー",
     "history": "履歴",
     "filter": "絞り込む",
     "not_selected": "未選択",
@@ -236,11 +236,77 @@
   },
   "settings": {
     "title": "設定",
-    "profile": "プロフィール",
-    "style": "スタイル",
-    "language": "言語",
-    "theme": "テーマ",
-    "policy": "利用規約",
+    "profile": {
+      "title": "プロフィール",
+      "avatar": {
+        "title": "アバター",
+        "error": "エラーが発生しました。もう一度お試しください。"
+      },
+      "name": {
+        "title": "名前",
+        "description": "他のユーザーに公開されるお名前です。後から変更することもできます。",
+        "label": "ユーザー名",
+        "placeholder": "山田太郎",
+        "required_error": "ユーザー名を入力してください。",
+        "invalid_type_error": "ユーザー名は文字列で入力してください。",
+        "too_short_error": "ユーザー名は3文字以上で入力してください。",
+        "too_long_error": "ユーザー名は24文字以内で入力してください。",
+        "submit": "変更する",
+        "cancel": "キャンセル",
+        "error": "エラーが発生しました。もう一度お試しください。"
+      },
+      "email": {
+        "title": "メールアドレス",
+        "description": "アカウントのメールアドレスです。後から変更することもできます。",
+        "label": "メールアドレス",
+        "placeholder": "name@example.com",
+        "invalid_email_error": "無効なメールアドレスです。",
+        "submit": "変更する",
+        "cancel": "キャンセル",
+        "success": "確認メールを送信しました。受信トレイを確認してください。",
+        "error": "エラーが発生しました。もう一度お試しください。"
+      },
+      "gender": {
+        "title": "性別",
+        "description": "おすすめの服を検索する際に利用される性別です。性別は後から変更できます。",
+        "label": "性別",
+        "placeholder": "性別を選択する",
+        "submit": "変更する",
+        "cancel": "キャンセル",
+        "error": "エラーが発生しました。もう一度お試しください。"
+      },
+      "height": {
+        "title": "身長",
+        "description": "身長は服のサイズを決定するために使用されます。後から変更できます。",
+        "label": "身長",
+        "placeholder": "175",
+        "required_error": "身長を入力してください。",
+        "invalid_type_error": "身長は数値で入力してください。",
+        "too_short_height": "身長は0cm以上で入力してください。",
+        "too_long_height": "身長は250cm以下で入力してください。",
+        "submit": "変更する",
+        "cancel": "キャンセル",
+        "invalid_height": "無効な身長です。",
+        "error": "エラーが発生しました。もう一度お試しください。"
+      },
+      "not_selected": "未選択",
+      "not_configured": "未設定"
+    },
+    "style": {
+      "title": "スタイル"
+    },
+    "theme": {
+      "title": "テーマ",
+      "light": "ライト",
+      "dark": "ダーク",
+      "system": "システム"
+    },
+    "language": {
+      "title": "言語",
+      "en": "English",
+      "ja": "日本語",
+      "system": "システム"
+    },
     "signout": {
       "title": "サインアウト",
       "description": "本当にサインアウトしますか？",

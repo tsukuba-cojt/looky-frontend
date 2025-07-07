@@ -2,11 +2,12 @@ import { FlashList } from "@shopify/flash-list";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
-import { Sheet, type SheetProps, Text, View, YStack } from "tamagui";
+import { type SheetProps, Text, View, YStack } from "tamagui";
 import { colors } from "@/constants";
 import type { Color } from "@/types";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
+import { Sheet } from "../Sheet";
 
 interface ColorPickerSheetProps extends SheetProps {
   color: Color | undefined;
@@ -31,20 +32,9 @@ export const ColorPickerSheet = ({
       animation="quick"
       {...props}
     >
-      <Sheet.Overlay
-        bg="black"
-        opacity={0.5}
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
-      <Sheet.Handle h="$1" mx="40%" />
-      <Sheet.Frame
-        flex={1}
-        gap="$4"
-        py="$8"
-        borderTopLeftRadius="$4xl"
-        borderTopRightRadius="$4xl"
-      >
+      <Sheet.Overlay />
+      <Sheet.Handle />
+      <Sheet.Frame flex={1} gap="$4" py="$8">
         <Sheet.ScrollView>
           <FlashList
             contentContainerStyle={{ paddingHorizontal: 12 }}

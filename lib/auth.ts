@@ -1,4 +1,4 @@
-import type { Provider } from "@supabase/supabase-js";
+import type { Provider, UserAttributes } from "@supabase/supabase-js";
 import { makeRedirectUri } from "expo-auth-session";
 import * as QueryParams from "expo-auth-session/build/QueryParams";
 import * as WebBrowser from "expo-web-browser";
@@ -67,6 +67,22 @@ export const signInWithOAuth = async (provider: Provider) => {
   return res;
 };
 
+export const resend = async (email: string) => {
+  const { data, error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: {
+      emailRedirectTo: redirectTo,
+    },
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
 export const verifyOtp = async (email: string, token: string) => {
   const { data, error } = await supabase.auth.verifyOtp({
     email,
@@ -85,4 +101,16 @@ export const signOut = async () => {
   if (error) {
     throw error;
   }
+};
+
+export const updateUser = async (attributes: UserAttributes) => {
+  const { data, error } = await supabase.auth.updateUser(attributes, {
+    emailRedirectTo: redirectTo,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
 };

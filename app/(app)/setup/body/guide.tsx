@@ -169,7 +169,7 @@ const GuidePage = () => {
         />
       </YStack>
 
-      <YStack w="100%" gap="$4" px="$8">
+      <YStack w="100%" gap="$3" px="$8">
         <Button variant="primary" onPress={onNextPage}>
           <Button.Text>
             {currentIndex === data.length - 1
@@ -178,7 +178,7 @@ const GuidePage = () => {
           </Button.Text>
         </Button>
         <Button
-          variant="link"
+          variant="ghost"
           onPress={() =>
             router.push({
               pathname: "/camera",

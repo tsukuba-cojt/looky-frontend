@@ -4,8 +4,8 @@ import { Text } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 
-const FilterLayout = () => {
-  const { t } = useTranslation("discover");
+const ProfileLayout = () => {
+  const { t } = useTranslation("settings");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -35,7 +35,7 @@ const FilterLayout = () => {
           </Text>
         ),
         headerRight: (props) => (
-          <Link replace href="/dicover" asChild>
+          <Link replace href="/settings" asChild>
             <Button
               {...props}
               variant="ghost"
@@ -55,35 +55,11 @@ const FilterLayout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: t("filter"),
-        }}
-      />
-      <Stack.Screen
-        name="gender"
-        options={{
-          title: t("gender"),
-        }}
-      />
-      <Stack.Screen
-        name="category"
-        options={{
-          title: t("category"),
-        }}
-      />
-      <Stack.Screen
-        name="subcategory"
-        options={{
-          title: t("subcategory"),
-        }}
-      />
-      <Stack.Screen
-        name="color"
-        options={{
-          title: t("color"),
+          title: t("language.title"),
         }}
       />
     </Stack>
   );
 };
 
-export default FilterLayout;
+export default ProfileLayout;

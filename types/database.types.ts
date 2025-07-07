@@ -9,25 +9,54 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      t_body: {
+        Row: {
+          created_at: string;
+          id: number;
+          object_key: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          object_key?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          object_key?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "t_body_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "t_user";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       t_clothes: {
         Row: {
           category: string | null;
           created_at: string;
-          gender_flag: number | null;
+          gender: Database["public"]["Enums"]["gender"] | null;
           id: number;
           image_url: string | null;
         };
         Insert: {
           category?: string | null;
           created_at?: string;
-          gender_flag?: number | null;
+          gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
           image_url?: string | null;
         };
         Update: {
           category?: string | null;
           created_at?: string;
-          gender_flag?: number | null;
+          gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
           image_url?: string | null;
         };
@@ -39,6 +68,7 @@ export type Database = {
           body_url: string | null;
           created_at: string;
           gender: string | null;
+          height: number | null;
           id: string;
           name: string;
         };
@@ -47,6 +77,7 @@ export type Database = {
           body_url?: string | null;
           created_at?: string;
           gender?: string | null;
+          height?: number | null;
           id?: string;
           name: string;
         };
@@ -55,6 +86,7 @@ export type Database = {
           body_url?: string | null;
           created_at?: string;
           gender?: string | null;
+          height?: number | null;
           id?: string;
           name?: string;
         };
@@ -63,21 +95,21 @@ export type Database = {
       t_user_vton: {
         Row: {
           created_at: string;
-          feedback_flag: number | null;
+          feedback: Database["public"]["Enums"]["vton_feedback"] | null;
           id: number;
           user_id: string | null;
           vton_id: number | null;
         };
         Insert: {
           created_at?: string;
-          feedback_flag?: number | null;
+          feedback?: Database["public"]["Enums"]["vton_feedback"] | null;
           id?: number;
           user_id?: string | null;
           vton_id?: number | null;
         };
         Update: {
           created_at?: string;
-          feedback_flag?: number | null;
+          feedback?: Database["public"]["Enums"]["vton_feedback"] | null;
           id?: number;
           user_id?: string | null;
           vton_id?: number | null;
@@ -103,19 +135,19 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
-          image_url: string;
+          object_key: string;
           tops_id: number;
         };
         Insert: {
           created_at?: string;
           id?: number;
-          image_url: string;
+          object_key: string;
           tops_id: number;
         };
         Update: {
           created_at?: string;
           id?: number;
-          image_url?: string;
+          object_key?: string;
           tops_id?: number;
         };
         Relationships: [
@@ -136,7 +168,8 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      gender: "man" | "woman" | "unisex";
+      vton_feedback: "love" | "like" | "hate" | "unreviewed";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -251,6 +284,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      gender: ["man", "woman", "unisex"],
+      vton_feedback: ["love", "like", "hate", "unreviewed"],
+    },
   },
 } as const;

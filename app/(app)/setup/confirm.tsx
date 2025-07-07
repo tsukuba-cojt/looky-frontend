@@ -21,7 +21,11 @@ const ConfirmPage = () => {
   const { session } = useAuth();
   const router = useRouter();
   const { uri } = useLocalSearchParams<{ uri?: string }>();
-  const { setValue, handleSubmit } = useFormContext<FormData>();
+  const {
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useFormContext<FormData>();
 
   useEffect(() => {
     if (uri) {
@@ -29,20 +33,15 @@ const ConfirmPage = () => {
     }
   }, [uri, setValue]);
 
-  const { trigger, isMutating } = useInsertMutation(
-    supabase.from("t_user"),
-    ["id"],
-    "*",
-    {
-      onSuccess: () => {
-        router.push("/");
-      },
-      onError: () => {
-        toast.error(t("avatar.error"));
-      },
-      revalidate: true,
+  const { trigger } = useInsertMutation(supabase.from("t_user"), ["id"], "*", {
+    onSuccess: () => {
+      router.push("/");
     },
-  );
+    onError: () => {
+      toast.error(t("avatar.error"));
+    },
+    revalidate: true,
+  });
 
   const onSubmit = (data: FormData) => {
     if (!session) {
@@ -105,9 +104,9 @@ const ConfirmPage = () => {
           </YStack>
         </YStack>
         <YStack gap="$3">
-          <Form.Trigger asChild>
+          <Form.Trigger asChild disabled={isSubmitting}>
             <Button variant="primary">
-              {isMutating ? (
+              {isSubmitting ? (
                 <Button.Icon>
                   <Spinner color="white" />
                 </Button.Icon>
@@ -119,7 +118,7 @@ const ConfirmPage = () => {
             </Button>
           </Form.Trigger>
           <Button
-            variant="link"
+            variant="ghost"
             onPress={() =>
               router.push({
                 pathname: "/camera",

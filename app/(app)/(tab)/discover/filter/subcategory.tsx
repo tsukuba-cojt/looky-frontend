@@ -8,12 +8,12 @@ import { subcategories } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 import type { Category } from "@/types";
 
-const SubcategoriesPage = () => {
+const SubcategoryPage = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const { category } = useLocalSearchParams<{ category: Category }>();
   const query = useSearchQueryStore((state) => state.query);
-  const setQuery = useSearchQueryStore().setQuery;
+  const setQuery = useSearchQueryStore((state) => state.setQuery);
 
   return (
     <YStack flex={1} pt="$4" gap="$2">
@@ -24,7 +24,7 @@ const SubcategoriesPage = () => {
         renderItem={({ item }) => (
           <Button
             variant="ghost"
-            h="$16"
+            h="$14"
             px="$8"
             justify="space-between"
             rounded="$none"
@@ -45,4 +45,5 @@ const SubcategoriesPage = () => {
     </YStack>
   );
 };
-export default SubcategoriesPage;
+
+export default SubcategoryPage;

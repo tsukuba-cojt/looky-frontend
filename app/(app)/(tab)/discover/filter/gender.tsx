@@ -7,22 +7,22 @@ import { Icons } from "@/components/Icons";
 import { genders } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 
-const GendersPage = () => {
+const GenderPage = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const query = useSearchQueryStore((state) => state.query);
-  const setQuery = useSearchQueryStore().setQuery;
+  const setQuery = useSearchQueryStore((state) => state.setQuery);
 
   return (
     <View flex={1} pt="$4" gap="$2">
       <FlashList
         contentContainerStyle={{ paddingBottom: 8 }}
         data={genders}
-        estimatedItemSize={74}
+        estimatedItemSize={64}
         renderItem={({ item }) => (
           <Button
             variant="ghost"
-            h="$16"
+            h="$14"
             px="$8"
             justify="space-between"
             rounded="$none"
@@ -43,4 +43,4 @@ const GendersPage = () => {
     </View>
   );
 };
-export default GendersPage;
+export default GenderPage;
