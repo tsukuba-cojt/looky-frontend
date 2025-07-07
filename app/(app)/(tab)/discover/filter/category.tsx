@@ -7,9 +7,9 @@ import { Icons } from "@/components/Icons";
 import { categories } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 
-const CategoriesPage = () => {
+const CategoryPage = () => {
   const { t } = useTranslation("common");
-  const setQuery = useSearchQueryStore().setQuery;
+  const setQuery = useSearchQueryStore((state) => state.setQuery);
 
   return (
     <YStack flex={1} pt="$4" gap="$2">
@@ -21,14 +21,14 @@ const CategoriesPage = () => {
           <Link
             replace
             href={{
-              pathname: "/discover/filter/categories/[category]",
+              pathname: "/discover/filter/subcategory",
               params: { category: item },
             }}
             asChild
           >
             <Button
               variant="ghost"
-              h="$16"
+              h="$14"
               px="$8"
               justify="space-between"
               rounded="$none"
@@ -45,4 +45,4 @@ const CategoriesPage = () => {
     </YStack>
   );
 };
-export default CategoriesPage;
+export default CategoryPage;

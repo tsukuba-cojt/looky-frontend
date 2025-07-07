@@ -85,7 +85,7 @@ const AvatarPage = () => {
                   >
                     <YStack position="relative">
                       <Avatar circular size="$40">
-                        <Avatar.Image accessibilityLabel="avatar" src={uri} />
+                        <Avatar.Image src={uri} />
                         <Avatar.Fallback
                           items="center"
                           justify="center"
@@ -143,14 +143,14 @@ const AvatarPage = () => {
               </>
             )}
           />
-          <YStack w="100%" gap="$4">
+          <YStack w="100%" gap="$3">
             <Form.Trigger asChild>
               <Button variant="primary">
                 <Button.Text>{t("avatar.submit")}</Button.Text>
               </Button>
             </Form.Trigger>
             <Link href="/setup/body" asChild>
-              <Button variant="link">
+              <Button variant="ghost">
                 <Button.Text>{t("avatar.skip")}</Button.Text>
               </Button>
             </Link>

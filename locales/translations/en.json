@@ -81,7 +81,7 @@
     "title": "Sign Up",
     "description": "Create your account.",
     "email": "Email",
-    "invalid_email": "Invalid email address.",
+    "invalid_email_error": "Invalid email address.",
     "submit": "Sign up",
     "or": "or",
     "signup_with_provider": "Sign up with {{provider}}",
@@ -94,7 +94,7 @@
     "title": "Log In",
     "description": "Let's log in to your account.",
     "email": "Email",
-    "invalid_email": "Invalid email address.",
+    "invalid_email_error": "Invalid email address.",
     "submit": "Log In",
     "or": "or",
     "login_with_provider": "Log in with {{provider}}",
@@ -135,8 +135,8 @@
       "description": "This name will be visible to other users. You can change it later.",
       "label": "Username",
       "placeholder": "John Doe",
-      "too_short_name": "Username must be at least 3 characters long.",
-      "too_long_name": "Username must be 24 characters or less.",
+      "too_short_error": "Username must be at least 3 characters long.",
+      "too_long_error": "Username must be 24 characters or less.",
       "submit": "Next",
       "skip": "Skip"
     },
@@ -150,15 +150,6 @@
       "other": "Other",
       "submit": "Next",
       "skip": "Skip"
-    },
-    "avatar": {
-      "title": "Choose an avatar",
-      "description": "This avatar will be visible to other users. You can change it later.",
-      "label": "Avatar",
-      "submit": "Get Started",
-      "skip": "Skip",
-      "invalid_url": "Invalid image URL.",
-      "error": "Something went wrong. Please try again."
     },
     "body": {
       "intro": {
@@ -235,11 +226,74 @@
   },
   "settings": {
     "title": "Settings",
-    "profile": "Profile",
-    "style": "Style",
-    "language": "Language",
-    "theme": "Theme",
-    "policy": "Policy",
+    "profile": {
+      "title": "Profile",
+      "avatar": {
+        "title": "Avatar",
+        "error": "Something went wrong. Please try again."
+      },
+      "name": {
+        "title": "Name",
+        "description": "This name will be visible to other users. You can change it later.",
+        "label": "Username",
+        "placeholder": "John Doe",
+        "required_error": "Username is required.",
+        "invalid_type_error": "Username must be a string.",
+        "too_short_error": "Username must be at least 3 characters long.",
+        "too_long_error": "Username must be 24 characters or less.",
+        "submit": "Change",
+        "cancel": "Cancel",
+        "error": "Something went wrong. Please try again."
+      },
+      "email": {
+        "title": "Email Address",
+        "description": "This is the email address associated with your account. You can change it later.",
+        "label": "Email Address",
+        "placeholder": "name@example.com",
+        "invalid_email_error": "Invalid email address.",
+        "submit": "Change",
+        "cancel": "Cancel",
+        "error": "Something went wrong. Please try again."
+      },
+      "gender": {
+        "title": "Gender",
+        "description": "This will be used to recommend clothing. You can change it later.",
+        "label": "Gender",
+        "placeholder": "Select your gender",
+        "submit": "Change",
+        "cancel": "Cancel",
+        "error": "Something went wrong. Please try again."
+      },
+      "height": {
+        "title": "Height",
+        "description": "Height is used to determine clothing sizes. You can change it later.",
+        "label": "Height",
+        "placeholder": "175",
+        "required_error": "Height is required.",
+        "invalid_type_error": "Height must be a number.",
+        "too_short_height": "Height must be at least 0 cm.",
+        "too_long_height": "Height must be 250 cm or less.",
+        "submit": "Change",
+        "cancel": "Cancel",
+        "invalid_height": "Invalid height.",
+        "error": "Something went wrong. Please try again."
+      },
+      "not_selected": "Not selected"
+    },
+    "style": {
+      "title": "Style"
+    },
+    "theme": {
+      "title": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "language": {
+      "title": "Language",
+      "en": "English",
+      "ja": "Japanese"
+    },
     "signout": {
       "title": "Sign Out",
       "description": "Are you sure you want to sign out?",

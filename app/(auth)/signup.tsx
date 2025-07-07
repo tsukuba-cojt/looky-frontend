@@ -25,7 +25,7 @@ const SignupPage = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: standardSchemaResolver(loginSchema),
   });
@@ -83,9 +83,9 @@ const SignupPage = () => {
               </YStack>
             )}
           />
-          <Form.Trigger asChild disabled={isLoading}>
+          <Form.Trigger asChild disabled={isSubmitting}>
             <Button variant="primary">
-              {isLoading ? (
+              {isSubmitting ? (
                 <Button.Icon>
                   <Spinner color="white" />
                 </Button.Icon>

@@ -1,11 +1,11 @@
 import { z } from "zod/v4";
 
 export const signupSchema = z.object({
-  email: z.email({ error: "invalid_email" }),
+  email: z.email({ error: "invalid_email_error" }),
 });
 
 export const loginSchema = z.object({
-  email: z.email({ error: "invalid_email" }),
+  email: z.email({ error: "invalid_email_error" }),
 });
 
 export const otpSchema = z.object(

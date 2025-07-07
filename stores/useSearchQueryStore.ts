@@ -14,7 +14,7 @@ interface SearchQueryState {
   clear: () => void;
 }
 
-export const useSearchQueryStore = create<SearchQueryState>()((set) => ({
+export const useSearchQueryStore = create<SearchQueryState>((set) => ({
   query: {
     gender: null,
     category: null,

@@ -10,14 +10,15 @@ const FilterPage = () => {
   const { t } = useTranslation(["common", "discover"]);
   const insets = useSafeAreaInsets();
   const query = useSearchQueryStore((state) => state.query);
+  const clear = useSearchQueryStore((state) => state.clear);
 
   return (
-    <YStack flex={1} pt="$4" justify="space-between">
+    <YStack flex={1} pt="$4" pb={insets.bottom} justify="space-between">
       <YStack gap="$2">
-        <Link href="/discover/filter/genders" asChild>
+        <Link href="/discover/filter/gender" asChild>
           <Button
             variant="ghost"
-            h="$16"
+            h="$14"
             pr="$8"
             pl="$6"
             justify="space-between"
@@ -29,7 +30,7 @@ const FilterPage = () => {
                   <Icons.userRound size="$4" />
                 </View>
               </Button.Icon>
-              <Button.Text>{t("discover:genders")}</Button.Text>
+              <Button.Text>{t("discover:gender")}</Button.Text>
             </XStack>
             <XStack gap="$3">
               <Button.Text color={query.gender ? "$color" : "$mutedColor"}>
@@ -43,10 +44,10 @@ const FilterPage = () => {
             </XStack>
           </Button>
         </Link>
-        <Link href="/discover/filter/categories" asChild>
+        <Link href="/discover/filter/category" asChild>
           <Button
             variant="ghost"
-            h="$16"
+            h="$14"
             pl="$6"
             pr="$8"
             justify="space-between"
@@ -58,7 +59,7 @@ const FilterPage = () => {
                   <Icons.shirt size="$4" />
                 </View>
               </Button.Icon>
-              <Button.Text>{t("discover:categories")}</Button.Text>
+              <Button.Text>{t("discover:category")}</Button.Text>
             </XStack>
             <XStack gap="$3">
               <Button.Text color={query.subcategory ? "$color" : "$mutedColor"}>
@@ -74,10 +75,10 @@ const FilterPage = () => {
             </XStack>
           </Button>
         </Link>
-        <Link href="/discover/filter/colors" asChild>
+        <Link href="/discover/filter/color" asChild>
           <Button
             variant="ghost"
-            h="$16"
+            h="$14"
             pl="$6"
             pr="$8"
             justify="space-between"
@@ -89,7 +90,7 @@ const FilterPage = () => {
                   <Icons.palette size="$4" />
                 </View>
               </Button.Icon>
-              <Button.Text>{t("discover:colors")}</Button.Text>
+              <Button.Text>{t("discover:color")}</Button.Text>
             </XStack>
             <XStack gap="$3">
               <Button.Text color={query.color ? "$color" : "$mutedColor"}>
@@ -104,11 +105,11 @@ const FilterPage = () => {
           </Button>
         </Link>
       </YStack>
-      <YStack w="100%" gap="$4" px="$8" pb={insets.bottom}>
+      <YStack w="100%" gap="$3" px="$8">
         <Button variant="primary">
           <Button.Text>{t("discover:search")}</Button.Text>
         </Button>
-        <Button variant="link">
+        <Button variant="ghost" onPress={clear}>
           <Button.Text>{t("discover:clear")}</Button.Text>
         </Button>
       </YStack>

@@ -54,6 +54,7 @@ app.post("/download", async (c) => {
     });
   } catch (error) {
     console.error(error);
+    
     return new Response(JSON.stringify({ error }), {
       status: 400,
       headers: { "Content-Type": "application/json" },

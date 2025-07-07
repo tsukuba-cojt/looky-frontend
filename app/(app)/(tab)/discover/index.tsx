@@ -70,7 +70,7 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("gender")}
             >
-              <Button.Text fontSize="$sm">{t("genders")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("gender")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
@@ -85,7 +85,7 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("category")}
             >
-              <Button.Text fontSize="$sm">{t("categories")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("category")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>
@@ -100,7 +100,7 @@ const DiscoverPage = () => {
               boxShadow="none"
               onPress={() => open("color")}
             >
-              <Button.Text fontSize="$sm">{t("colors")}</Button.Text>
+              <Button.Text fontSize="$sm">{t("color")}</Button.Text>
               <Button.Icon>
                 <Icons.chevronDown size="$4" color="$mutedColor" />
               </Button.Icon>

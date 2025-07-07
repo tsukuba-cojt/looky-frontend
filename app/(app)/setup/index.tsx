@@ -84,14 +84,14 @@ const NamePage = () => {
               )}
             />
             <KeyboardStickyView offset={{ opened: 10 }}>
-              <YStack gap="$4">
+              <YStack gap="$3">
                 <Form.Trigger asChild>
                   <Button variant="primary">
                     <Button.Text>{t("name.submit")}</Button.Text>
                   </Button>
                 </Form.Trigger>
                 <Link href="/setup/gender" asChild>
-                  <Button variant="link" onPress={Keyboard.dismiss}>
+                  <Button variant="ghost" onPress={Keyboard.dismiss}>
                     <Button.Text>{t("name.skip")}</Button.Text>
                   </Button>
                 </Link>

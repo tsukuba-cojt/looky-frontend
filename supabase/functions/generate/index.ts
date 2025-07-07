@@ -43,7 +43,9 @@ app.get("/generate", async (c) => {
 
     const token = c.req.header("Authorization")?.replace("Bearer ", "");
 
-    const { data: { user } } = await supabase.auth.getUser(token);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser(token);
 
     const response = await fetch(`${endpoint}/user/clothes/recommend`, {
       method: "POST",

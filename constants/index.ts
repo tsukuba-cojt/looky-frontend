@@ -60,3 +60,7 @@ export const colors = {
   black: "#000000",
   white: "#FFFFFF",
 } as const;
+
+export const languages = ["en", "ja", "system"] as const;
+
+export const themes = ["light", "dark", "system"] as const;
