@@ -12,7 +12,7 @@ const ColorPage = () => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const query = useSearchQueryStore((state) => state.query);
-  const setQuery = useSearchQueryStore((state) => state.setQuery)
+  const setQuery = useSearchQueryStore((state) => state.setQuery);
 
   return (
     <View flex={1} pt="$4">

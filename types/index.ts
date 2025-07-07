@@ -1,4 +1,11 @@
-import type { categories, colors, genders, languages, subcategories, themes } from "@/constants";
+import type {
+  categories,
+  colors,
+  genders,
+  languages,
+  subcategories,
+  themes,
+} from "@/constants";
 import type { Database } from "./database.types";
 
 export type User = Database["public"]["Tables"]["t_user"]["Row"];
@@ -12,6 +19,6 @@ export type Subcategory = {
 
 export type Color = keyof typeof colors;
 
-export type Language = (typeof languages)[number]
+export type Language = (typeof languages)[number];
 
-export type Theme = (typeof themes)[number]
+export type Theme = (typeof themes)[number];
