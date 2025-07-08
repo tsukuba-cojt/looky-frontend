@@ -27,9 +27,9 @@ import { Select } from "@/components/Select";
 import { Sheet } from "@/components/Sheet";
 import { Skeleton } from "@/components/Skeleton";
 import { genders } from "@/constants";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
 import { profileSchema } from "@/schemas/app";
+import { useSessionStore } from "@/stores/useSessionStore";
 import type { Gender } from "@/types";
 
 const genderSchema = profileSchema.pick({ gender: true });
@@ -37,7 +37,7 @@ type FormData = z.infer<typeof genderSchema>;
 
 const GenderPage = () => {
   const { t } = useTranslation(["common", "settings"]);
-  const { session } = useAuth();
+  const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [position, setPosition] = useState(0);

@@ -1,10 +1,10 @@
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Stack } from "expo-router";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const AppLayout = () => {
-  const { session } = useAuth();
+  const session = useSessionStore((state) => state.session);
 
   const { data: user, isLoading } = useQuery(
     supabase

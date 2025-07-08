@@ -10,9 +10,9 @@ import { Form, Label, Spinner, Text, View, XStack, YStack } from "tamagui";
 import type { z } from "zod/v4";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
-import { useAuth } from "@/hooks/useAuth";
 import { updateUser } from "@/lib/auth";
 import { profileSchema } from "@/schemas/app";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const email = profileSchema.pick({ email: true });
 type FormData = z.infer<typeof email>;
@@ -20,7 +20,8 @@ type FormData = z.infer<typeof email>;
 const EmailPage = () => {
   const { t } = useTranslation("settings");
   const router = useRouter();
-  const { session, isLoading } = useAuth();
+  const session = useSessionStore((state) => state.session);
+  const isLoading = useSessionStore((state) => state.isLoading);
   const insets = useSafeAreaInsets();
   const {
     control,

@@ -10,16 +10,15 @@ import {
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { AppState, type AppStateStatus } from "react-native";
+import { AppState, type AppStateStatus, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Toaster } from "sonner-native";
 import { SWRConfig } from "swr";
 import { PortalProvider, TamaguiProvider } from "tamagui";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { AuthProvider } from "@/context/AuthProvider";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 import { useThemeStore } from "@/stores/useThemeStore";
 import { config } from "@/tamagui.config";
 
@@ -34,60 +33,84 @@ AppState.addEventListener("change", (state) => {
 });
 
 const RootLayout = () => {
-  const resolvedTheme = useThemeStore((state) => state.resolvedTheme);
+  const colorSchema = useColorScheme();
+  const theme = useThemeStore((state) => state.theme);
+  const setSession = useSessionStore((state) => state.setSession);
+  const setIsLoading = useSessionStore((state) => state.setIsLoading);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsLoading(false);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        setIsLoading(false);
+      },
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, [setSession, setIsLoading]);
 
   return (
-    <AuthProvider>
-      <SWRConfig
-        value={{
-          provider: () => new Map(),
-          isVisible: () => {
-            return true;
-          },
-          initFocus(callback) {
-            let appState = AppState.currentState;
+    <SWRConfig
+      value={{
+        provider: () => new Map(),
+        isVisible: () => {
+          return true;
+        },
+        initFocus(callback) {
+          let appState = AppState.currentState;
 
-            const onAppStateChange = (nextAppState: AppStateStatus) => {
-              if (
-                appState.match(/inactive|background/) &&
-                nextAppState === "active"
-              ) {
-                callback();
-              }
-              appState = nextAppState;
-            };
+          const onAppStateChange = (nextAppState: AppStateStatus) => {
+            if (
+              appState.match(/inactive|background/) &&
+              nextAppState === "active"
+            ) {
+              callback();
+            }
+            appState = nextAppState;
+          };
 
-            const subscription = AppState.addEventListener(
-              "change",
-              onAppStateChange,
-            );
+          const subscription = AppState.addEventListener(
+            "change",
+            onAppStateChange,
+          );
 
-            return () => {
-              subscription.remove();
-            };
-          },
-        }}
+          return () => {
+            subscription.remove();
+          };
+        },
+      }}
+    >
+      <TamaguiProvider
+        config={config}
+        defaultTheme={theme === "system" ? (colorSchema ?? "light") : theme}
       >
-        <TamaguiProvider config={config} defaultTheme={resolvedTheme()}>
-          <ThemeProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <PortalProvider shouldAddRootHost>
-                <KeyboardProvider>
-                  <StatusBar style={resolvedTheme()} />
-                  <RootNavigator />
-                  <Toaster />
-                </KeyboardProvider>
-              </PortalProvider>
-            </GestureHandlerRootView>
-          </ThemeProvider>
-        </TamaguiProvider>
-      </SWRConfig>
-    </AuthProvider>
+        <ThemeProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <PortalProvider shouldAddRootHost>
+              <KeyboardProvider>
+                <StatusBar
+                  style={theme === "system" ? (colorSchema ?? "light") : theme}
+                />
+                <RootNavigator />
+                <Toaster />
+              </KeyboardProvider>
+            </PortalProvider>
+          </GestureHandlerRootView>
+        </ThemeProvider>
+      </TamaguiProvider>
+    </SWRConfig>
   );
 };
 
 const RootNavigator = () => {
-  const { session, isLoading } = useAuth();
+  const session = useSessionStore((state) => state.session);
   const isAuth = session !== null;
 
   const [loaded] = useFonts({
@@ -98,12 +121,12 @@ const RootNavigator = () => {
   });
 
   useEffect(() => {
-    if (loaded && !isLoading) {
+    if (loaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, isLoading]);
+  }, [loaded]);
 
-  if (!loaded || isLoading) {
+  if (!loaded) {
     return null;
   }
 

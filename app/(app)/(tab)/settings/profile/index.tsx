@@ -13,17 +13,16 @@ import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { ImagePickerSheet } from "@/components/ImagePickerSheet";
 import { Skeleton } from "@/components/Skeleton";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const ProfilePage = () => {
   const { t } = useTranslation(["common", "settings"]);
+  const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const pathname = usePathname();
   const { uri } = useLocalSearchParams<{ uri?: string }>();
   const [isOpen, setIsOpen] = useState(false);
-
-  const { session } = useAuth();
 
   const { data: user, isLoading } = useQuery(
     supabase

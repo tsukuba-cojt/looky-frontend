@@ -14,9 +14,9 @@ import { Form, Label, Text, View, XStack, YStack } from "tamagui";
 import type { z } from "zod/v4";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
 import { profileSchema } from "@/schemas/app";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const nameSchema = profileSchema.pick({ name: true });
 type FormData = z.infer<typeof nameSchema>;
@@ -24,7 +24,7 @@ type FormData = z.infer<typeof nameSchema>;
 const NamePage = () => {
   const { t } = useTranslation("settings");
   const router = useRouter();
-  const { session } = useAuth();
+  const session = useSessionStore((state) => state.session);
   const insets = useSafeAreaInsets();
   const {
     control,
