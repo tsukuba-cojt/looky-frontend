@@ -4,22 +4,23 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, TouchableOpacity } from "react-native";
 import { toast } from "sonner-native";
-import { Avatar, Text, XStack, YStack } from "tamagui";
+import { Avatar, getFontSize, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { ImagePickerSheet } from "@/components/ImagePickerSheet";
-import { useAuth } from "@/hooks/useAuth";
+import { Skeleton } from "@/components/Skeleton";
 import { signOut } from "@/lib/auth";
 import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const SettingsPage = () => {
   const { t } = useTranslation("settings");
-  const { session } = useAuth();
+  const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: user } = useQuery(
+  const { data: user, isLoading } = useQuery(
     supabase
       .from("t_user")
       .select("id, name, avatar_url, gender")
@@ -45,24 +46,33 @@ const SettingsPage = () => {
               </Avatar.Fallback>
             </Avatar>
           </TouchableOpacity>
-          <YStack flex={1} gap="$2">
-            <Text
-              fontSize="$xl"
-              fontWeight="$bold"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {user?.name ?? ""}
-            </Text>
-            <Text
-              fontSize="$sm"
-              color="$mutedColor"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {user?.gender?.toUpperCase() ?? ""}
-            </Text>
-          </YStack>
+          <View flex={1}>
+            {isLoading ? (
+              <YStack gap="$2">
+                <Skeleton w="$16" h={getFontSize("$xl")} rounded="$full" />
+                <Skeleton w="$32" h={getFontSize("$sm")} rounded="$full" />
+              </YStack>
+            ) : (
+              <YStack gap="$2">
+                <Text
+                  fontSize="$xl"
+                  fontWeight="$bold"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {user?.name ?? ""}
+                </Text>
+                <Text
+                  fontSize="$sm"
+                  color="$mutedColor"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {user?.gender?.toUpperCase() ?? ""}
+                </Text>
+              </YStack>
+            )}
+          </View>
         </XStack>
         <YStack gap="$6">
           <Link href="/settings/profile" asChild>

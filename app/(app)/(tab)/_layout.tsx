@@ -7,12 +7,12 @@ import { Header } from "@/components/Header";
 import type { Icons } from "@/components/Icons";
 import { TabButton } from "@/components/TabButton";
 import { tabs } from "@/constants";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const TabLayout = () => {
   const { t } = useTranslation("common");
-  const { session } = useAuth();
+  const session = useSessionStore((state) => state.session);
   const insets = useSafeAreaInsets();
 
   const { data: user, isLoading } = useQuery(

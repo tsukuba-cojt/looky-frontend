@@ -10,15 +10,15 @@ import { Form, H1, Spinner, Text, View, XStack, YStack } from "tamagui";
 import type z from "zod/v4";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/client";
 import type { setupSchema } from "@/schemas/app";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 type FormData = z.infer<typeof setupSchema>;
 
 const ConfirmPage = () => {
   const { t } = useTranslation("setup");
-  const { session } = useAuth();
+  const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const { uri } = useLocalSearchParams<{ uri?: string }>();
   const {
