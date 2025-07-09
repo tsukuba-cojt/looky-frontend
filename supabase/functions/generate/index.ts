@@ -5,8 +5,6 @@ import type { Database } from "../database.types.ts";
 
 const app = new Hono();
 
-const endpoint = Deno.env.get("FASTAPI_ENDPOINT") ?? "";
-
 /**
  * @route GET /generate
  * @summary 服の推薦をリクエストする
@@ -47,16 +45,19 @@ app.get("/generate", async (c) => {
       data: { user },
     } = await supabase.auth.getUser(token);
 
-    const response = await fetch(`${endpoint}/user/clothes/recommend`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Internal-Secret": Deno.env.get("FASTAPI_INTERNAL_SECRET") ?? "",
+    const response = await fetch(
+      `${Deno.env.get("FASTAPI_URL") ?? ""}/user/clothes/recommend`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Internal-Secret": Deno.env.get("FASTAPI_SECRET_KEY") ?? "",
+        },
+        body: JSON.stringify({
+          user_id: user?.id ?? "",
+        }),
       },
-      body: JSON.stringify({
-        user_id: user?.id ?? "",
-      }),
-    });
+    );
 
     if (!response.ok) {
       const error = await response.text();
