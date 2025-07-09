@@ -27531,6 +27531,13 @@
           "easing": "Function",
           "loop": true,
           "repeatReverse": true
+        },
+        "bounce": {
+          "type": "timing",
+          "duration": 1000,
+          "loop": true,
+          "repeatReverse": true,
+          "easing": "Function"
         }
       },
       "usePresence": "Function",

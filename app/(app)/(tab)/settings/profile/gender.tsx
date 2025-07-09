@@ -62,7 +62,7 @@ const GenderPage = () => {
           setValue("gender", data.gender as Gender);
         }
       },
-    },
+    }
   );
 
   const { trigger } = useUpdateMutation(supabase.from("t_user"), ["id"], "*", {
@@ -98,7 +98,7 @@ const GenderPage = () => {
                 <Text color="$destructiveBackground">*</Text>
               </XStack>
               <Select
-                value={value}
+                value={value ?? undefined}
                 onValueChange={onChange}
                 disablePreventBodyScroll
               >

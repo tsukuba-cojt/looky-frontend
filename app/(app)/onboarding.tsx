@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, SafeAreaView, useWindowDimensions } from "react-native";
@@ -42,13 +42,13 @@ const OnboardingPage = () => {
         icon: require("../../assets/images/onboarding3.png"),
       },
     ],
-    [t],
+    [t]
   );
 
   const inputRange = [0, data.length];
   const scrollX = Animated.add(
     scrollOffsetAnimatedValue,
-    positionAnimatedValue,
+    positionAnimatedValue
   ).interpolate({
     inputRange,
     outputRange: [0, data.length * width],
@@ -66,9 +66,9 @@ const OnboardingPage = () => {
             },
           },
         ],
-        { useNativeDriver: false },
+        { useNativeDriver: false }
       ),
-    [scrollOffsetAnimatedValue, positionAnimatedValue],
+    [scrollOffsetAnimatedValue, positionAnimatedValue]
   );
 
   const onNextPage = () => {
@@ -114,7 +114,7 @@ const OnboardingPage = () => {
       <YStack position="absolute" b="$32" w="100%">
         <SlidingDot
           data={data}
-          //@ts-ignore
+          //@ts-expect-error
           scrollX={scrollX}
           dotSize={8}
           marginHorizontal={4}
@@ -134,9 +134,11 @@ const OnboardingPage = () => {
             {currentIndex === data.length - 1 ? t("get_started") : t("next")}
           </Button.Text>
         </Button>
-        <Button variant="link" onPress={() => router.push("/setup")}>
-          <Button.Text>{t("skip")}</Button.Text>
-        </Button>
+        <Link href="/setup" asChild>
+          <Button variant="ghost">
+            <Button.Text>{t("skip")}</Button.Text>
+          </Button>
+        </Link>
       </YStack>
     </SafeAreaView>
   );

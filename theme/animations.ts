@@ -1,4 +1,5 @@
 import { createAnimations } from "@tamagui/animations-moti";
+import type { TransitionConfig } from "moti";
 import { Easing } from "react-native-reanimated";
 
 export const animations = createAnimations({
@@ -47,5 +48,5 @@ export const animations = createAnimations({
     easing: Easing.bezier(0.4, 0, 0.6, 1),
     loop: true,
     repeatReverse: true,
-  },
+  } satisfies TransitionConfig,
 });

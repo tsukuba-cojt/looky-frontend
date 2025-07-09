@@ -1,6 +1,6 @@
 import { useCameraPermissions } from "expo-camera";
 import { Image } from "expo-image";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, SafeAreaView, useWindowDimensions } from "react-native";
@@ -28,30 +28,30 @@ const GuidePage = () => {
     () => [
       {
         key: "1",
-        title: t("body.guide.tab1.title"),
-        description: t("body.guide.tab1.description"),
+        title: t("outfit.guide.tab1.title"),
+        description: t("outfit.guide.tab1.description"),
         icon: require("../../../../assets/images/dummy.png"),
       },
       {
         key: "2",
-        title: t("body.guide.tab2.title"),
-        description: t("body.guide.tab2.description"),
+        title: t("outfit.guide.tab2.title"),
+        description: t("outfit.guide.tab2.description"),
         icon: require("../../../../assets/images/dummy.png"),
       },
       {
         key: "3",
-        title: t("body.guide.tab3.title"),
-        description: t("body.guide.tab3.description"),
+        title: t("outfit.guide.tab3.title"),
+        description: t("outfit.guide.tab3.description"),
         icon: require("../../../../assets/images/dummy.png"),
       },
     ],
-    [t],
+    [t]
   );
 
   const inputRange = [0, data.length];
   const scrollX = Animated.add(
     scrollOffsetAnimatedValue,
-    positionAnimatedValue,
+    positionAnimatedValue
   ).interpolate({
     inputRange,
     outputRange: [0, data.length * width],
@@ -69,9 +69,9 @@ const GuidePage = () => {
             },
           },
         ],
-        { useNativeDriver: false },
+        { useNativeDriver: false }
       ),
-    [scrollOffsetAnimatedValue, positionAnimatedValue],
+    [scrollOffsetAnimatedValue, positionAnimatedValue]
   );
 
   const onNextPage = async () => {
@@ -82,7 +82,7 @@ const GuidePage = () => {
         router.push({
           pathname: "/camera",
           params: {
-            from: "/setup/confirm",
+            from: "/setup/outfit/gallery",
           },
         });
       } else {
@@ -92,11 +92,11 @@ const GuidePage = () => {
           router.push({
             pathname: "/camera",
             params: {
-              from: "/setup/confirm",
+              from: "/setup/outfit/gallery",
             },
           });
         } else {
-          toast.error(t("body.guide.error"));
+          toast.error(t("outfit.guide.error"));
         }
       }
     }
@@ -118,7 +118,7 @@ const GuidePage = () => {
             <YStack key={key} flex={1} items="center" pt={48} gap="$12">
               <YStack gap="$6">
                 <H1 text="center" fontSize="$2xl" fontWeight="$bold">
-                  {t("body.guide.tips")}
+                  {t("outfit.guide.tips")}
                 </H1>
                 <View
                   w={300}
@@ -155,7 +155,7 @@ const GuidePage = () => {
       <YStack position="absolute" b="$32" w="100%">
         <SlidingDot
           data={data}
-          //@ts-ignore
+          //@ts-expect-error
           scrollX={scrollX}
           dotSize={8}
           marginHorizontal={4}
@@ -173,23 +173,23 @@ const GuidePage = () => {
         <Button variant="primary" onPress={onNextPage}>
           <Button.Text>
             {currentIndex === data.length - 1
-              ? t("body.guide.get_started")
-              : t("body.guide.next")}
+              ? t("outfit.guide.get_started")
+              : t("outfit.guide.next")}
           </Button.Text>
         </Button>
-        <Button
-          variant="ghost"
-          onPress={() =>
-            router.push({
-              pathname: "/camera",
-              params: {
-                from: "/setup/confirm",
-              },
-            })
-          }
+        <Link
+          href={{
+            pathname: "/camera",
+            params: {
+              from: "/setup/outfit/gallery",
+            },
+          }}
+          asChild
         >
-          <Button.Text>{t("body.guide.skip")}</Button.Text>
-        </Button>
+          <Button variant="ghost">
+            <Button.Text>{t("outfit.guide.skip")}</Button.Text>
+          </Button>
+        </Link>
       </YStack>
     </SafeAreaView>
   );

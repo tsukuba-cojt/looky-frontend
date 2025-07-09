@@ -8,9 +8,6 @@ export const Skeleton = (props: ViewProps) => {
       enterStyle={{
         opacity: 0.5,
       }}
-      exitStyle={{
-        opacity: 0.5,
-      }}
       bg="$accentBackground"
       {...props}
     />

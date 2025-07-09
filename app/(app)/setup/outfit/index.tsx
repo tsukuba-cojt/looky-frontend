@@ -37,23 +37,21 @@ const IntroPage = () => {
               fontWeight="$bold"
               text="center"
             >
-              {t("body.intro.title")}
+              {t("outfit.intro.title")}
             </H1>
             <Text text="center" color="$mutedColor">
-              {t("body.intro.description")}
+              {t("outfit.intro.description")}
             </Text>
           </YStack>
         </YStack>
         <YStack gap="$3">
-          <Link href="/setup/body/guide" asChild>
+          <Link href="/setup/outfit/guide" asChild>
             <Button variant="primary">
-              <Button.Text fontWeight="$bold">
-                {t("body.intro.get_started")}
-              </Button.Text>
+              <Button.Text>{t("outfit.intro.get_started")}</Button.Text>
             </Button>
           </Link>
           <Text fontSize="$xs" color="$placeholderColor" text="center">
-            {t("body.intro.note")}
+            {t("outfit.intro.note")}
           </Text>
         </YStack>
       </YStack>

@@ -145,16 +145,24 @@
       "description": "This will be used to recommend clothing. You can change it later.",
       "label": "Gender",
       "placeholder": "Select your gender",
-      "man": "Male",
-      "woman": "Female",
-      "other": "Other",
+      "required_error":"Gender is required.",
       "submit": "Next",
       "skip": "Skip"
     },
-    "body": {
+    "avatar": {
+      "title": "Uplaod your avatar",
+      "description": "This name will be visible to other users. You can change it later.",
+      "required_error": "Avatar is required.",
+      "invalid_type_error": "Avatar must be a string.",
+      "submit": "Next",
+      "skip": "Skip",
+      "error": "Something went wrong. Please try again."
+    },
+    "outfit": {
       "intro": {
-        "title": "Upload yourr Full-Body Photo",
+        "title": "Upload your Full-Body Photo",
         "description": "This full-body photo of you to try on clothes.",
+        "required_error": "Full-Body is required.",
         "note": "You can change the photo later.",
         "get_started": "Get Started"
       },
@@ -177,15 +185,20 @@
         "skip": "Skip",
         "error": "Camera access is not allowed. Please allow camera access in your settings."
       },
-      "confirm": {
-        "title": "Are you satisfied with this photo?",
-        "requirement1": "Your entire body fits within the frame.",
-        "requirement2": "You are facing the camera directly.",
-        "requirement3": "No other people or objects are visible in the background.",
-        "done": "Done",
-        "redo": "Redo",
+      "gallery": {
+        "title": "Add your outfits",
+        "description": "It's useful to register a few outfits. You can change it later.",
+        "next": "Next",
+        "note": "Register at least one outfit.",
         "error": "Something went wrong. Please try again."
       }
+    },
+    "welcome": {
+      "title": "You're all set!",
+      "description": "Press the button below to discover your perfect outfit.",
+      "error": "Something went wrong. Please try again.",
+      "get_started": "Get Started",
+      "note": ""
     }
   },
   "camera": {
@@ -260,6 +273,7 @@
         "description": "This will be used to recommend clothing. You can change it later.",
         "label": "Gender",
         "placeholder": "Select your gender",
+        "required_error": "Gender is required.",
         "submit": "Change",
         "cancel": "Cancel",
         "error": "Something went wrong. Please try again."
@@ -275,7 +289,6 @@
         "too_long_height": "Height must be 250 cm or less.",
         "submit": "Change",
         "cancel": "Cancel",
-        "invalid_height": "Invalid height.",
         "error": "Something went wrong. Please try again."
       },
       "not_selected": "Not selected"

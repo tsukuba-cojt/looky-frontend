@@ -17,13 +17,14 @@ type FormData = z.infer<typeof nameSchema>;
 const NamePage = () => {
   const { t } = useTranslation("setup");
   const router = useRouter();
-  const { setValue } = useFormContext<FormData>();
+  const { getValues, setValue } = useFormContext<FormData>();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: standardSchemaResolver(nameSchema),
+    defaultValues: { name: getValues("name") },
   });
 
   const onSubmit = (data: FormData) => {
