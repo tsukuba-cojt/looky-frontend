@@ -30,19 +30,19 @@ const GuidePage = () => {
         key: "1",
         title: t("outfit.guide.tab1.title"),
         description: t("outfit.guide.tab1.description"),
-        icon: require("../../../../assets/images/dummy.png"),
+        icon: require("../../../../assets/images/iphone.png"),
       },
       {
         key: "2",
         title: t("outfit.guide.tab2.title"),
         description: t("outfit.guide.tab2.description"),
-        icon: require("../../../../assets/images/dummy.png"),
+        icon: require("../../../../assets/images/iphone_frame.png"),
       },
       {
         key: "3",
         title: t("outfit.guide.tab3.title"),
         description: t("outfit.guide.tab3.description"),
-        icon: require("../../../../assets/images/dummy.png"),
+        icon: require("../../../../assets/images/iphone_count3.png"),
       },
     ],
     [t]

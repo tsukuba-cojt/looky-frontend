@@ -25,7 +25,7 @@ const IntroPage = () => {
                 height: "150%",
                 transform: [{ translateY: 60 }],
               }}
-              source={require("../../../../assets/images/dummy.png")}
+              source={require("../../../../assets/images/iphone.png")}
               contentFit="contain"
               transition={200}
             />
