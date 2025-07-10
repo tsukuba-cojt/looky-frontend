@@ -9,7 +9,7 @@ import PagerView, {
   type PagerViewOnPageScrollEventData,
 } from "react-native-pager-view";
 import { toast } from "sonner-native";
-import { H1, Text, useTheme, View, YStack } from "tamagui";
+import { H1, Text, useTheme, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
@@ -30,28 +30,28 @@ const GuidePage = () => {
         key: "1",
         title: t("outfit.guide.tab1.title"),
         description: t("outfit.guide.tab1.description"),
-        icon: require("../../../../assets/images/iphone.png"),
+        icon: require("../../../../assets/images/guide1.png"),
       },
       {
         key: "2",
         title: t("outfit.guide.tab2.title"),
         description: t("outfit.guide.tab2.description"),
-        icon: require("../../../../assets/images/iphone_frame.png"),
+        icon: require("../../../../assets/images/guide2.png"),
       },
       {
         key: "3",
         title: t("outfit.guide.tab3.title"),
         description: t("outfit.guide.tab3.description"),
-        icon: require("../../../../assets/images/iphone_count3.png"),
+        icon: require("../../../../assets/images/guide3.png"),
       },
     ],
-    [t]
+    [t],
   );
 
   const inputRange = [0, data.length];
   const scrollX = Animated.add(
     scrollOffsetAnimatedValue,
-    positionAnimatedValue
+    positionAnimatedValue,
   ).interpolate({
     inputRange,
     outputRange: [0, data.length * width],
@@ -69,9 +69,9 @@ const GuidePage = () => {
             },
           },
         ],
-        { useNativeDriver: false }
+        { useNativeDriver: false },
       ),
-    [scrollOffsetAnimatedValue, positionAnimatedValue]
+    [scrollOffsetAnimatedValue, positionAnimatedValue],
   );
 
   const onNextPage = async () => {
@@ -120,24 +120,11 @@ const GuidePage = () => {
                 <H1 text="center" fontSize="$2xl" fontWeight="$bold">
                   {t("outfit.guide.tips")}
                 </H1>
-                <View
-                  w={300}
-                  h={300}
-                  bg="$primaryBackground"
-                  rounded="$full"
-                  overflow="hidden"
-                >
-                  <Image
-                    style={{
-                      width: "100%",
-                      height: "150%",
-                      transform: [{ translateY: 60 }],
-                    }}
-                    source={icon}
-                    contentFit="contain"
-                    transition={200}
-                  />
-                </View>
+                <Image
+                  style={{ width: 300, height: 300 }}
+                  source={icon}
+                  transition={200}
+                />
               </YStack>
               <YStack gap="$6">
                 <H1 fontSize="$2xl" fontWeight="$bold">

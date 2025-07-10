@@ -4,7 +4,7 @@ type SheetAction<T> = { type: "open"; payload: T } | { type: "close" };
 
 const reducer = (
   state: string | null,
-  action: SheetAction<string>
+  action: SheetAction<string>,
 ): string | null => {
   switch (action.type) {
     case "open":
@@ -21,7 +21,7 @@ export const useSheet = () => {
 
   const open = useCallback(
     (type: string) => dispatch({ type: "open", payload: type }),
-    []
+    [],
   );
   const close = useCallback(() => dispatch({ type: "close" }), []);
 
@@ -37,7 +37,7 @@ export const useSheet = () => {
         },
       };
     },
-    [state, close]
+    [state, close],
   );
 
   return { state, open, close, getSheetProps };

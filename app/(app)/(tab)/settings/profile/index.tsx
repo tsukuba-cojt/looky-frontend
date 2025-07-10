@@ -44,7 +44,8 @@ const ProfilePage = () => {
               bg="$mutedBackground"
             >
               <Text fontSize="$4xl" fontWeight="$semibold">
-                {user?.name.charAt(0).toUpperCase() ?? ""}
+                {user?.name?.charAt(0).toUpperCase() ??
+                  t("common:not_configured").charAt(0)}
               </Text>
             </Avatar.Fallback>
           </Avatar>
@@ -58,7 +59,7 @@ const ProfilePage = () => {
                   <Skeleton w="$20" h={getFontSize("$md")} rounded="$full" />
                 ) : (
                   <Button.Text color={user?.name ? "$color" : "$mutedColor"}>
-                    {user?.name ?? t("settings:profile.not_selected")}
+                    {user?.name ?? t("settings:profile.not_configured")}
                   </Button.Text>
                 )}
                 <Button.Icon>

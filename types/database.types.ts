@@ -49,21 +49,21 @@ export type Database = {
           created_at: string;
           gender: Database["public"]["Enums"]["gender"] | null;
           id: number;
-          image_url: string | null;
+          object_key: string | null;
         };
         Insert: {
           category?: string | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
-          image_url?: string | null;
+          object_key?: string | null;
         };
         Update: {
           category?: string | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
-          image_url?: string | null;
+          object_key?: string | null;
         };
         Relationships: [];
       };
@@ -75,7 +75,7 @@ export type Database = {
           gender: string | null;
           height: number | null;
           id: string;
-          name: string;
+          name: string | null;
         };
         Insert: {
           avatar_url?: string | null;
@@ -84,7 +84,7 @@ export type Database = {
           gender?: string | null;
           height?: number | null;
           id?: string;
-          name: string;
+          name?: string | null;
         };
         Update: {
           avatar_url?: string | null;
@@ -93,7 +93,7 @@ export type Database = {
           gender?: string | null;
           height?: number | null;
           id?: string;
-          name?: string;
+          name?: string | null;
         };
         Relationships: [];
       };

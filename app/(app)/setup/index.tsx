@@ -78,7 +78,7 @@ const NamePage = () => {
                       <View />
                     )}
                     <Text fontSize="$sm" color="$mutedColor">
-                      {value.length} / 24
+                      {value?.length ?? 0} / 24
                     </Text>
                   </XStack>
                 </YStack>

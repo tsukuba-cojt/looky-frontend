@@ -1,5 +1,4 @@
 import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
-import { File } from "expo-file-system/next";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { useRouter } from "expo-router";
 import { useFormContext } from "react-hook-form";
@@ -39,53 +38,54 @@ const WelcomePage = () => {
       return;
     }
 
-    let avatarUrl: string;
+    let avatarUrl: string | null = null;
+    if (data.avatar) {
+      try {
+        const context = ImageManipulator.manipulate(data.avatar?.uri);
+        const image = await context.renderAsync();
+        const result = await image.saveAsync({
+          format: SaveFormat.JPEG,
+        });
 
-    try {
-      const context = ImageManipulator.manipulate(data.avatar.uri);
-      const image = await context.renderAsync();
-      const result = await image.saveAsync({
-        format: SaveFormat.JPEG,
-      });
+        const blob = await (await fetch(result.uri)).blob();
 
-      const file = new File(result.uri);
-      const blob = file.blob();
+        const objectKey = `${data.avatar?.id}.jpg`;
 
-      const objectKey = `${data.avatar.id}.jpg`;
+        const {
+          data: { url },
+          error,
+        } = await supabase.functions.invoke("upload", {
+          method: "POST",
+          body: {
+            bucket_name: "looky-avatar-images",
+            object_key: objectKey,
+            content_type: blob.type,
+          },
+        });
 
-      const {
-        data: { url },
-        error,
-      } = await supabase.functions.invoke("upload", {
-        method: "POST",
-        body: {
-          bucket_name: "looky-avatar-images",
-          object_key: objectKey,
-          content_type: blob.type,
-        },
-      });
+        if (error) {
+          throw error;
+        }
 
-      if (error) {
-        throw error;
+        const response = await fetch(url, {
+          method: "PUT",
+          body: blob,
+          headers: {
+            "Content-Type": blob.type,
+          },
+        });
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text);
+        }
+
+        avatarUrl = objectKey;
+      } catch (error) {
+        console.error(error);
+        toast.error(t("welcome.error"));
+        return;
       }
-
-      const response = await fetch(url, {
-        method: "PUT",
-        body: blob,
-        headers: {
-          "Content-Type": blob.type,
-        },
-      });
-
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text);
-      }
-
-      avatarUrl = objectKey;
-    } catch {
-      toast.error(t("welcome.error"));
-      return;
     }
 
     let bodyUrls: string[];
@@ -99,8 +99,7 @@ const WelcomePage = () => {
             format: SaveFormat.JPEG,
           });
 
-          const file = new File(result.uri);
-          const blob = file.blob();
+          const blob = await (await fetch(result.uri)).blob();
 
           const objectKey = `${id}.jpg`;
 
@@ -134,11 +133,12 @@ const WelcomePage = () => {
           }
 
           return objectKey;
-        })
+        }),
       );
 
       bodyUrls = objectKeys;
-    } catch {
+    } catch (error) {
+      console.error(error);
       toast.error(t("welcome.error"));
       return;
     }
@@ -194,9 +194,7 @@ const WelcomePage = () => {
                   <Spinner color="white" />
                 </Button.Icon>
               ) : (
-                <Button.Text fontWeight="$bold">
-                  {t("welcome.get_started")}
-                </Button.Text>
+                <Button.Text>{t("welcome.get_started")}</Button.Text>
               )}
             </Button>
           </Form.Trigger>

@@ -8,17 +8,20 @@ export const setupSchema = z.object({
         issue.input === undefined ? "required_error" : "invalid_type_error",
     })
     .min(3, { message: "too_short_error" })
-    .max(128, { message: "too_long_error" }),
-  gender: z.enum(genders, { error: "required_error" }).nullable(),
-  avatar: z.object(
-    {
-      id: z.uuid(),
-      uri: z.string(),
-    },
-    {
-      error: "required_error",
-    }
-  ),
+    .max(128, { message: "too_long_error" })
+    .optional(),
+  gender: z.enum(genders, { error: "required_error" }).optional(),
+  avatar: z
+    .object(
+      {
+        id: z.uuid(),
+        uri: z.string(),
+      },
+      {
+        error: "required_error",
+      },
+    )
+    .optional(),
   outfits: z
     .array(z.object({ id: z.uuid(), uri: z.string() }))
     .nonempty({ error: "required_error" }),

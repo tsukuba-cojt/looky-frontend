@@ -69,7 +69,8 @@
       "black": "Black",
       "white": "White"
     },
-    "close": "Close"
+    "close": "Close",
+    "not_configured": "Not configured"
   },
   "top": {
     "title": "Welcome to Looky",
@@ -129,7 +130,6 @@
     "skip": "Skip"
   },
   "setup": {
-    "unset": "Unset",
     "name": {
       "title": "Enter your name",
       "description": "This name will be visible to other users. You can change it later.",
@@ -291,7 +291,8 @@
         "cancel": "Cancel",
         "error": "Something went wrong. Please try again."
       },
-      "not_selected": "Not selected"
+      "not_selected": "Not selected",
+      "not_configured": "Not configured"
     },
     "style": {
       "title": "Style"

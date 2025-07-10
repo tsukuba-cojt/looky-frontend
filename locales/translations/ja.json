@@ -70,7 +70,8 @@
       "black": "黒",
       "white": "白"
     },
-    "close": "閉じる"
+    "close": "閉じる",
+    "not_configured": "未設定"
   },
   "top": {
     "title": "Lookyへようこそ",
@@ -130,7 +131,6 @@
     "skip": "スキップ"
   },    
   "setup": {
-    "unset": "未設定",
     "name": {
       "title": "お名前を教えてください",
       "description": "他のユーザーに公開されるお名前です。後から変更することもできます。",

@@ -2,7 +2,7 @@ import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
-import { H1, Text, View, YStack } from "tamagui";
+import { H1, Text, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
 const IntroPage = () => {
@@ -12,24 +12,11 @@ const IntroPage = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <YStack flex={1} px="$8" pt="$24" pb="$6" justify="space-between">
         <YStack items="center" gap="$12">
-          <View
-            w={300}
-            h={300}
-            bg="$primaryBackground"
-            rounded="$full"
-            overflow="hidden"
-          >
-            <Image
-              style={{
-                width: "100%",
-                height: "150%",
-                transform: [{ translateY: 60 }],
-              }}
-              source={require("../../../../assets/images/iphone.png")}
-              contentFit="contain"
-              transition={200}
-            />
-          </View>
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={require("../../../../assets/images/intro.png")}
+            transition={200}
+          />
           <YStack gap="$6">
             <H1
               fontSize="$2xl"

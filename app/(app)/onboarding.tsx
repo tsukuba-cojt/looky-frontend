@@ -42,13 +42,13 @@ const OnboardingPage = () => {
         icon: require("../../assets/images/onboarding3.png"),
       },
     ],
-    [t]
+    [t],
   );
 
   const inputRange = [0, data.length];
   const scrollX = Animated.add(
     scrollOffsetAnimatedValue,
-    positionAnimatedValue
+    positionAnimatedValue,
   ).interpolate({
     inputRange,
     outputRange: [0, data.length * width],
@@ -66,9 +66,9 @@ const OnboardingPage = () => {
             },
           },
         ],
-        { useNativeDriver: false }
+        { useNativeDriver: false },
       ),
-    [scrollOffsetAnimatedValue, positionAnimatedValue]
+    [scrollOffsetAnimatedValue, positionAnimatedValue],
   );
 
   const onNextPage = () => {

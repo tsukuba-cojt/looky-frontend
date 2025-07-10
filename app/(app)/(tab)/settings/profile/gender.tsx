@@ -62,7 +62,7 @@ const GenderPage = () => {
           setValue("gender", data.gender as Gender);
         }
       },
-    }
+    },
   );
 
   const { trigger } = useUpdateMutation(supabase.from("t_user"), ["id"], "*", {

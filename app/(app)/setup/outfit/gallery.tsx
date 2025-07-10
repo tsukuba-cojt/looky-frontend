@@ -152,9 +152,7 @@ const GalleryPage = () => {
                     <Spinner color="white" />
                   </Button.Icon>
                 ) : (
-                  <Button.Text>
-                    {t("outfit.gallery.next")}
-                  </Button.Text>
+                  <Button.Text>{t("outfit.gallery.next")}</Button.Text>
                 )}
               </Button>
             </Form.Trigger>
