@@ -20,7 +20,7 @@ const TabLayout = () => {
       .from("t_user")
       .select("id, name, avatar_url")
       .eq("id", session?.user.id ?? "")
-      .maybeSingle()
+      .maybeSingle(),
   );
 
   return (

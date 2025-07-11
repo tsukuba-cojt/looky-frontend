@@ -11,7 +11,7 @@ const AppLayout = () => {
       .from("t_user")
       .select("id")
       .eq("id", session?.user.id ?? "")
-      .maybeSingle()
+      .maybeSingle(),
   );
 
   if (isLoading) {

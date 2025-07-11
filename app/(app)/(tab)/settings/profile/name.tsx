@@ -47,7 +47,7 @@ const NamePage = () => {
           setValue("name", data.name);
         }
       },
-    }
+    },
   );
 
   const { trigger } = useUpdateMutation(supabase.from("t_user"), ["id"], "*", {

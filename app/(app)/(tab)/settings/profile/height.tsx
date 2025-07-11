@@ -47,7 +47,7 @@ const HeightPage = () => {
           setValue("height", data.height);
         }
       },
-    }
+    },
   );
 
   const { trigger } = useUpdateMutation(supabase.from("t_user"), ["id"], "*", {

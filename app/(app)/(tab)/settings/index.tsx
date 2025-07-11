@@ -25,7 +25,7 @@ const SettingsPage = () => {
       .from("t_user")
       .select("id, name, avatar_url, gender")
       .eq("id", session?.user.id ?? "")
-      .maybeSingle()
+      .maybeSingle(),
   );
 
   return (
@@ -150,7 +150,7 @@ const SettingsPage = () => {
                     },
                   },
                 ],
-                { cancelable: true }
+                { cancelable: true },
               );
             }}
             justify="space-between"
