@@ -55,14 +55,14 @@ const GenderPage = () => {
       .from("t_user")
       .select("id, gender")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .maybeSingle(),
     {
       onSuccess: ({ data }) => {
         if (data?.gender) {
           setValue("gender", data.gender as Gender);
         }
       },
-    },
+    }
   );
 
   const { trigger } = useUpdateMutation(supabase.from("t_user"), ["id"], "*", {

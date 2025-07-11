@@ -12,7 +12,7 @@ const normalizedStories = [
     files: "**/*.stories.?(ts|tsx|js|jsx)",
     importPathMatcher:
       /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.stories\.(?:ts|tsx|js|jsx)?)$/,
-    // @ts-expect-error
+    // @ts-ignore
     req: require.context(
       "../components",
       true,
@@ -34,7 +34,7 @@ const annotations = [
 
 global.STORIES = normalizedStories;
 
-// @ts-expect-error
+// @ts-ignore
 module?.hot?.accept?.();
 
 if (!global.view) {

@@ -48,7 +48,7 @@ const RootLayout = () => {
       (_event, session) => {
         setSession(session);
         setIsLoading(false);
-      },
+      }
     );
 
     return () => {
@@ -78,7 +78,7 @@ const RootLayout = () => {
 
           const subscription = AppState.addEventListener(
             "change",
-            onAppStateChange,
+            onAppStateChange
           );
 
           return () => {
@@ -89,14 +89,14 @@ const RootLayout = () => {
     >
       <TamaguiProvider
         config={config}
-        defaultTheme={theme === "system" ? (colorSchema ?? "light") : theme}
+        defaultTheme={theme === "system" ? colorSchema ?? "light" : theme}
       >
         <ThemeProvider>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <PortalProvider shouldAddRootHost>
               <KeyboardProvider>
                 <StatusBar
-                  style={theme === "system" ? (colorSchema ?? "light") : theme}
+                  style={theme === "system" ? colorSchema ?? "light" : theme}
                 />
                 <RootNavigator />
                 <Toaster />

@@ -41,7 +41,8 @@ const LoginPage = () => {
           email: data.email,
         },
       });
-    } catch {
+    } catch (error) {
+      console.error(error);
       toast.error(t("error"));
     }
   };

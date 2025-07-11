@@ -29,7 +29,7 @@ const ProfilePage = () => {
       .from("t_user")
       .select("id, name, avatar_url, gender, height")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .maybeSingle()
   );
 
   return (

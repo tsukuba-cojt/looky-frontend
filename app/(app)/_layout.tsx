@@ -6,18 +6,17 @@ import { useSessionStore } from "@/stores/useSessionStore";
 const AppLayout = () => {
   const session = useSessionStore((state) => state.session);
 
-  const { data: user } = useQuery(
+  const { data: user, isLoading } = useQuery(
     supabase
       .from("t_user")
       .select("id")
       .eq("id", session?.user.id ?? "")
-      .single(),
-    {
-      onSuccess: ({ data }) => {
-        console.log(data);
-      },
-    },
+      .maybeSingle()
   );
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

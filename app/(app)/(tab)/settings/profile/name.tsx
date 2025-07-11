@@ -40,14 +40,14 @@ const NamePage = () => {
       .from("t_user")
       .select("id, name")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .maybeSingle(),
     {
       onSuccess: ({ data }) => {
         if (data?.name) {
           setValue("name", data.name);
         }
       },
-    },
+    }
   );
 
   const { trigger } = useUpdateMutation(supabase.from("t_user"), ["id"], "*", {
