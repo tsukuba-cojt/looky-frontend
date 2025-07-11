@@ -17,16 +17,17 @@ const genderSchema = setupSchema.pick({ gender: true });
 type FormData = z.infer<typeof genderSchema>;
 
 const GenderPage = () => {
-  const { t } = useTranslation("setup");
+  const { t } = useTranslation(["common", "setup"]);
   const router = useRouter();
   const [position, setPosition] = useState(0);
-  const { setValue } = useFormContext<FormData>();
+  const { getValues, setValue } = useFormContext<FormData>();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: standardSchemaResolver(genderSchema),
+    defaultValues: { gender: getValues("gender") },
   });
 
   const onSubmit = (data: FormData) => {
@@ -39,9 +40,9 @@ const GenderPage = () => {
       <YStack flex={1} pt="$8" px="$8" gap="$8">
         <YStack gap="$1">
           <H1 fontSize="$2xl" fontWeight="bold">
-            {t("gender.title")}
+            {t("setup:gender.title")}
           </H1>
-          <Text color="$mutedColor">{t("gender.description")}</Text>
+          <Text color="$mutedColor">{t("setup:gender.description")}</Text>
         </YStack>
         <Form
           flex={1}
@@ -54,16 +55,16 @@ const GenderPage = () => {
             render={({ field: { onChange, value } }) => (
               <YStack gap="$1.5">
                 <XStack>
-                  <Label htmlFor="gender">{t("gender.label")}</Label>
+                  <Label htmlFor="gender">{t("setup:gender.label")}</Label>
                   <Text color="$destructiveBackground">*</Text>
                 </XStack>
                 <Select
-                  value={value}
+                  value={value ?? undefined}
                   onValueChange={onChange}
                   disablePreventBodyScroll
                 >
                   <Select.Trigger iconAfter={Icons.chevronDown}>
-                    <Select.Value placeholder={t("gender.placeholder")} />
+                    <Select.Value placeholder={t("setup:gender.placeholder")} />
                   </Select.Trigger>
 
                   <Adapt when="maxMd" platform="touch">
@@ -113,7 +114,7 @@ const GenderPage = () => {
                                 }
                                 fontSize="$sm"
                               >
-                                {t(`gender.${option}`)}
+                                {t(`common:gender.${option}`)}
                               </Select.ItemText>
                               <Select.ItemIndicator marginLeft="auto">
                                 <Icons.check size="$4" />
@@ -129,7 +130,7 @@ const GenderPage = () => {
                 <XStack items="center" justify="space-between" px="$1">
                   {errors.gender ? (
                     <Text px="$1" fontSize="$sm" color="$destructiveBackground">
-                      {t(`gender.${errors.gender.message}`)}
+                      {t(`setup:gender.${errors.gender.message}`)}
                     </Text>
                   ) : (
                     <View />
@@ -141,12 +142,12 @@ const GenderPage = () => {
           <YStack gap="$3">
             <Form.Trigger asChild>
               <Button variant="primary">
-                <Button.Text>{t("gender.submit")}</Button.Text>
+                <Button.Text>{t("setup:gender.submit")}</Button.Text>
               </Button>
             </Form.Trigger>
             <Link href="/setup/avatar" asChild>
               <Button variant="ghost">
-                <Button.Text>{t("gender.skip")}</Button.Text>
+                <Button.Text>{t("setup:gender.skip")}</Button.Text>
               </Button>
             </Link>
           </YStack>

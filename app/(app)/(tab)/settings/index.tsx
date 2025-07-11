@@ -14,7 +14,7 @@ import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
 const SettingsPage = () => {
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation(["common", "settings"]);
   const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const pathname = usePathname();
@@ -25,7 +25,7 @@ const SettingsPage = () => {
       .from("t_user")
       .select("id, name, avatar_url, gender")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .maybeSingle(),
   );
 
   return (
@@ -41,7 +41,8 @@ const SettingsPage = () => {
                 bg="$mutedBackground"
               >
                 <Text fontSize="$2xl" fontWeight="$semibold">
-                  {user?.name.charAt(0).toUpperCase() ?? ""}
+                  {user?.name?.charAt(0).toUpperCase() ??
+                    t("common:not_configured").charAt(0)}
                 </Text>
               </Avatar.Fallback>
             </Avatar>
@@ -60,7 +61,7 @@ const SettingsPage = () => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {user?.name ?? ""}
+                  {user?.name ?? t("common:not_configured")}
                 </Text>
                 <Text
                   fontSize="$sm"
@@ -81,7 +82,7 @@ const SettingsPage = () => {
                 <Button.Icon>
                   <Icons.userRound size="$4" />
                 </Button.Icon>
-                <Button.Text>{t("profile.title")}</Button.Text>
+                <Button.Text>{t("settings:profile.title")}</Button.Text>
               </XStack>
               <Button.Icon>
                 <Icons.chevronRight size="$4" />
@@ -94,7 +95,7 @@ const SettingsPage = () => {
                 <Button.Icon>
                   <Icons.shirt size="$4" />
                 </Button.Icon>
-                <Button.Text>{t("style.title")}</Button.Text>
+                <Button.Text>{t("settings:style.title")}</Button.Text>
               </XStack>
               <Button.Icon>
                 <Icons.chevronRight size="$4" />
@@ -107,7 +108,7 @@ const SettingsPage = () => {
                 <Button.Icon>
                   <Icons.languages size="$4" />
                 </Button.Icon>
-                <Button.Text>{t("language.title")}</Button.Text>
+                <Button.Text>{t("settings:language.title")}</Button.Text>
               </XStack>
               <Button.Icon>
                 <Icons.chevronRight size="$4" />
@@ -120,7 +121,7 @@ const SettingsPage = () => {
                 <Button.Icon>
                   <Icons.palette size="$4" />
                 </Button.Icon>
-                <Button.Text>{t("theme.title")}</Button.Text>
+                <Button.Text>{t("settings:theme.title")}</Button.Text>
               </XStack>
               <Button.Icon>
                 <Icons.chevronRight size="$4" />
@@ -131,20 +132,20 @@ const SettingsPage = () => {
             variant="ghost"
             onPress={() => {
               Alert.alert(
-                t("signout.title"),
-                t("signout.description"),
+                t("settings:signout.title"),
+                t("settings:signout.description"),
                 [
                   {
-                    text: t("signout.cancel"),
+                    text: t("settings:signout.cancel"),
                     style: "cancel",
                   },
                   {
-                    text: t("signout.continue"),
+                    text: t("settings:signout.continue"),
                     onPress: async () => {
                       try {
                         await signOut();
                       } catch {
-                        toast.error(t("signout.error"));
+                        toast.error(t("settings:signout.error"));
                       }
                     },
                   },
@@ -158,7 +159,7 @@ const SettingsPage = () => {
               <Button.Icon>
                 <Icons.logout size="$4" />
               </Button.Icon>
-              <Button.Text>{t("signout.title")}</Button.Text>
+              <Button.Text>{t("settings:signout.title")}</Button.Text>
             </XStack>
             <Button.Icon>
               <Icons.chevronRight size="$4" />

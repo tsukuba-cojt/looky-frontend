@@ -1,15 +1,15 @@
-import { useReducer } from "react";
+import { useCallback, useReducer } from "react";
 
-type SheetAction<T> = { type: "OPEN"; payload: T } | { type: "CLOSE" };
+type SheetAction<T> = { type: "open"; payload: T } | { type: "close" };
 
 const reducer = (
   state: string | null,
   action: SheetAction<string>,
 ): string | null => {
   switch (action.type) {
-    case "OPEN":
+    case "open":
       return action.payload;
-    case "CLOSE":
+    case "close":
       return null;
     default:
       return state;
@@ -19,20 +19,26 @@ const reducer = (
 export const useSheet = () => {
   const [state, dispatch] = useReducer(reducer, null);
 
-  const open = (type: string) => dispatch({ type: "OPEN", payload: type });
-  const close = () => dispatch({ type: "CLOSE" });
+  const open = useCallback(
+    (type: string) => dispatch({ type: "open", payload: type }),
+    [],
+  );
+  const close = useCallback(() => dispatch({ type: "close" }), []);
 
-  const getSheetProps = (type: string) => {
-    const isOpen = state === type;
-    return {
-      open: isOpen,
-      onOpenChange: (open: boolean) => {
-        if (!open) {
-          close();
-        }
-      },
-    };
-  };
+  const getSheetProps = useCallback(
+    (type: string) => {
+      const isOpen = state === type;
+      return {
+        open: isOpen,
+        onOpenChange: (open: boolean) => {
+          if (!open) {
+            close();
+          }
+        },
+      };
+    },
+    [state, close],
+  );
 
   return { state, open, close, getSheetProps };
 };

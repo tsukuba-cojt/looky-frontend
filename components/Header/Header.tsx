@@ -1,4 +1,5 @@
 import { Link } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar, H1, Text, XStack } from "tamagui";
 import type { User } from "@/types";
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ title, user, isLoading }: HeaderProps) => {
+  const { t } = useTranslation("common");
   const insets = useSafeAreaInsets();
 
   return (
@@ -35,7 +37,10 @@ export const Header = ({ title, user, isLoading }: HeaderProps) => {
               justify="center"
               bg="$mutedBackground"
             >
-              <Text>{user?.name.charAt(0).toUpperCase() ?? ""}</Text>
+              <Text>
+                {user?.name?.charAt(0).toUpperCase() ??
+                  t("not_configured").charAt(0)}
+              </Text>
             </Avatar.Fallback>
           </Avatar>
         </Link>

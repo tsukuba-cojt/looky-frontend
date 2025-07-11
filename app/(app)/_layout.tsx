@@ -11,7 +11,7 @@ const AppLayout = () => {
       .from("t_user")
       .select("id")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .maybeSingle(),
   );
 
   if (isLoading) {
@@ -30,6 +30,7 @@ const AppLayout = () => {
       </Stack.Protected>
       <Stack.Screen name="camera" />
       <Stack.Screen name="crop" />
+      <Stack.Screen name="loading" />
     </Stack>
   );
 };

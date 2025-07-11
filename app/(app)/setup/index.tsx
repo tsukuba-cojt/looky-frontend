@@ -17,13 +17,14 @@ type FormData = z.infer<typeof nameSchema>;
 const NamePage = () => {
   const { t } = useTranslation("setup");
   const router = useRouter();
-  const { setValue } = useFormContext<FormData>();
+  const { getValues, setValue } = useFormContext<FormData>();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: standardSchemaResolver(nameSchema),
+    defaultValues: { name: getValues("name") },
   });
 
   const onSubmit = (data: FormData) => {
@@ -77,7 +78,7 @@ const NamePage = () => {
                       <View />
                     )}
                     <Text fontSize="$sm" color="$mutedColor">
-                      {value.length} / 24
+                      {value?.length ?? 0} / 24
                     </Text>
                   </XStack>
                 </YStack>

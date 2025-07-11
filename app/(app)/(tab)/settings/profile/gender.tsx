@@ -55,7 +55,7 @@ const GenderPage = () => {
       .from("t_user")
       .select("id, gender")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .maybeSingle(),
     {
       onSuccess: ({ data }) => {
         if (data?.gender) {
@@ -98,7 +98,7 @@ const GenderPage = () => {
                 <Text color="$destructiveBackground">*</Text>
               </XStack>
               <Select
-                value={value}
+                value={value ?? undefined}
                 onValueChange={onChange}
                 disablePreventBodyScroll
               >

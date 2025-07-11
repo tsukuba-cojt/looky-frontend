@@ -40,7 +40,7 @@ const HeightPage = () => {
       .from("t_user")
       .select("id, height")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .maybeSingle(),
     {
       onSuccess: ({ data }) => {
         if (data?.height) {

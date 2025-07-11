@@ -25,8 +25,11 @@ const app = new Hono();
  *   error: string
  * }
  */
-app.get("/generate", async (c) => {
+app.post("/generate", async (c) => {
   try {
+    const body = await c.req.json();
+    const clothes_category = body.clothes_category ?? "";
+
     const supabase = createClient<Database>(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_ANON_KEY") ?? "",
@@ -46,7 +49,7 @@ app.get("/generate", async (c) => {
     } = await supabase.auth.getUser(token);
 
     const response = await fetch(
-      `${Deno.env.get("FASTAPI_URL") ?? ""}/user/clothes/recommend`,
+      `${Deno.env.get("FASTAPI_URL") ?? ""}/recommend`,
       {
         method: "POST",
         headers: {
@@ -55,6 +58,7 @@ app.get("/generate", async (c) => {
         },
         body: JSON.stringify({
           user_id: user?.id ?? "",
+          clothes_category,
         }),
       },
     );
