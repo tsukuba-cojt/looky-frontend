@@ -5,4 +5,10 @@
       "source.fixAll": "always",
       "source.organizeImports.biome": "explicit"
     },
+    "[typescript]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
 }

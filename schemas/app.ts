@@ -2,29 +2,15 @@ import { z } from "zod/v4";
 import { genders } from "@/constants";
 
 export const setupSchema = z.object({
-  name: z
-    .string({
-      error: (issue) =>
-        issue.input === undefined ? "required_error" : "invalid_type_error",
-    })
-    .min(3, { message: "too_short_error" })
-    .max(128, { message: "too_long_error" })
-    .optional(),
-  gender: z.enum(genders, { error: "required_error" }).optional(),
+  name: z.string().optional(),
+  gender: z.enum(genders).optional(),
   avatar: z
-    .object(
-      {
-        id: z.uuid(),
-        uri: z.string(),
-      },
-      {
-        error: "required_error",
-      },
-    )
+    .object({
+      id: z.uuid(),
+      uri: z.string(),
+    })
     .optional(),
-  outfits: z
-    .array(z.object({ id: z.uuid(), uri: z.string() }))
-    .nonempty({ error: "required_error" }),
+  outfits: z.array(z.object({ id: z.uuid(), uri: z.string() })).nonempty(),
 });
 
 export const profileSchema = z.object({

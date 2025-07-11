@@ -1,13 +1,14 @@
 import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
-import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
 import { toast } from "sonner-native";
-import { Form, H1, Spinner, Text, View, YStack } from "tamagui";
+import { Form, H1, Spinner, Text, YStack } from "tamagui";
 import type z from "zod/v4";
 import { Button } from "@/components/Button";
+import { useUpload } from "@/hooks/useUpload";
 import { supabase } from "@/lib/client";
 import type { setupSchema } from "@/schemas/app";
 import { useSessionStore } from "@/stores/useSessionStore";
@@ -23,135 +24,71 @@ const WelcomePage = () => {
     formState: { isSubmitting },
   } = useFormContext<FormData>();
 
-  const { trigger } = useInsertMutation(supabase.from("t_user"), ["id"], "*", {
-    onSuccess: () => {
-      router.push("/loading");
+  const { trigger: upload } = useUpload();
+
+  const { trigger: createUser } = useInsertMutation(
+    supabase.from("t_user"),
+    ["id"],
+    "*",
+    {
+      onSuccess: () => {
+        router.replace("/loading");
+      },
+      onError: () => {
+        toast.error(t("welcome.error"));
+      },
+      revalidate: true,
     },
-    onError: () => {
-      toast.error(t("welcome.error"));
+  );
+
+  const { trigger: createTask } = useInsertMutation(
+    supabase.from("t_task"),
+    ["id"],
+    "*",
+    {
+      onError: () => {
+        toast.error(t("welcome.error"));
+      },
     },
-    revalidate: true,
-  });
+  );
 
   const onSubmit = async (data: FormData) => {
-    if (!session) {
-      return;
-    }
-
-    let avatarUrl: string | null = null;
     if (data.avatar) {
-      try {
-        const context = ImageManipulator.manipulate(data.avatar?.uri);
-        const image = await context.renderAsync();
-        const result = await image.saveAsync({
-          format: SaveFormat.JPEG,
-        });
-
-        const blob = await (await fetch(result.uri)).blob();
-
-        const objectKey = `${data.avatar?.id}.jpg`;
-
-        const {
-          data: { url },
-          error,
-        } = await supabase.functions.invoke("upload", {
-          method: "POST",
-          body: {
-            bucket_name: "looky-avatar-images",
-            object_key: objectKey,
-            content_type: blob.type,
-          },
-        });
-
-        if (error) {
-          throw error;
-        }
-
-        const response = await fetch(url, {
-          method: "PUT",
-          body: blob,
-          headers: {
-            "Content-Type": blob.type,
-          },
-        });
-
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text);
-        }
-
-        avatarUrl = objectKey;
-      } catch (error) {
-        console.error(error);
-        toast.error(t("welcome.error"));
-        return;
-      }
+      const blob = await (await fetch(data.avatar.uri)).blob();
+      await upload({
+        blob,
+        bucketName: "looky-avatar-images",
+        objectKey: `${data.avatar.id}.jpg`,
+      });
     }
 
-    let bodyUrls: string[];
+    await Promise.all(
+      data.outfits.map(async (outfit) => {
+        const blob = await (await fetch(outfit.uri)).blob();
+        await upload({
+          blob,
+          bucketName: "looky-body-images",
+          objectKey: `${outfit.id}.jpg`,
+        });
+      }),
+    );
 
-    try {
-      const objectKeys = await Promise.all(
-        data.outfits.map(async ({ id, uri }) => {
-          const context = ImageManipulator.manipulate(uri);
-          const image = await context.renderAsync();
-          const result = await image.saveAsync({
-            format: SaveFormat.JPEG,
-          });
-
-          const blob = await (await fetch(result.uri)).blob();
-
-          const objectKey = `${id}.jpg`;
-
-          const {
-            data: { url },
-            error,
-          } = await supabase.functions.invoke("upload", {
-            method: "POST",
-            body: {
-              bucket_name: "looky-body-images",
-              object_key: objectKey,
-              content_type: blob.type,
-            },
-          });
-
-          if (error) {
-            throw error;
-          }
-
-          const response = await fetch(url, {
-            method: "PUT",
-            body: blob,
-            headers: {
-              "Content-Type": blob.type,
-            },
-          });
-
-          if (!response.ok) {
-            const text = await response.text();
-            throw new Error(text);
-          }
-
-          return objectKey;
-        }),
-      );
-
-      bodyUrls = objectKeys;
-    } catch (error) {
-      console.error(error);
-      toast.error(t("welcome.error"));
-      return;
-    }
-
-    await trigger([
+    await createUser([
       {
-        id: session.user.id,
+        id: session?.user.id ?? "",
         name: data.name,
         gender: data.gender,
-        avatar_url: avatarUrl,
-        body_url: bodyUrls[0],
+        avatar_url: data.avatar ? `${data.avatar.id}.jpg` : null,
+        body_url: `${data.outfits[0].uri}.jpg`,
       },
     ]);
+
+    await createTask(
+      Array.from({ length: 3 }, () => ({
+        user_id: session?.user.id ?? "",
+        status: "pending",
+      })),
+    );
   };
 
   return (
@@ -165,12 +102,10 @@ const WelcomePage = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <YStack items="center" gap="$12">
-          <View
-            w={300}
-            h={300}
-            bg="$primaryBackground"
-            rounded="$full"
-            overflow="hidden"
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={require("../../../assets/images/welcome.png")}
+            transition={200}
           />
           <YStack gap="$6">
             <H1

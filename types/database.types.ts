@@ -45,27 +45,62 @@ export type Database = {
       };
       t_clothes: {
         Row: {
-          category: string | null;
+          category: Database["public"]["Enums"]["part"] | null;
           created_at: string;
           gender: Database["public"]["Enums"]["gender"] | null;
           id: number;
+          invalid: boolean | null;
           object_key: string | null;
         };
         Insert: {
-          category?: string | null;
+          category?: Database["public"]["Enums"]["part"] | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
+          invalid?: boolean | null;
           object_key?: string | null;
         };
         Update: {
-          category?: string | null;
+          category?: Database["public"]["Enums"]["part"] | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
+          invalid?: boolean | null;
           object_key?: string | null;
         };
         Relationships: [];
+      };
+      t_task: {
+        Row: {
+          created_at: string;
+          id: number;
+          status: Database["public"]["Enums"]["status"] | null;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          status?: Database["public"]["Enums"]["status"] | null;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          status?: Database["public"]["Enums"]["status"] | null;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "t_task_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "t_user";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       t_user: {
         Row: {
@@ -175,6 +210,8 @@ export type Database = {
     Enums: {
       feedback: "love" | "like" | "hate" | "nope";
       gender: "man" | "woman" | "unisex";
+      part: "Upper-body" | "Lower-body" | "Dressed";
+      status: "success" | "error" | "pending";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -307,6 +344,8 @@ export const Constants = {
     Enums: {
       feedback: ["love", "like", "hate", "nope"],
       gender: ["man", "woman", "unisex"],
+      part: ["Upper-body", "Lower-body", "Dressed"],
+      status: ["success", "error", "pending"],
     },
   },
 } as const;

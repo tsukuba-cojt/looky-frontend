@@ -1,5 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import * as Crypto from "expo-crypto";
+import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import {
   Link,
   useLocalSearchParams,
@@ -12,13 +13,22 @@ import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Form, H1, Text, View, YStack } from "tamagui";
-import type { z } from "zod/v4";
+import { z } from "zod/v4";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { ImagePickerSheet } from "@/components/ImagePickerSheet";
-import { setupSchema } from "@/schemas/app";
 
-const avatarSchema = setupSchema.pick({ avatar: true });
+const avatarSchema = z.object({
+  avatar: z.object(
+    {
+      id: z.uuid(),
+      uri: z.string(),
+    },
+    {
+      error: "required_error",
+    },
+  ),
+});
 type FormData = z.infer<typeof avatarSchema>;
 
 const AvatarPage = () => {
@@ -40,7 +50,12 @@ const AvatarPage = () => {
 
   const onSubmit = async (data: FormData) => {
     router.push("/setup/outfit");
-    setValue("avatar", data.avatar);
+    const context = ImageManipulator.manipulate(data.avatar?.uri ?? "");
+    const image = await context.renderAsync();
+    const result = await image.saveAsync({
+      format: SaveFormat.JPEG,
+    });
+    setValue("avatar", { id: data.avatar.id, uri: result.uri });
   };
 
   return (

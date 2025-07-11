@@ -1,21 +1,44 @@
+import { useSubscription } from "@supabase-cache-helpers/postgrest-swr";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { H1, Text, View, XStack, YStack } from "tamagui";
-import { wait } from "@/lib/utilts";
+import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const LoadingPage = () => {
   const { t } = useTranslation("loading");
+  const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const animation = useRef<LottieView>(null);
 
-  useEffect(() => {
-    (async () => {
-      await wait(10);
-      router.push("/");
-    })();
-  }, [router]);
+  useSubscription(
+    supabase,
+    "task",
+    {
+      event: "*",
+      table: "t_task",
+      schema: "public",
+      filter: `user_id=eq.${session?.user.id}`,
+    },
+    ["id"],
+    {
+      callback: async (payload) => {
+        if (payload.eventType === "UPDATE") {
+          const { count } = await supabase
+            .from("t_task")
+            .select("id", { count: "exact", head: true })
+            .eq("user_id", session?.user.id ?? "")
+            .eq("status", "pending");
+
+          if (count === 0) {
+            router.replace("/");
+          }
+        }
+      },
+    },
+  );
 
   return (
     <YStack

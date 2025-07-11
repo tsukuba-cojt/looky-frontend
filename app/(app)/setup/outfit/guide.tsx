@@ -14,7 +14,7 @@ import { Button } from "@/components/Button";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
-const animatedImages = [
+const icons = [
   require("../../../../assets/images/guide3.png"),
   require("../../../../assets/images/guide4.png"),
   require("../../../../assets/images/guide5.png"),
@@ -48,7 +48,7 @@ const GuidePage = () => {
         key: "3",
         title: t("outfit.guide.tab3.title"),
         description: t("outfit.guide.tab3.description"),
-        icon: animatedImages[0],
+        icon: icons[0],
       },
     ],
     [t],
@@ -64,26 +64,20 @@ const GuidePage = () => {
   });
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [animImageIndex, setAnimImageIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    let intervalId: number | undefined;
-
-    if (currentIndex === 2) {
-      intervalId = setInterval(() => {
-        setAnimImageIndex(
-          (prevIndex) => (prevIndex + 1) % animatedImages.length,
-        );
-      }, 1500);
-    }
+    const intervalId = setInterval(() => {
+      setProgress((prev) => (prev + 1) % icons.length);
+    }, 2000);
 
     return () => {
       if (intervalId) {
         clearInterval(intervalId);
       }
-      setAnimImageIndex(0);
+      setProgress(0);
     };
-  }, [currentIndex]);
+  }, []);
 
   const onPageScroll = useMemo(
     () =>
@@ -141,9 +135,6 @@ const GuidePage = () => {
         }}
       >
         {data.map(({ key, title, description, icon }, index) => {
-          const imageSource =
-            index === 2 ? animatedImages[animImageIndex] : icon;
-
           return (
             <YStack key={key} flex={1} items="center" pt={48} gap="$12">
               <YStack gap="$6">
@@ -152,7 +143,7 @@ const GuidePage = () => {
                 </H1>
                 <Image
                   style={{ width: 300, height: 300 }}
-                  source={imageSource}
+                  source={index === 2 ? icons[progress] : icon}
                   transition={200}
                 />
               </YStack>

@@ -28,7 +28,7 @@ const app = new Hono();
 app.post("/generate", async (c) => {
   try {
     const body = await c.req.json();
-    const clothes_category = body.clothes_category ?? "";
+    const part = body.part ?? "";
 
     const supabase = createClient<Database>(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -48,6 +48,15 @@ app.post("/generate", async (c) => {
       data: { user },
     } = await supabase.auth.getUser(token);
 
+    const { data: task, error } = await supabase
+      .from("t_task")
+      .insert({ status: "pending", user_id: user?.id ?? "" }).select("id")
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
     const response = await fetch(
       `${Deno.env.get("FASTAPI_URL") ?? ""}/recommend`,
       {
@@ -57,8 +66,9 @@ app.post("/generate", async (c) => {
           "X-Internal-Secret": Deno.env.get("FASTAPI_SECRET_KEY") ?? "",
         },
         body: JSON.stringify({
+          task_id: task?.id ?? "",
           user_id: user?.id ?? "",
-          clothes_category,
+          clothes_category: part,
         }),
       },
     );
