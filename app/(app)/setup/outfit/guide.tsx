@@ -1,7 +1,7 @@
 import { useCameraPermissions } from "expo-camera";
 import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, SafeAreaView, useWindowDimensions } from "react-native";
 import { SlidingDot } from "react-native-animated-pagination-dots";
@@ -13,6 +13,12 @@ import { H1, Text, useTheme, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
+
+const animatedImages = [
+  require("../../../../assets/images/guide3.png"),
+  require("../../../../assets/images/guide4.png"),
+  require("../../../../assets/images/guide5.png"),
+];
 
 const GuidePage = () => {
   const { t } = useTranslation("setup");
@@ -42,7 +48,7 @@ const GuidePage = () => {
         key: "3",
         title: t("outfit.guide.tab3.title"),
         description: t("outfit.guide.tab3.description"),
-        icon: require("../../../../assets/images/guide3.png"),
+        icon: animatedImages[0],
       },
     ],
     [t],
@@ -57,6 +63,27 @@ const GuidePage = () => {
     outputRange: [0, data.length * width],
   });
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [animImageIndex, setAnimImageIndex] = useState(0);
+
+  useEffect(() => {
+    let intervalId: number | undefined;
+
+    if (currentIndex === 2) {
+      intervalId = setInterval(() => {
+        setAnimImageIndex(
+          (prevIndex) => (prevIndex + 1) % animatedImages.length,
+        );
+      }, 1500);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+      setAnimImageIndex(0);
+    };
+  }, [currentIndex]);
 
   const onPageScroll = useMemo(
     () =>
@@ -113,7 +140,10 @@ const GuidePage = () => {
           setCurrentIndex(e.nativeEvent.position);
         }}
       >
-        {data.map(({ key, title, description, icon }) => {
+        {data.map(({ key, title, description, icon }, index) => {
+          const imageSource =
+            index === 2 ? animatedImages[animImageIndex] : icon;
+
           return (
             <YStack key={key} flex={1} items="center" pt={48} gap="$12">
               <YStack gap="$6">
@@ -122,7 +152,7 @@ const GuidePage = () => {
                 </H1>
                 <Image
                   style={{ width: 300, height: 300 }}
-                  source={icon}
+                  source={imageSource}
                   transition={200}
                 />
               </YStack>
