@@ -39,13 +39,8 @@ const TopPage = memo(() => {
         <Button onPress={() => router.navigate("/signup")}>
           <Button.Text color="$primaryBackground">{t("signup")}</Button.Text>
         </Button>
-        <Button group variant="link" onPress={() => router.navigate("/login")}>
-          <Button.Text
-            color="white"
-            $group-press={{ textDecorationLine: "underline" }}
-          >
-            {t("login")}
-          </Button.Text>
+        <Button variant="link" onPress={() => router.navigate("/login")}>
+          <Button.Text color="white">{t("login")}</Button.Text>
         </Button>
       </YStack>
     </YStack>
