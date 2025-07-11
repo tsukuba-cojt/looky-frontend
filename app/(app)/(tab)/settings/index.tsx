@@ -144,6 +144,7 @@ const SettingsPage = () => {
                     onPress: async () => {
                       try {
                         await signOut();
+                        toast.success(t("settings:signout.success"))
                       } catch {
                         toast.error(t("settings:signout.error"));
                       }

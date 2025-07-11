@@ -95,9 +95,7 @@ const RootLayout = () => {
           <GestureHandlerRootView style={{ flex: 1 }}>
             <PortalProvider shouldAddRootHost>
               <KeyboardProvider>
-                <StatusBar
-                  style={theme === "system" ? (colorSchema ?? "light") : theme}
-                />
+                <StatusBar style="inverted" />
                 <RootNavigator />
                 <Toaster />
               </KeyboardProvider>

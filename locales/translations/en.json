@@ -20,6 +20,7 @@
     "category": {
       "tops": "Tops",
       "bottoms": "Bottoms",
+      "outwear": "Outwear",
       "dresses": "Dresses"
     },
     "subcategory": {
@@ -109,7 +110,7 @@
     "description": "Enter your verification code.",
     "do_not_receive_code": "Did not receive the verification code?",
     "resend": "Resend",
-    "success": "Verification email resent.",
+    "success": "Verification email resent. Please check your inbox.",
     "error": "Something went wrong. Please try again."
   },
   "onboarding": {
@@ -162,7 +163,6 @@
       "intro": {
         "title": "Upload your Full-Body Photo",
         "description": "This full-body photo of you to try on clothes.",
-        "required_error": "Full-Body is required.",
         "note": "You can change the photo later.",
         "get_started": "Get Started"
       },
@@ -188,9 +188,9 @@
       "gallery": {
         "title": "Add your outfits",
         "description": "It's useful to register a few outfits. You can change it later.",
+        "required_error": "Full-Body is required.",
         "next": "Next",
-        "note": "Register at least one outfit.",
-        "error": "Something went wrong. Please try again."
+        "note": "Register at least one outfit."
       }
     },
     "welcome": {
@@ -212,16 +212,21 @@
     "done": "Done",
     "cancel": "Cancel"
   },
+  "loading": {
+    "title": "Generating",
+    "description": "We are finding the perfect outfit for you.\nPlease wait a moment.",
+    "error": "Something went wrong. Please try again."
+  },
   "try_on": {
     "title": "Try On"
   },
   "discover": {
     "title": "Discover",
     "placeholder": "Search...",
-    "genders": "Gender",
-    "categories": "Category",
-    "subcategories": "Subcategory",
-    "colors": "Color",
+    "gender": "Gender",
+    "category": "Category",
+    "subcategory": "Subcategory",
+    "color": "Color",
     "history": "History",
     "filter": "Filter",
     "not_selected": "Not selected",
@@ -266,6 +271,7 @@
         "invalid_email_error": "Invalid email address.",
         "submit": "Change",
         "cancel": "Cancel",
+        "success": "Verification email sent. Please check your inbox.",
         "error": "Something went wrong. Please try again."
       },
       "gender": {
@@ -306,16 +312,17 @@
     "language": {
       "title": "Language",
       "en": "English",
-      "ja": "Japanese"
+      "ja": "日本語",
+      "system": "System"
     },
     "signout": {
       "title": "Sign Out",
       "description": "Are you sure you want to sign out?",
       "cancel": "Cancel",
-      "continue": "Continue"
-    },
-    "success": "You have successfully signed out.",
-    "error": "Something went wrong. Please try again."
+      "continue": "Continue",
+      "success": "You have successfully signed out.",
+      "error": "Something went wrong. Please try again."
+    }
   },
   "details": {
     "try_on": "Try On"
