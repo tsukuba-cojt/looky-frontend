@@ -1,6 +1,7 @@
 import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
+import { memo, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
@@ -15,7 +16,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 
 type FormData = z.infer<typeof setupSchema>;
 
-const WelcomePage = () => {
+const WelcomePage = memo(() => {
   const { t } = useTranslation("setup");
   const router = useRouter();
   const session = useSessionStore((state) => state.session);
@@ -52,44 +53,47 @@ const WelcomePage = () => {
     },
   );
 
-  const onSubmit = async (data: FormData) => {
-    if (data.avatar) {
-      const blob = await (await fetch(data.avatar.uri)).blob();
-      await upload({
-        blob,
-        bucketName: "looky-avatar-images",
-        objectKey: `${data.avatar.id}.jpg`,
-      });
-    }
-
-    await Promise.all(
-      data.outfits.map(async (outfit) => {
-        const blob = await (await fetch(outfit.uri)).blob();
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      if (data.avatar) {
+        const blob = await (await fetch(data.avatar.uri)).blob();
         await upload({
           blob,
-          bucketName: "looky-body-images",
-          objectKey: `${outfit.id}.jpg`,
+          bucketName: "looky-avatar-images",
+          objectKey: `${data.avatar.id}.jpg`,
         });
-      }),
-    );
+      }
 
-    await createUser([
-      {
-        id: session?.user.id ?? "",
-        name: data.name,
-        gender: data.gender,
-        avatar_url: data.avatar ? `${data.avatar.id}.jpg` : null,
-        body_url: `${data.outfits[0].uri}.jpg`,
-      },
-    ]);
+      await Promise.all(
+        data.outfits.map(async (outfit) => {
+          const blob = await (await fetch(outfit.uri)).blob();
+          await upload({
+            blob,
+            bucketName: "looky-body-images",
+            objectKey: `${outfit.id}.jpg`,
+          });
+        }),
+      );
 
-    await createTask(
-      Array.from({ length: 3 }, () => ({
-        user_id: session?.user.id ?? "",
-        status: "pending",
-      })),
-    );
-  };
+      await createUser([
+        {
+          id: session?.user.id ?? "",
+          name: data.name,
+          gender: data.gender,
+          avatar_url: data.avatar ? `${data.avatar.id}.jpg` : null,
+          body_url: `${data.outfits[0].uri}.jpg`,
+        },
+      ]);
+
+      await createTask(
+        Array.from({ length: 3 }, () => ({
+          user_id: session?.user.id ?? "",
+          status: "pending",
+        })),
+      );
+    },
+    [createTask, createUser, session, upload],
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -140,6 +144,6 @@ const WelcomePage = () => {
       </Form>
     </SafeAreaView>
   );
-};
+});
 
 export default WelcomePage;

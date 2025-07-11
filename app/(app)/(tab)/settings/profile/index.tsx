@@ -5,7 +5,7 @@ import {
   usePathname,
   useRouter,
 } from "expo-router";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { Avatar, getFontSize, Text, XStack, YStack } from "tamagui";
@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/Skeleton";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
-const ProfilePage = () => {
+const ProfilePage = memo(() => {
   const { t } = useTranslation(["common", "settings"]);
   const session = useSessionStore((state) => state.session);
   const router = useRouter();
@@ -144,6 +144,6 @@ const ProfilePage = () => {
       />
     </>
   );
-};
+});
 
 export default ProfilePage;

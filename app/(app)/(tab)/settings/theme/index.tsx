@@ -1,4 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Label, View, XStack } from "tamagui";
 import { RadioGroup } from "@/components/RadioGroup";
@@ -6,7 +7,7 @@ import { themes } from "@/constants";
 import { useThemeStore } from "@/stores/useThemeStore";
 import type { Theme } from "@/types";
 
-const ThemePage = () => {
+const ThemePage = memo(() => {
   const { t } = useTranslation("settings");
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
@@ -35,6 +36,6 @@ const ThemePage = () => {
       </RadioGroup>
     </View>
   );
-};
+});
 
 export default ThemePage;

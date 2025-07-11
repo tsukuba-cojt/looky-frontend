@@ -2,6 +2,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { Image } from "expo-image";
 import {
   createRef,
+  memo,
   type RefObject,
   useCallback,
   useEffect,
@@ -52,7 +53,7 @@ const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
   );
 };
 
-const TryOnPage = () => {
+const TryOnPage = memo(() => {
   const ref = useRef<SwipableCardRef>(null);
   const onEndReachedThreadhold = 0.4;
   const activeIndex = useSharedValue(0);
@@ -235,6 +236,6 @@ const TryOnPage = () => {
       </View>
     </Portal>
   );
-};
+});
 
 export default TryOnPage;

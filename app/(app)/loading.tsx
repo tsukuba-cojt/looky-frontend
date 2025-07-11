@@ -1,13 +1,13 @@
 import { useSubscription } from "@supabase-cache-helpers/postgrest-swr";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { H1, Text, View, XStack, YStack } from "tamagui";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
-const LoadingPage = () => {
+const LoadingPage = memo(() => {
   const { t } = useTranslation("loading");
   const session = useSessionStore((state) => state.session);
   const router = useRouter();
@@ -99,6 +99,6 @@ const LoadingPage = () => {
       </YStack>
     </YStack>
   );
-};
+});
 
 export default LoadingPage;

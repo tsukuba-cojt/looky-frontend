@@ -4,6 +4,7 @@ import {
   useUpdateMutation,
 } from "@supabase-cache-helpers/postgrest-swr";
 import { useRouter } from "expo-router";
+import { memo, useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
@@ -21,7 +22,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 const nameSchema = profileSchema.pick({ name: true });
 type FormData = z.infer<typeof nameSchema>;
 
-const NamePage = () => {
+const NamePage = memo(() => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const session = useSessionStore((state) => state.session);
@@ -60,13 +61,16 @@ const NamePage = () => {
     revalidate: true,
   });
 
-  const onSubmit = async (data: FormData) => {
-    if (!session) {
-      return;
-    }
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      if (!session) {
+        return;
+      }
 
-    await trigger({ id: session.user.id, name: data.name });
-  };
+      await trigger({ id: session.user.id, name: data.name });
+    },
+    [session, trigger],
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -130,6 +134,6 @@ const NamePage = () => {
       </View>
     </TouchableWithoutFeedback>
   );
-};
+});
 
 export default NamePage;

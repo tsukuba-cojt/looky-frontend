@@ -8,6 +8,7 @@ import type {
   TabNavigationState,
 } from "@react-navigation/native";
 import { withLayoutContext } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowDimensions } from "react-native";
 import { Text } from "tamagui";
@@ -21,7 +22,7 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 
-const CollectionsLayout = () => {
+const CollectionsLayout = memo(() => {
   const { t } = useTranslation("collections");
   const { width } = useWindowDimensions();
 
@@ -66,6 +67,6 @@ const CollectionsLayout = () => {
       />
     </MaterialTopTabs>
   );
-};
+});
 
 export default CollectionsLayout;

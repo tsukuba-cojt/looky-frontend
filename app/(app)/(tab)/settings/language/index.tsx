@@ -1,4 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Label, View, XStack } from "tamagui";
 import { RadioGroup } from "@/components/RadioGroup";
@@ -6,7 +7,7 @@ import { languages } from "@/constants";
 import { useLanguageStore } from "@/stores/useLanguageStore";
 import type { Language } from "@/types";
 
-const LanguagePage = () => {
+const LanguagePage = memo(() => {
   const { t } = useTranslation("settings");
   const language = useLanguageStore((state) => state.language);
   const setLanguage = useLanguageStore((state) => state.setLanguage);
@@ -35,6 +36,6 @@ const LanguagePage = () => {
       </RadioGroup>
     </View>
   );
-};
+});
 
 export default LanguagePage;

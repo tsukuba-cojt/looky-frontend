@@ -4,6 +4,7 @@ import {
   useUpdateMutation,
 } from "@supabase-cache-helpers/postgrest-swr";
 import { useRouter } from "expo-router";
+import { memo, useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
@@ -21,7 +22,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 const heightSchema = profileSchema.pick({ height: true });
 type FormData = z.infer<typeof heightSchema>;
 
-const HeightPage = () => {
+const HeightPage = memo(() => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const session = useSessionStore((state) => state.session);
@@ -60,13 +61,16 @@ const HeightPage = () => {
     revalidate: true,
   });
 
-  const onSubmit = async (data: FormData) => {
-    if (!session) {
-      return;
-    }
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      if (!session) {
+        return;
+      }
 
-    await trigger({ id: session.user.id, height: data.height });
-  };
+      await trigger({ id: session.user.id, height: data.height });
+    },
+    [session, trigger],
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -136,6 +140,6 @@ const HeightPage = () => {
       </View>
     </TouchableWithoutFeedback>
   );
-};
+});
 
 export default HeightPage;

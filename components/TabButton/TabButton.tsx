@@ -1,5 +1,5 @@
 import type { TabTriggerSlotProps } from "expo-router/ui";
-import { forwardRef, type PropsWithChildren } from "react";
+import { forwardRef, memo, type PropsWithChildren } from "react";
 import { Pressable, type View } from "react-native";
 import { Text, YStack } from "tamagui";
 import { Icons } from "../Icons";
@@ -9,8 +9,8 @@ interface TabButtonProps extends PropsWithChildren, TabTriggerSlotProps {
   icon: keyof typeof Icons;
 }
 
-export const TabButton = forwardRef<View, TabButtonProps>(
-  ({ label, icon, ...props }, ref) => {
+export const TabButton = memo(
+  forwardRef<View, TabButtonProps>(({ label, icon, ...props }, ref) => {
     const Icon = Icons[icon];
 
     return (
@@ -31,5 +31,5 @@ export const TabButton = forwardRef<View, TabButtonProps>(
         </YStack>
       </Pressable>
     );
-  },
+  }),
 );

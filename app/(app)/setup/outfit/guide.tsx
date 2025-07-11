@@ -1,7 +1,7 @@
 import { useCameraPermissions } from "expo-camera";
 import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, SafeAreaView, useWindowDimensions } from "react-native";
 import { SlidingDot } from "react-native-animated-pagination-dots";
@@ -20,7 +20,7 @@ const icons = [
   require("../../../../assets/images/guide5.png"),
 ];
 
-const GuidePage = () => {
+const GuidePage = memo(() => {
   const { t } = useTranslation("setup");
   const router = useRouter();
   const { width } = useWindowDimensions();
@@ -54,7 +54,7 @@ const GuidePage = () => {
     [t],
   );
 
-  const inputRange = [0, data.length];
+  const inputRange = useMemo(() => [0, data.length], [data]);
   const scrollX = Animated.add(
     scrollOffsetAnimatedValue,
     positionAnimatedValue,
@@ -95,7 +95,7 @@ const GuidePage = () => {
     [scrollOffsetAnimatedValue, positionAnimatedValue],
   );
 
-  const onNextPage = async () => {
+  const onNextPage = useCallback(async () => {
     if (currentIndex + 1 < data.length) {
       ref.current?.setPage(currentIndex + 1);
     } else {
@@ -121,7 +121,15 @@ const GuidePage = () => {
         }
       }
     }
-  };
+  }, [
+    currentIndex,
+    data,
+    permission,
+    requestPermission,
+    router.push,
+    router,
+    t,
+  ]);
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
@@ -201,6 +209,6 @@ const GuidePage = () => {
       </YStack>
     </SafeAreaView>
   );
-};
+});
 
 export default GuidePage;

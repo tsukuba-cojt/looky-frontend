@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
+import { memo } from "react";
 
-const SettingsLayout = () => {
+const SettingsLayout = memo(() => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
@@ -9,6 +10,6 @@ const SettingsLayout = () => {
       <Stack.Screen name="theme" options={{ presentation: "modal" }} />
     </Stack>
   );
-};
+});
 
 export default SettingsLayout;

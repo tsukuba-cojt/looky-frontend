@@ -1,10 +1,11 @@
 import { Link, Stack, usePathname, useRouter } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 
-const FilterLayout = () => {
+const FilterLayout = memo(() => {
   const { t } = useTranslation("discover");
   const router = useRouter();
   const pathname = usePathname();
@@ -35,7 +36,7 @@ const FilterLayout = () => {
           </Text>
         ),
         headerRight: (props) => (
-          <Link replace href="/dicover" asChild>
+          <Link replace href="/discover" asChild>
             <Button
               {...props}
               variant="ghost"
@@ -84,6 +85,6 @@ const FilterLayout = () => {
       />
     </Stack>
   );
-};
+});
 
 export default FilterLayout;

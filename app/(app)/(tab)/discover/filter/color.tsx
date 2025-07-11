@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useRouter } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { Text, View, YStack } from "tamagui";
@@ -8,7 +9,7 @@ import { colors } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 import type { Color } from "@/types";
 
-const ColorPage = () => {
+const ColorPage = memo(() => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const query = useSearchQueryStore((state) => state.query);
@@ -55,5 +56,6 @@ const ColorPage = () => {
       />
     </View>
   );
-};
+});
+
 export default ColorPage;

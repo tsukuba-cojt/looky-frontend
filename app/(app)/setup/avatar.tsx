@@ -7,7 +7,7 @@ import {
   usePathname,
   useRouter,
 } from "expo-router";
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
@@ -31,7 +31,7 @@ const avatarSchema = z.object({
 });
 type FormData = z.infer<typeof avatarSchema>;
 
-const AvatarPage = () => {
+const AvatarPage = memo(() => {
   const { t } = useTranslation("setup");
   const router = useRouter();
   const pathname = usePathname();
@@ -48,15 +48,18 @@ const AvatarPage = () => {
     },
   });
 
-  const onSubmit = async (data: FormData) => {
-    router.push("/setup/outfit");
-    const context = ImageManipulator.manipulate(data.avatar?.uri ?? "");
-    const image = await context.renderAsync();
-    const result = await image.saveAsync({
-      format: SaveFormat.JPEG,
-    });
-    setValue("avatar", { id: data.avatar.id, uri: result.uri });
-  };
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      const context = ImageManipulator.manipulate(data.avatar?.uri ?? "");
+      const image = await context.renderAsync();
+      const result = await image.saveAsync({
+        format: SaveFormat.JPEG,
+      });
+      setValue("avatar", { id: data.avatar.id, uri: result.uri });
+      router.push("/setup/outfit");
+    },
+    [router, setValue],
+  );
 
   return (
     <>
@@ -150,6 +153,6 @@ const AvatarPage = () => {
       />
     </>
   );
-};
+});
 
 export default AvatarPage;

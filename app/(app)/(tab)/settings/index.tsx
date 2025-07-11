@@ -1,6 +1,6 @@
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Link, usePathname, useRouter } from "expo-router";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, TouchableOpacity } from "react-native";
 import { toast } from "sonner-native";
@@ -13,7 +13,7 @@ import { signOut } from "@/lib/auth";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
-const SettingsPage = () => {
+const SettingsPage = memo(() => {
   const { t } = useTranslation(["common", "settings"]);
   const session = useSessionStore((state) => state.session);
   const router = useRouter();
@@ -184,6 +184,6 @@ const SettingsPage = () => {
       />
     </>
   );
-};
+});
 
 export default SettingsPage;

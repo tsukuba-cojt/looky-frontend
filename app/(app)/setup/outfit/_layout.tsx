@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
+import { memo } from "react";
 
-const OutfitLayout = () => {
+const OutfitLayout = memo(() => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
@@ -8,6 +9,6 @@ const OutfitLayout = () => {
       <Stack.Screen name="gallery" />
     </Stack>
   );
-};
+});
 
 export default OutfitLayout;

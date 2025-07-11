@@ -1,11 +1,12 @@
 import { Image } from "expo-image";
 import { Link } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
 import { H1, Text, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
-const IntroPage = () => {
+const IntroPage = memo(() => {
   const { t } = useTranslation("setup");
 
   return (
@@ -44,6 +45,6 @@ const IntroPage = () => {
       </YStack>
     </SafeAreaView>
   );
-};
+});
 
 export default IntroPage;

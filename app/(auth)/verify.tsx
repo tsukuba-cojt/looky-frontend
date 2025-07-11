@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { toast } from "sonner-native";
@@ -8,22 +9,25 @@ import { Icons } from "@/components/Icons";
 import { OtpInput } from "@/components/OtpInput";
 import { resend, verifyOtp } from "@/lib/auth";
 
-const VerifyPage = () => {
+const VerifyPage = memo(() => {
   const { t } = useTranslation("verify");
   const router = useRouter();
   const { email } = useLocalSearchParams<{ email: string }>();
 
-  const onEnter = (code: number) => {
-    try {
-      verifyOtp(email, code.toString());
+  const onEnter = useCallback(
+    async (code: number) => {
+      try {
+        await verifyOtp(email, code.toString());
 
-      router.replace("/");
-    } catch {
-      toast.error(t("error"));
-    }
-  };
+        router.replace("/");
+      } catch {
+        toast.error(t("error"));
+      }
+    },
+    [email, router, t],
+  );
 
-  const onResend = async () => {
+  const onResend = useCallback(async () => {
     try {
       await resend(email);
 
@@ -31,7 +35,7 @@ const VerifyPage = () => {
     } catch {
       toast.error(t("error"));
     }
-  };
+  }, [email, t]);
 
   return (
     <YStack flex={1} items="center" justify="center" gap="$6">
@@ -69,6 +73,6 @@ const VerifyPage = () => {
       </XStack>
     </YStack>
   );
-};
+});
 
 export default VerifyPage;

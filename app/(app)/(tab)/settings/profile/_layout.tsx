@@ -1,10 +1,11 @@
 import { Link, Stack, usePathname, useRouter } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { PortalProvider, Text } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 
-const ProfileLayout = () => {
+const ProfileLayout = memo(() => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const pathname = usePathname();
@@ -86,6 +87,6 @@ const ProfileLayout = () => {
       </Stack>
     </PortalProvider>
   );
-};
+});
 
 export default ProfileLayout;

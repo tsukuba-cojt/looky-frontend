@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { YStack } from "tamagui";
 import { Button } from "@/components/Button";
@@ -8,7 +9,7 @@ import { subcategories } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 import type { Category } from "@/types";
 
-const SubcategoryPage = () => {
+const SubcategoryPage = memo(() => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const { category } = useLocalSearchParams<{ category: Category }>();
@@ -44,6 +45,6 @@ const SubcategoryPage = () => {
       />
     </YStack>
   );
-};
+});
 
 export default SubcategoryPage;

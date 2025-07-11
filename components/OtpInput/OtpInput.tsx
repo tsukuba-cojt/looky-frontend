@@ -1,5 +1,5 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Form, XStack } from "tamagui";
 import { Input } from "@/components/Input";
@@ -13,9 +13,9 @@ interface OtpInputProps {
   onEnter: (code: number) => void;
 }
 
-export const OtpInput = ({ onEnter }: OtpInputProps) => {
-  const length = 6;
+const length = 6;
 
+export const OtpInput = ({ onEnter }: OtpInputProps) => {
   const [translateX, setTranslateX] = useState(0);
 
   const {
@@ -33,18 +33,24 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
     ),
   });
 
-  const onFocusChange = (id: number, value: string) => {
-    if (value === "") {
-      setFocus((id - 1).toString());
-    } else {
-      setFocus((id + 1).toString());
-    }
-  };
+  const onFocusChange = useCallback(
+    (id: number, value: string) => {
+      if (value === "") {
+        setFocus((id - 1).toString());
+      } else {
+        setFocus((id + 1).toString());
+      }
+    },
+    [setFocus],
+  );
 
-  const onSubmit = handleSubmit((data) => {
-    const code = Number(Object.values(data).join(""));
-    onEnter(code);
-  });
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      const code = Number(Object.values(data).join(""));
+      onEnter(code);
+    },
+    [onEnter],
+  );
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
@@ -62,7 +68,7 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
   }, [reset, errors]);
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <XStack gap="$2.5" x={translateX} animation="quick">
         {Array(length)
           .fill(null)
@@ -100,13 +106,13 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
 
                         setFocus((length - 1).toString());
 
-                        onSubmit();
+                        handleSubmit(onSubmit)();
                       } else {
                         onChange(code.split("")[0]);
                         onFocusChange(id, code);
 
                         if (id === length - 1) {
-                          onSubmit();
+                          handleSubmit(onSubmit)();
                         }
                       }
                     }}
@@ -120,7 +126,7 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
                         }
                       }
                       if (event.key === "Enter") {
-                        onSubmit();
+                        handleSubmit(onSubmit)();
                       }
                     }}
                   />

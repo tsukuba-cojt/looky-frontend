@@ -9,7 +9,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { AppState, type AppStateStatus, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
@@ -117,7 +117,7 @@ const RootLayout = () => {
 
 const RootNavigator = () => {
   const session = useSessionStore((state) => state.session);
-  const isAuth = session !== null;
+  const isAuth = useMemo(() => session !== null, [session]);
 
   const [loaded] = useFonts({
     Inter_400Regular,

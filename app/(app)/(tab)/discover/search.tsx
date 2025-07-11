@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { Link, useRouter } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +9,7 @@ import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { Input } from "@/components/Input";
 
-const SearchPage = () => {
+const SearchPage = memo(() => {
   const { t } = useTranslation("discover");
   const router = useRouter();
 
@@ -81,5 +82,6 @@ const SearchPage = () => {
       </YStack>
     </SafeAreaView>
   );
-};
+});
+
 export default SearchPage;

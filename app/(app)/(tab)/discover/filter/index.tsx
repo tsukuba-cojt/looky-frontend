@@ -1,4 +1,5 @@
 import { Link } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { View, XStack, YStack } from "tamagui";
@@ -6,7 +7,7 @@ import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 
-const FilterPage = () => {
+const FilterPage = memo(() => {
   const { t } = useTranslation(["common", "discover"]);
   const insets = useSafeAreaInsets();
   const query = useSearchQueryStore((state) => state.query);
@@ -115,5 +116,6 @@ const FilterPage = () => {
       </YStack>
     </YStack>
   );
-};
+});
+
 export default FilterPage;

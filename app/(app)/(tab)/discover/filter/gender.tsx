@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useRouter } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "tamagui";
 import { Button } from "@/components/Button";
@@ -7,7 +8,7 @@ import { Icons } from "@/components/Icons";
 import { genders } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 
-const GenderPage = () => {
+const GenderPage = memo(() => {
   const { t } = useTranslation("common");
   const router = useRouter();
   const query = useSearchQueryStore((state) => state.query);
@@ -42,5 +43,6 @@ const GenderPage = () => {
       />
     </View>
   );
-};
+});
+
 export default GenderPage;

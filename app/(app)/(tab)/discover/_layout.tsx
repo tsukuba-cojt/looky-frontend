@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
+import { memo } from "react";
 
-const DiscoverLayout = () => {
+const DiscoverLayout = memo(() => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
@@ -18,6 +19,6 @@ const DiscoverLayout = () => {
       />
     </Stack>
   );
-};
+});
 
 export default DiscoverLayout;

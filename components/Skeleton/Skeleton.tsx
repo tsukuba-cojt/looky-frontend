@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { View, type ViewProps } from "tamagui";
 
-export const Skeleton = (props: ViewProps) => {
+export const Skeleton = memo((props: ViewProps) => {
   return (
     <View
       animation="pulse"
@@ -12,4 +13,4 @@ export const Skeleton = (props: ViewProps) => {
       {...props}
     />
   );
-};
+});

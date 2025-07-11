@@ -1,9 +1,10 @@
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Stack } from "expo-router";
+import { memo } from "react";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
-const AppLayout = () => {
+const AppLayout = memo(() => {
   const session = useSessionStore((state) => state.session);
 
   const { data: user, isLoading } = useQuery(
@@ -36,6 +37,6 @@ const AppLayout = () => {
       <Stack.Screen name="loading" />
     </Stack>
   );
-};
+});
 
 export default AppLayout;

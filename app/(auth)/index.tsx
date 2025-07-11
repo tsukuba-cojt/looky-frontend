@@ -1,9 +1,10 @@
 import { useRouter } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { H1, Text, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
-const TopPage = () => {
+const TopPage = memo(() => {
   const { t } = useTranslation("top");
   const router = useRouter();
 
@@ -49,6 +50,6 @@ const TopPage = () => {
       </YStack>
     </YStack>
   );
-};
+});
 
 export default TopPage;
