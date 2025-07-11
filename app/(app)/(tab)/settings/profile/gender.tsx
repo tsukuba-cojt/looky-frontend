@@ -4,7 +4,7 @@ import {
   useUpdateMutation,
 } from "@supabase-cache-helpers/postgrest-swr";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -35,7 +35,7 @@ import type { Gender } from "@/types";
 const genderSchema = profileSchema.pick({ gender: true });
 type FormData = z.infer<typeof genderSchema>;
 
-const GenderPage = () => {
+const GenderPage = memo(() => {
   const { t } = useTranslation(["common", "settings"]);
   const session = useSessionStore((state) => state.session);
   const router = useRouter();
@@ -75,13 +75,16 @@ const GenderPage = () => {
     revalidate: true,
   });
 
-  const onSubmit = async (data: FormData) => {
-    if (!session) {
-      return;
-    }
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      if (!session) {
+        return;
+      }
 
-    await trigger({ id: session.user.id, gender: data.gender });
-  };
+      await trigger({ id: session.user.id, gender: data.gender });
+    },
+    [session, trigger],
+  );
 
   return (
     <View flex={1} pt="$8" pb={insets.bottom} px="$8">
@@ -196,6 +199,6 @@ const GenderPage = () => {
       </Form>
     </View>
   );
-};
+});
 
 export default GenderPage;

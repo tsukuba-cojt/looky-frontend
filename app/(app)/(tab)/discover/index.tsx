@@ -1,7 +1,7 @@
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { View, XStack, YStack } from "tamagui";
@@ -19,7 +19,7 @@ const data = Array.from({ length: 40 }, (_, i) => ({
   url: `https://picsum.photos/1200/900?random=${i + 1}`,
 }));
 
-const DiscoverPage = () => {
+const DiscoverPage = memo(() => {
   const { t } = useTranslation("discover");
   const [gender, setGender] = useState<Gender>();
   const [category, setCategory] = useState<Category>();
@@ -63,8 +63,7 @@ const DiscoverPage = () => {
             <Button
               variant="outline"
               h="$8"
-              pr="$2"
-              pl="$3"
+              px="$3"
               gap="$1"
               rounded="$full"
               boxShadow="none"
@@ -78,8 +77,7 @@ const DiscoverPage = () => {
             <Button
               variant="outline"
               h="$8"
-              pr="$2"
-              pl="$3"
+              px="$3"
               gap="$1"
               rounded="$full"
               boxShadow="none"
@@ -93,8 +91,7 @@ const DiscoverPage = () => {
             <Button
               variant="outline"
               h="$8"
-              pr="$2"
-              pl="$3"
+              px="$3"
               gap="$1"
               rounded="$full"
               boxShadow="none"
@@ -180,5 +177,6 @@ const DiscoverPage = () => {
       />
     </>
   );
-};
+});
+
 export default DiscoverPage;

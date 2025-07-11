@@ -43,6 +43,15 @@ export type SwipableCardProps = {
   cardStyle?: StyleProp<ViewStyle>;
 };
 
+const userConfig = {
+  damping: 20,
+  stiffness: 50,
+  mass: 1,
+  overshootClamping: true,
+  restDisplacementThreshold: 0.0001,
+  restSpeedThreshold: 0.0001,
+};
+
 export const SwipeableCard = memo(
   forwardRef<SwipableCardRef, PropsWithChildren<SwipableCardProps>>(
     (
@@ -58,15 +67,6 @@ export const SwipeableCard = memo(
       },
       ref,
     ) => {
-      const userConfig = {
-        damping: 20,
-        stiffness: 50,
-        mass: 1,
-        overshootClamping: true,
-        restDisplacementThreshold: 0.0001,
-        restSpeedThreshold: 0.0001,
-      };
-
       const translateX = useSharedValue(0);
       const translateY = useSharedValue(0);
 

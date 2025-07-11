@@ -1,4 +1,5 @@
 import { Link } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar, H1, Text, XStack } from "tamagui";
@@ -11,7 +12,7 @@ interface HeaderProps {
   isLoading: boolean;
 }
 
-export const Header = ({ title, user, isLoading }: HeaderProps) => {
+export const Header = memo(({ title, user, isLoading }: HeaderProps) => {
   const { t } = useTranslation("common");
   const insets = useSafeAreaInsets();
 
@@ -47,4 +48,4 @@ export const Header = ({ title, user, isLoading }: HeaderProps) => {
       )}
     </XStack>
   );
-};
+});

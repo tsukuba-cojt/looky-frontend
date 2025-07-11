@@ -1,5 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useRouter } from "expo-router";
+import { memo, useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
@@ -17,7 +18,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 const email = profileSchema.pick({ email: true });
 type FormData = z.infer<typeof email>;
 
-const EmailPage = () => {
+const EmailPage = memo(() => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const session = useSessionStore((state) => state.session);
@@ -31,24 +32,27 @@ const EmailPage = () => {
     resolver: standardSchemaResolver(email),
   });
 
-  const onSubmit = async (data: FormData) => {
-    Keyboard.dismiss();
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      Keyboard.dismiss();
 
-    try {
-      if (!session) {
-        return;
+      try {
+        if (!session) {
+          return;
+        }
+
+        await updateUser({
+          email: data.email,
+        });
+
+        toast.success(t("profile.email.success"));
+        router.replace("/settings");
+      } catch {
+        toast.error(t("profile.email.error"));
       }
-
-      await updateUser({
-        email: data.email,
-      });
-
-      toast.success(t("profile.email.success"));
-      router.replace("/settings");
-    } catch {
-      toast.error(t("profile.email.error"));
-    }
-  };
+    },
+    [router, session, t],
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -119,6 +123,6 @@ const EmailPage = () => {
       </View>
     </TouchableWithoutFeedback>
   );
-};
+});
 
 export default EmailPage;

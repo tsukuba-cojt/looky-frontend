@@ -1,5 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Link, useRouter } from "expo-router";
+import { memo, useCallback } from "react";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
@@ -21,7 +22,7 @@ const nameSchema = z.object({
 });
 type FormData = z.infer<typeof nameSchema>;
 
-const NamePage = () => {
+const NamePage = memo(() => {
   const { t } = useTranslation("setup");
   const router = useRouter();
   const { getValues, setValue } = useFormContext<FormData>();
@@ -34,12 +35,15 @@ const NamePage = () => {
     defaultValues: { name: getValues("name") },
   });
 
-  const onSubmit = (data: FormData) => {
-    router.push("/setup/gender");
-    setValue("name", data.name);
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      router.push("/setup/gender");
+      setValue("name", data.name);
 
-    Keyboard.dismiss();
-  };
+      Keyboard.dismiss();
+    },
+    [router, setValue],
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -109,6 +113,6 @@ const NamePage = () => {
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
-};
+});
 
 export default NamePage;

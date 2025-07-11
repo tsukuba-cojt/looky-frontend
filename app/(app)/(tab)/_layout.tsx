@@ -1,5 +1,6 @@
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { TabList, TabSlot, Tabs, TabTrigger } from "expo-router/ui";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { XStack, YStack } from "tamagui";
@@ -10,7 +11,7 @@ import { tabs } from "@/constants";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
-const TabLayout = () => {
+const TabLayout = memo(() => {
   const { t } = useTranslation("common");
   const session = useSessionStore((state) => state.session);
   const insets = useSafeAreaInsets();
@@ -64,6 +65,6 @@ const TabLayout = () => {
       </TabList>
     </Tabs>
   );
-};
+});
 
 export default TabLayout;

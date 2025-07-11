@@ -1,12 +1,13 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Stack } from "expo-router";
+import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import type z from "zod/v4";
 import { setupSchema } from "@/schemas/app";
 
 type FormData = z.infer<typeof setupSchema>;
 
-const SetupLayout = () => {
+const SetupLayout = memo(() => {
   const methods = useForm<FormData>({
     resolver: standardSchemaResolver(setupSchema),
   });
@@ -22,6 +23,6 @@ const SetupLayout = () => {
       </Stack>
     </FormProvider>
   );
-};
+});
 
 export default SetupLayout;

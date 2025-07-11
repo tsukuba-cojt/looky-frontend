@@ -1,6 +1,6 @@
 import { SaveFormat, useImageManipulator } from "expo-image-manipulator";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, useWindowDimensions } from "react-native";
 import {
@@ -21,7 +21,7 @@ import { Button } from "@/components/Button";
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
-const CropPage = () => {
+const CropPage = memo(() => {
   const { t } = useTranslation("crop");
   const router = useRouter();
   const { uri, from } = useLocalSearchParams<{ uri: string; from: string }>();
@@ -44,8 +44,8 @@ const CropPage = () => {
     height: number;
   } | null>(null);
 
-  const diameter = width * 0.9;
-  const radius = diameter / 2;
+  const diameter = useMemo(() => width * 0.9, [width]);
+  const radius = useMemo(() => diameter / 2, [diameter]);
 
   useEffect(() => {
     if (uri) {
@@ -75,7 +75,7 @@ const CropPage = () => {
     }
   }, [uri, translateX, translateY, scale, size, diameter]);
 
-  const worklet = () => {
+  const worklet = useCallback(() => {
     "worklet";
     if (!size.value) {
       return;
@@ -92,7 +92,7 @@ const CropPage = () => {
 
     translateX.value = Math.min(Math.max(translateX.value, -offsetX), offsetX);
     translateY.value = Math.min(Math.max(translateY.value, -offsetY), offsetY);
-  };
+  }, [diameter, scale, size, translateX, translateY]);
 
   const panGesture = Gesture.Pan()
     .onStart(() => {
@@ -148,7 +148,7 @@ const CropPage = () => {
     };
   });
 
-  const crop = async () => {
+  const crop = useCallback(async () => {
     if (!size.value) {
       return {};
     }
@@ -179,7 +179,17 @@ const CropPage = () => {
       pathname: from,
       params: { uri: result.uri },
     });
-  };
+  }, [
+    context,
+    diameter,
+    from,
+    radius,
+    router,
+    scale,
+    size,
+    translateX,
+    translateY,
+  ]);
 
   if (isLoading) {
     return (
@@ -253,6 +263,6 @@ const CropPage = () => {
       </GestureDetector>
     </YStack>
   );
-};
+});
 
 export default CropPage;

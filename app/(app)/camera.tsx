@@ -5,14 +5,14 @@ import {
   useCameraPermissions,
 } from "expo-camera";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { H1, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 
-const CameraPage = () => {
+const CameraPage = memo(() => {
   const { t } = useTranslation("camera");
   const router = useRouter();
   const { from } = useLocalSearchParams<{ from: string }>();
@@ -169,6 +169,6 @@ const CameraPage = () => {
       )}
     </View>
   );
-};
+});
 
 export default CameraPage;

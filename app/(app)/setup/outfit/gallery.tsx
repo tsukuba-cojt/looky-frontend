@@ -52,22 +52,25 @@ const GalleryPage = () => {
     }, [uri, append, router]),
   );
 
-  const onSubmit = async (data: FormData) => {
-    const outfits = await Promise.all(
-      data.outfits.map(async (outfit) => {
-        const context = ImageManipulator.manipulate(outfit.uri);
-        const image = await context.renderAsync();
-        const result = await image.saveAsync({
-          format: SaveFormat.JPEG,
-        });
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      const outfits = await Promise.all(
+        data.outfits.map(async (outfit) => {
+          const context = ImageManipulator.manipulate(outfit.uri);
+          const image = await context.renderAsync();
+          const result = await image.saveAsync({
+            format: SaveFormat.JPEG,
+          });
 
-        return { id: outfit.id, uri: result.uri };
-      }),
-    );
+          return { id: outfit.id, uri: result.uri };
+        }),
+      );
 
-    setValue("outfits", outfits);
-    router.push("/setup/welcome");
-  };
+      setValue("outfits", outfits);
+      router.push("/setup/welcome");
+    },
+    [router, setValue],
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

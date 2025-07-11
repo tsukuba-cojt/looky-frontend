@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { YStack } from "tamagui";
 import { Button } from "@/components/Button";
@@ -7,7 +8,7 @@ import { Icons } from "@/components/Icons";
 import { categories } from "@/constants";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 
-const CategoryPage = () => {
+const CategoryPage = memo(() => {
   const { t } = useTranslation("common");
   const setQuery = useSearchQueryStore((state) => state.setQuery);
 
@@ -44,5 +45,6 @@ const CategoryPage = () => {
       />
     </YStack>
   );
-};
+});
+
 export default CategoryPage;

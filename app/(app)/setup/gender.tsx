@@ -1,6 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Link, useRouter } from "expo-router";
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,7 +17,7 @@ const genderSchema = z.object({
 });
 type FormData = z.infer<typeof genderSchema>;
 
-const GenderPage = () => {
+const GenderPage = memo(() => {
   const { t } = useTranslation(["common", "setup"]);
   const router = useRouter();
   const [position, setPosition] = useState(0);
@@ -31,10 +31,13 @@ const GenderPage = () => {
     defaultValues: { gender: getValues("gender") },
   });
 
-  const onSubmit = (data: FormData) => {
-    router.push("/setup/avatar");
-    setValue("gender", data.gender);
-  };
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      router.push("/setup/avatar");
+      setValue("gender", data.gender);
+    },
+    [router, setValue],
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -156,6 +159,6 @@ const GenderPage = () => {
       </YStack>
     </SafeAreaView>
   );
-};
+});
 
 export default GenderPage;

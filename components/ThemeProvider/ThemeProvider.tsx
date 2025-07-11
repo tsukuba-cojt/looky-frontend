@@ -2,10 +2,10 @@ import {
   DefaultTheme,
   ThemeProvider as ReactNavitationThemeProvider,
 } from "@react-navigation/native";
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
 import { useTheme } from "tamagui";
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+export const ThemeProvider = memo(({ children }: { children: ReactNode }) => {
   const theme = useTheme();
 
   return (
@@ -26,4 +26,4 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </ReactNavitationThemeProvider>
   );
-};
+});

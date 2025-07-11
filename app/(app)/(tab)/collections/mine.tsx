@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
@@ -12,7 +12,7 @@ const data = Array.from({ length: 40 }, (_, i) => ({
   url: `https://picsum.photos/1200/900?random=${i + 1}`,
 }));
 
-const MinePage = () => {
+const MinePage = memo(() => {
   const { t } = useTranslation(["common", "collections"]);
   const [category, setCategory] = useState<Category>("tops");
 
@@ -68,5 +68,6 @@ const MinePage = () => {
       />
     </YStack>
   );
-};
+});
+
 export default MinePage;

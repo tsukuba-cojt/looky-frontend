@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, SafeAreaView, useWindowDimensions } from "react-native";
 import { SlidingDot } from "react-native-animated-pagination-dots";
@@ -45,7 +45,7 @@ const OnboardingPage = () => {
     [t],
   );
 
-  const inputRange = [0, data.length];
+  const inputRange = useMemo(() => [0, data.length], [data]);
   const scrollX = Animated.add(
     scrollOffsetAnimatedValue,
     positionAnimatedValue,
@@ -71,13 +71,13 @@ const OnboardingPage = () => {
     [scrollOffsetAnimatedValue, positionAnimatedValue],
   );
 
-  const onNextPage = () => {
+  const onNextPage = useCallback(() => {
     if (currentIndex + 1 < data.length) {
       ref.current?.setPage(currentIndex + 1);
     } else {
       router.push("/setup");
     }
-  };
+  }, [data, router, currentIndex]);
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>

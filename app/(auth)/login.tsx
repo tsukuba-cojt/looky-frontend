@@ -1,5 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Link, useRouter } from "expo-router";
+import { memo, useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,7 +20,7 @@ import { loginSchema } from "@/schemas/auth";
 
 type FormData = z.infer<typeof loginSchema>;
 
-const LoginPage = () => {
+const LoginPage = memo(() => {
   const { t } = useTranslation("login");
   const router = useRouter();
   const {
@@ -30,22 +31,24 @@ const LoginPage = () => {
     resolver: standardSchemaResolver(loginSchema),
   });
 
-  const onSubmit = async (data: FormData) => {
-    try {
-      await signInWithEmail(data.email);
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      try {
+        await signInWithEmail(data.email);
 
-      toast.success(t("success"));
-      router.push({
-        pathname: "/verify",
-        params: {
-          email: data.email,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-      toast.error(t("error"));
-    }
-  };
+        toast.success(t("success"));
+        router.push({
+          pathname: "/verify",
+          params: {
+            email: data.email,
+          },
+        });
+      } catch {
+        toast.error(t("error"));
+      }
+    },
+    [router, t],
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -158,6 +161,6 @@ const LoginPage = () => {
       </YStack>
     </TouchableWithoutFeedback>
   );
-};
+});
 
 export default LoginPage;
