@@ -96,7 +96,13 @@ const RootLayout = () => {
             <PortalProvider shouldAddRootHost>
               <KeyboardProvider>
                 <StatusBar
-                  style={theme === "system" ? (colorSchema ?? "light") : theme}
+                  style={
+                    theme === "system"
+                      ? "auto"
+                      : theme === "light"
+                        ? "dark"
+                        : "light"
+                  }
                 />
                 <RootNavigator />
                 <Toaster />

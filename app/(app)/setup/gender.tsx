@@ -5,15 +5,16 @@ import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Adapt, Form, H1, Label, Text, View, XStack, YStack } from "tamagui";
-import type { z } from "zod/v4";
+import { z } from "zod/v4";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { Select } from "@/components/Select";
 import { Sheet } from "@/components/Sheet";
 import { genders } from "@/constants";
-import { setupSchema } from "@/schemas/app";
 
-const genderSchema = setupSchema.pick({ gender: true });
+const genderSchema = z.object({
+  gender: z.enum(genders, { error: "required_error" }),
+});
 type FormData = z.infer<typeof genderSchema>;
 
 const GenderPage = () => {

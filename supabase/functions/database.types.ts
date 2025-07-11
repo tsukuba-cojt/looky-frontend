@@ -40,32 +40,67 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "t_user";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       t_clothes: {
         Row: {
-          category: string | null;
+          category: Database["public"]["Enums"]["part"] | null;
           created_at: string;
           gender: Database["public"]["Enums"]["gender"] | null;
           id: number;
+          invalid: boolean | null;
           object_key: string | null;
         };
         Insert: {
-          category?: string | null;
+          category?: Database["public"]["Enums"]["part"] | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
+          invalid?: boolean | null;
           object_key?: string | null;
         };
         Update: {
-          category?: string | null;
+          category?: Database["public"]["Enums"]["part"] | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
+          invalid?: boolean | null;
           object_key?: string | null;
         };
         Relationships: [];
+      };
+      t_task: {
+        Row: {
+          created_at: string;
+          id: number;
+          status: Database["public"]["Enums"]["status"] | null;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          status?: Database["public"]["Enums"]["status"] | null;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          status?: Database["public"]["Enums"]["status"] | null;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "t_task_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "t_user";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       t_user: {
         Row: {
@@ -133,7 +168,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "t_vton";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       t_vton: {
@@ -162,7 +197,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "t_clothes";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
     };
@@ -175,6 +210,8 @@ export type Database = {
     Enums: {
       feedback: "love" | "like" | "hate" | "nope";
       gender: "man" | "woman" | "unisex";
+      part: "Upper-body" | "Lower-body" | "Dressed";
+      status: "success" | "error" | "pending";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -198,7 +235,7 @@ export type Tables<
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -209,14 +246,14 @@ export type Tables<
     ? R
     : never
   : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])
-  ? (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-      Row: infer R;
-    }
-    ? R
-    : never
-  : never;
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
@@ -226,7 +263,7 @@ export type TablesInsert<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -236,12 +273,12 @@ export type TablesInsert<
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-      Insert: infer I;
-    }
-    ? I
-    : never
-  : never;
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
@@ -251,7 +288,7 @@ export type TablesUpdate<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -261,12 +298,12 @@ export type TablesUpdate<
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-      Update: infer U;
-    }
-    ? U
-    : never
-  : never;
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U;
+      }
+      ? U
+      : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
@@ -276,14 +313,14 @@ export type Enums<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-  ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-  : never;
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
@@ -293,20 +330,22 @@ export type CompositeTypes<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-  ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-  : never;
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never;
 
 export const Constants = {
   public: {
     Enums: {
       feedback: ["love", "like", "hate", "nope"],
       gender: ["man", "woman", "unisex"],
+      part: ["Upper-body", "Lower-body", "Dressed"],
+      status: ["success", "error", "pending"],
     },
   },
 } as const;

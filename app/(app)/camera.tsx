@@ -15,11 +15,8 @@ import { Icons } from "@/components/Icons";
 const CameraPage = () => {
   const { t } = useTranslation("camera");
   const router = useRouter();
-  const { from, ...params } = useLocalSearchParams<
-    { from: string } & Record<string, string>
-  >();
+  const { from } = useLocalSearchParams<{ from: string }>();
   const ref = useRef<CameraView>(null);
-  const paramsRef = useRef(params);
   const [isReady, setIsReady] = useState(false);
   const [facing, setFacing] = useState<CameraType>("back");
   const [flash, setFlash] = useState<FlashMode>("off");
@@ -36,9 +33,9 @@ const CameraPage = () => {
   const takePicture = useCallback(async () => {
     const picture = await ref.current?.takePictureAsync();
     if (picture) {
-      router.push({
+      router.dismissTo({
         pathname: from,
-        params: { ...paramsRef.current, uri: picture.uri },
+        params: { uri: picture.uri },
       });
     }
   }, [router, from]);
@@ -105,7 +102,7 @@ const CameraPage = () => {
             justify="space-between"
           >
             <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
-              <Icons.chevronLeft size="$8" color="white" />
+              <Icons.x size="$8" color="white" />
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.6}>
               <Icons.zap size="$6" color="white" />

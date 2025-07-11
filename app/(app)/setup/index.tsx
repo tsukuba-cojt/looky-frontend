@@ -6,12 +6,19 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Form, H1, Label, Text, View, XStack, YStack } from "tamagui";
-import type { z } from "zod/v4";
+import { z } from "zod/v4";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
-import { setupSchema } from "@/schemas/app";
 
-const nameSchema = setupSchema.pick({ name: true });
+const nameSchema = z.object({
+  name: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined ? "required_error" : "invalid_type_error",
+    })
+    .min(3, { message: "too_short_error" })
+    .max(128, { message: "too_long_error" }),
+});
 type FormData = z.infer<typeof nameSchema>;
 
 const NamePage = () => {
@@ -52,7 +59,6 @@ const NamePage = () => {
             <Controller
               name="name"
               control={control}
-              defaultValue=""
               render={({ field: { onChange, value } }) => (
                 <YStack gap="$1.5">
                   <XStack>

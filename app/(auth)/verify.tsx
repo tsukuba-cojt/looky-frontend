@@ -6,7 +6,7 @@ import { H1, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { OtpInput } from "@/components/OtpInput";
-import { signInWithEmail, verifyOtp } from "@/lib/auth";
+import { resend, verifyOtp } from "@/lib/auth";
 
 const VerifyPage = () => {
   const { t } = useTranslation("verify");
@@ -14,12 +14,18 @@ const VerifyPage = () => {
   const { email } = useLocalSearchParams<{ email: string }>();
 
   const onEnter = (code: number) => {
-    verifyOtp(email, code.toString());
+    try {
+      verifyOtp(email, code.toString());
+
+      router.replace("/");
+    } catch {
+      toast.error(t("error"));
+    }
   };
 
   const onResend = async () => {
     try {
-      await signInWithEmail(email);
+      await resend(email);
 
       toast.success(t("success"));
     } catch {

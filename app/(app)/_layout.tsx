@@ -28,7 +28,10 @@ const AppLayout = () => {
         <Stack.Screen name="(tab)" />
         <Stack.Screen name="details/[id]" />
       </Stack.Protected>
-      <Stack.Screen name="camera" />
+      <Stack.Screen
+        name="camera"
+        options={{ presentation: "fullScreenModal" }}
+      />
       <Stack.Screen name="crop" />
       <Stack.Screen name="loading" />
     </Stack>
