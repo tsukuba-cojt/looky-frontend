@@ -31,5 +31,5 @@ const upload = async (
 };
 
 export const useUpload = () => {
-  return useSWRMutation("upload", upload, );
+  return useSWRMutation("upload", upload);
 };
