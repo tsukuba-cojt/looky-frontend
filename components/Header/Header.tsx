@@ -32,7 +32,9 @@ export const Header = memo(({ title, user, isLoading }: HeaderProps) => {
       ) : (
         <Link href="/settings" asChild>
           <Avatar circular size="$9">
-            <Avatar.Image src={user?.avatar_url ?? undefined} />
+            <Avatar.Image
+              src={`https://looky-avatar-images.s3.ap-northeast-1.amazonaws.com/${user?.avatar_url}`}
+            />
             <Avatar.Fallback
               items="center"
               justify="center"

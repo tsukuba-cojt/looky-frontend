@@ -1,3 +1,4 @@
+import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo } from "react";
@@ -7,11 +8,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
+import { supabase } from "@/lib/client";
 
 const DetailsPage = memo(() => {
   const { t } = useTranslation("details");
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
+
+  const { data } = useQuery(
+    supabase
+      .from("t_clothes")
+      .select("id,object_key")
+      .eq("id", Number(id))
+      .maybeSingle(),
+  );
 
   return (
     <>
@@ -61,7 +71,7 @@ const DetailsPage = memo(() => {
                 </TouchableOpacity>
               </XStack>
               <Image
-                source={{ uri: `https://picsum.photos/id/${id}/1200/900` }}
+                source={`https://looky-clothes-images.s3.ap-northeast-1.amazonaws.com/${data?.object_key}`}
                 style={{ width: "100%", height: "100%" }}
                 transition={200}
               />

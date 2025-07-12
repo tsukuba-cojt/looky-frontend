@@ -9,7 +9,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { AppState, type AppStateStatus, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
@@ -32,7 +32,40 @@ AppState.addEventListener("change", (state) => {
   }
 });
 
-const RootLayout = () => {
+const RootNavigator = memo(() => {
+  const session = useSessionStore((state) => state.session);
+  const isAuth = useMemo(() => session !== null, [session]);
+
+  const [loaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={!isAuth}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
+      <Stack.Protected guard={isAuth}>
+        <Stack.Screen name="(app)" />
+      </Stack.Protected>
+    </Stack>
+  );
+});
+
+const RootLayout = memo(() => {
   const colorSchema = useColorScheme();
   const theme = useThemeStore((state) => state.theme);
   const setSession = useSessionStore((state) => state.setSession);
@@ -113,39 +146,6 @@ const RootLayout = () => {
       </TamaguiProvider>
     </SWRConfig>
   );
-};
-
-const RootNavigator = () => {
-  const session = useSessionStore((state) => state.session);
-  const isAuth = useMemo(() => session !== null, [session]);
-
-  const [loaded] = useFonts({
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!isAuth}>
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-      <Stack.Protected guard={isAuth}>
-        <Stack.Screen name="(app)" />
-      </Stack.Protected>
-    </Stack>
-  );
-};
+});
 
 export default RootLayout;

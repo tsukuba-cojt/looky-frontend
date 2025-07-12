@@ -42,10 +42,14 @@ const LikePage = memo(() => {
         data={data}
         estimatedItemSize={240}
         contentContainerStyle={{
-          paddingHorizontal: 16,
+          paddingHorizontal: 24,
         }}
-        renderItem={({ item }) => (
-          <View p="$1.5">
+        renderItem={({ item, index }) => (
+          <View
+            pt={index > 1 ? 16 : 0}
+            pl={index % 2 === 1 ? 8 : 0}
+            pr={index % 2 === 0 ? 8 : 0}
+          >
             <View
               w="100%"
               aspectRatio={3 / 4}

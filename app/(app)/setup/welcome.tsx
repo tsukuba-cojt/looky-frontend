@@ -27,7 +27,7 @@ const WelcomePage = memo(() => {
 
   const { trigger: upload } = useUpload();
 
-  const { trigger: createUser } = useInsertMutation(
+  const { trigger: insertUser } = useInsertMutation(
     supabase.from("t_user"),
     ["id"],
     "*",
@@ -42,7 +42,7 @@ const WelcomePage = memo(() => {
     },
   );
 
-  const { trigger: createTask } = useInsertMutation(
+  const { trigger: insertTask } = useInsertMutation(
     supabase.from("t_task"),
     ["id"],
     "*",
@@ -75,7 +75,7 @@ const WelcomePage = memo(() => {
         }),
       );
 
-      await createUser([
+      await insertUser([
         {
           id: session?.user.id ?? "",
           name: data.name,
@@ -85,14 +85,14 @@ const WelcomePage = memo(() => {
         },
       ]);
 
-      await createTask(
+      await insertTask(
         Array.from({ length: 3 }, () => ({
           user_id: session?.user.id ?? "",
           status: "pending",
         })),
       );
     },
-    [createTask, createUser, session, upload],
+    [insertTask, insertUser, session, upload],
   );
 
   return (

@@ -1,23 +1,21 @@
 import { FlashList } from "@shopify/flash-list";
+import { useCursorInfiniteScrollQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
-import { View, XStack, YStack } from "tamagui";
+import { Spinner, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { CategorySelectSheet } from "@/components/CategorySelectSheet";
 import { ColorPickerSheet } from "@/components/ColorPickerSheet/ColorPickerSheet";
 import { GenderSelectSheet } from "@/components/GenderSelectSheet";
 import { Icons } from "@/components/Icons";
 import { Input } from "@/components/Input";
+import { Skeleton } from "@/components/Skeleton";
 import { useSheet } from "@/hooks/useSheet";
+import { supabase } from "@/lib/client";
 import type { Category, Color, Gender } from "@/types";
-
-const data = Array.from({ length: 40 }, (_, i) => ({
-  id: i + 1,
-  url: `https://picsum.photos/1200/900?random=${i + 1}`,
-}));
 
 const DiscoverPage = memo(() => {
   const { t } = useTranslation("discover");
@@ -26,6 +24,22 @@ const DiscoverPage = memo(() => {
   const [color, setColor] = useState<Color>();
 
   const { open, getSheetProps } = useSheet();
+
+  const { data, loadMore, isLoading, isValidating } =
+    useCursorInfiniteScrollQuery(
+      () =>
+        supabase
+          .from("t_clothes")
+          .select("id,gender,category,object_key")
+          .order("id", { ascending: true })
+          .limit(12),
+      { orderBy: "id", uqOrderBy: "id" },
+    );
+
+  const isRefreshing = useMemo(
+    () => !isLoading && isValidating,
+    [isLoading, isValidating],
+  );
 
   return (
     <>
@@ -104,61 +118,98 @@ const DiscoverPage = memo(() => {
             </Button>
           </XStack>
         </YStack>
-        <FlashList
-          numColumns={2}
-          data={data}
-          estimatedItemSize={240}
-          contentContainerStyle={{
-            paddingHorizontal: 16,
-          }}
-          renderItem={({ item }) => (
-            <Link
-              href={{
-                pathname: "/details/[id]",
-                params: { id: item.id },
-              }}
-              asChild
-            >
-              <TouchableOpacity activeOpacity={0.6}>
-                <View p="$1.5">
+        {isLoading ? (
+          <FlashList
+            numColumns={2}
+            data={Array.from({ length: 6 })}
+            estimatedItemSize={240}
+            contentContainerStyle={{
+              paddingHorizontal: 24,
+            }}
+            renderItem={({ index }) => (
+              <View
+                pt={index > 1 ? 16 : 0}
+                pl={index % 2 === 1 ? 8 : 0}
+                pr={index % 2 === 0 ? 8 : 0}
+              >
+                <Skeleton
+                  w="100%"
+                  aspectRatio={3 / 4}
+                  rounded="$2xl"
+                  boxShadow="$sm"
+                />
+              </View>
+            )}
+          />
+        ) : (
+          <FlashList
+            numColumns={2}
+            data={data}
+            estimatedItemSize={240}
+            onEndReached={loadMore}
+            contentContainerStyle={{
+              paddingHorizontal: 24,
+            }}
+            ListFooterComponent={() =>
+              isRefreshing && (
+                <View mt="$4" justify="center">
+                  <Spinner color="$mutedColor" />
+                </View>
+              )
+            }
+            renderItem={({ item, index }) => (
+              <Link
+                href={{
+                  pathname: "/details/[id]",
+                  params: { id: item.id },
+                }}
+                asChild
+              >
+                <TouchableOpacity activeOpacity={0.6}>
                   <View
-                    position="relative"
-                    w="100%"
-                    aspectRatio={3 / 4}
-                    rounded="$2xl"
-                    boxShadow="$sm"
-                    overflow="hidden"
-                    bg="$mutedBackground"
+                    pt={index > 1 ? 16 : 0}
+                    pl={index % 2 === 1 ? 8 : 0}
+                    pr={index % 2 === 0 ? 8 : 0}
                   >
-                    <Image
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                      }}
-                      source={item.url}
-                      transition={200}
-                    />
-                    <View position="absolute" b={8} r={8}>
-                      <TouchableOpacity activeOpacity={0.6}>
-                        <View
-                          p="$2"
-                          items="center"
-                          justify="center"
-                          bg="black"
-                          rounded="$full"
-                          opacity={0.8}
-                          boxShadow="$shadow.xl"
-                        >
-                          <Icons.heart size="$4" color="white" />
-                        </View>
-                      </TouchableOpacity>
+                    <View
+                      position="relative"
+                      w="100%"
+                      aspectRatio={3 / 4}
+                      rounded="$2xl"
+                      boxShadow="$sm"
+                      overflow="hidden"
+                      bg="$mutedBackground"
+                    >
+                      <Image
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                        }}
+                        source={`https://looky-clothes-images.s3.ap-northeast-1.amazonaws.com/${item.object_key}`}
+                        transition={200}
+                      />
+                      <View position="absolute" b={8} r={8}>
+                        <TouchableOpacity activeOpacity={0.6}>
+                          <View
+                            p="$2"
+                            items="center"
+                            justify="center"
+                            bg="black"
+                            rounded="$full"
+                            opacity={0.8}
+                            boxShadow="$shadow.xl"
+                          >
+                            <Icons.heart size="$4" color="white" />
+                          </View>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            </Link>
-          )}
-        />
+                </TouchableOpacity>
+              </Link>
+            )}
+          />
+        )}
       </YStack>
       <GenderSelectSheet
         {...getSheetProps("gender")}
