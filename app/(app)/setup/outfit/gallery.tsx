@@ -87,6 +87,9 @@ const GalleryPage = () => {
           <FlashList
             numColumns={2}
             scrollEnabled={false}
+            data={Array(4)
+              .fill(null)
+              .map((_, i) => fields[i] ?? null)}
             ListFooterComponent={
               errors.outfits && (
                 <Text
@@ -99,16 +102,11 @@ const GalleryPage = () => {
                 </Text>
               )
             }
-            data={Array(4)
-              .fill(null)
-              .map((_, i) => fields[i] ?? null)}
             renderItem={({ item, index }) => (
               <View
-                style={{
-                  paddingLeft: index % 2 === 1 ? 10 : 0,
-                  paddingRight: index % 2 === 0 ? 10 : 0,
-                  paddingTop: index > 1 ? 20 : 0,
-                }}
+                pt={index > 1 ? 20 : 0}
+                pl={index % 2 === 1 ? 10 : 0}
+                pr={index % 2 === 0 ? 10 : 0}
               >
                 {item ? (
                   <View

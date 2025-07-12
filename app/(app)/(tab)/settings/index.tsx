@@ -34,7 +34,9 @@ const SettingsPage = memo(() => {
         <XStack px="$2" items="center" gap="$4">
           <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpen(true)}>
             <Avatar circular size="$16">
-              <Avatar.Image src={user?.avatar_url || undefined} />
+              <Avatar.Image
+                src={`https://looky-avatar-images.s3.ap-northeast-1.amazonaws.com/${user?.avatar_url}`}
+              />
               <Avatar.Fallback
                 items="center"
                 justify="center"

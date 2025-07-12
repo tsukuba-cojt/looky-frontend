@@ -1,20 +1,26 @@
 import { useIsFocused } from "@react-navigation/native";
+import {
+  useInsertMutation,
+  useQuery,
+  useSubscription,
+  useUpdateMutation,
+} from "@supabase-cache-helpers/postgrest-swr";
 import { Image } from "expo-image";
+import { Link } from "expo-router";
 import {
   createRef,
   memo,
   type RefObject,
   useCallback,
-  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
+  useState,
 } from "react";
-import {
-  runOnJS,
-  useAnimatedReaction,
-  useSharedValue,
-} from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
+import { TouchableOpacity } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
+import { toast } from "sonner-native";
 import { Portal, View, XStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
@@ -23,61 +29,141 @@ import {
   type SwipableCardRef,
   SwipeableCard,
 } from "@/components/SwipeableCard";
-
-const data = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  url: `https://picsum.photos/1200/900?random=${i + 1}`,
-}));
+import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
+import type { Vton } from "@/types";
 
 interface SwipableCardItemProps {
+  id: number;
   url: string;
 }
 
-const SwipableCardItem = ({ url }: SwipableCardItemProps) => {
+const SwipableCardItem = memo(({ id, url }: SwipableCardItemProps) => {
   return (
-    <View
-      overflow="hidden"
-      rounded="$3xl"
-      position="relative"
-      bg="$background"
-      boxShadow="$sm"
-    >
-      <View position="absolute" inset={0} bg="$background" />
+    <View position="relative" overflow="hidden" rounded="$3xl" boxShadow="$sm">
+      <View position="absolute" inset={0} bg="$mutedBackground" />
       <Skeleton position="absolute" inset={0} />
-      <Image
-        style={{ width: "100%", height: "100%" }}
-        source={url}
-        transition={200}
-      />
+      <Link
+        href={{
+          pathname: "/details/[id]",
+          params: { id },
+        }}
+        asChild
+      >
+        <TouchableOpacity activeOpacity={0.6}>
+          <Image
+            style={{ width: "100%", height: "100%" }}
+            source={url}
+            transition={200}
+          />
+        </TouchableOpacity>
+      </Link>
     </View>
   );
-};
+});
 
 const TryOnPage = memo(() => {
+  const { t } = useTranslation("try_on");
+  const session = useSessionStore((state) => state.session);
+  const [items, setItems] = useState<
+    { id: number; vton: Pick<Vton, "object_key" | "tops_id"> }[]
+  >([]);
+
+  const { mutate } = useQuery(
+    supabase
+      .from("t_user_vton")
+      .select(`
+          id,
+          vton: t_vton (object_key,tops_id)
+        `)
+      .eq("user_id", session?.user.id ?? "")
+      .is("feedback", null)
+      .order("created_at", { ascending: true })
+      .limit(3),
+    {
+      onSuccess: ({ data }) => {
+        if (!data) {
+          return;
+        }
+
+        setItems((prev) => {
+          const ids = new Set(prev.map((item) => item.id));
+          const next = data
+            .filter((item) => !ids.has(item.id))
+            .map((item) => ({
+              id: item.id,
+              vton: item.vton as NonNullable<typeof item.vton>,
+            }));
+
+          return [...prev, ...next];
+        });
+      },
+    },
+  );
+
+  const { trigger: insertTask } = useInsertMutation(
+    supabase.from("t_task"),
+    ["id"],
+    "*",
+    {
+      onError: () => {
+        toast.error(t("error"));
+      },
+    },
+  );
+
+  const { trigger: updateFeedback } = useUpdateMutation(
+    supabase.from("t_user_vton"),
+    ["id"],
+    "*",
+    {
+      onError: () => {
+        toast.error(t("error"));
+      },
+    },
+  );
+
+  useSubscription(
+    supabase,
+    "task",
+    {
+      event: "*",
+      table: "t_task",
+      schema: "public",
+      filter: `user_id=eq.${session?.user.id}`,
+    },
+    ["id"],
+    {
+      callback: async (payload) => {
+        if (payload.eventType === "UPDATE") {
+          if (payload.new.status === "success") {
+            await mutate();
+          }
+        }
+      },
+    },
+  );
+
   const ref = useRef<SwipableCardRef>(null);
-  const onEndReachedThreadhold = 0.4;
   const activeIndex = useSharedValue(0);
-  const length = useRef(data.length);
   const focused = useIsFocused();
 
-  useEffect(() => {
-    length.current = data.length;
-  }, []);
+  const length = useMemo(() => items.length, [items]);
 
   const refs = useMemo(() => {
     const tmp: RefObject<SwipableCardRef | null>[] = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < length; i++) {
       tmp.push(createRef<SwipableCardRef>());
     }
     return tmp;
-  }, []);
+  }, [length]);
 
   const worklet = useCallback(() => {
     "worklet";
-    if (activeIndex.value < length.current) {
+    if (activeIndex.value < length) {
       activeIndex.value++;
     }
-  }, [activeIndex]);
+  }, [activeIndex, length]);
 
   const swipeRight = useCallback(() => {
     const currentIndex = Math.floor(activeIndex.value);
@@ -128,6 +214,58 @@ const TryOnPage = memo(() => {
     }
   }, [activeIndex, refs]);
 
+  const onSwipeRight = useCallback(
+    async (id: number) => {
+      await updateFeedback({ id, feedback: "like" });
+      await insertTask([
+        {
+          user_id: session?.user.id ?? "",
+          status: "pending",
+        },
+      ]);
+    },
+    [insertTask, session, updateFeedback],
+  );
+
+  const onSwipeTop = useCallback(
+    async (id: number) => {
+      await updateFeedback({ id, feedback: "love" });
+      await insertTask([
+        {
+          user_id: session?.user.id ?? "",
+          status: "pending",
+        },
+      ]);
+    },
+    [insertTask, session, updateFeedback],
+  );
+
+  const onSwipeLeft = useCallback(
+    async (id: number) => {
+      await updateFeedback({ id, feedback: "nope" });
+      await insertTask([
+        {
+          user_id: session?.user.id ?? "",
+          status: "pending",
+        },
+      ]);
+    },
+    [insertTask, session, updateFeedback],
+  );
+
+  const onSwipeBottom = useCallback(
+    async (id: number) => {
+      await updateFeedback({ id, feedback: "hate" });
+      await insertTask([
+        {
+          user_id: session?.user.id ?? "",
+          status: "pending",
+        },
+      ]);
+    },
+    [insertTask, session, updateFeedback],
+  );
+
   useImperativeHandle(ref, () => {
     return {
       swipeLeft,
@@ -138,54 +276,41 @@ const TryOnPage = memo(() => {
     };
   }, [swipeLeft, swipeRight, swipeBack, swipeTop, swipeBottom]);
 
-  const onEndReached = useCallback(() => {}, []);
-
-  useAnimatedReaction(
-    () =>
-      activeIndex.value >=
-      length.current - onEndReachedThreadhold * length.current,
-    (isEndReached: boolean) => {
-      if (isEndReached && onEndReached) {
-        runOnJS(onEndReached)();
-      }
-    },
-    [data],
-  );
-
   return (
     <Portal opacity={focused ? 1 : 0}>
       <View flex={1} items="center" justify="center" pt="$6" px="$6" gap="$6">
         <View aspectRatio={3 / 4} w="100%">
-          {data
-            .map((item, index) => {
-              return (
-                <SwipeableCard
-                  key={index.toString()}
-                  cardStyle={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  index={index}
-                  activeIndex={activeIndex}
-                  ref={refs[index]}
-                  onSwipeRight={() => {
-                    console.log("right");
-                  }}
-                  onSwipeLeft={() => {
-                    console.log("left");
-                  }}
-                  onSwipeTop={() => {
-                    console.log("top");
-                  }}
-                  onSwipeBottom={() => {
-                    console.log("bottom");
-                  }}
-                >
-                  <SwipableCardItem url={item.url} />
-                </SwipeableCard>
-              );
-            })
-            .reverse()}
+          {items.map((item, index) => {
+            return (
+              <SwipeableCard
+                key={index.toString()}
+                cardStyle={{
+                  width: "100%",
+                  height: "100%",
+                }}
+                index={index}
+                activeIndex={activeIndex}
+                ref={refs[index]}
+                onSwipeRight={() => {
+                  onSwipeRight(item.id);
+                }}
+                onSwipeLeft={() => {
+                  onSwipeLeft(item.id);
+                }}
+                onSwipeTop={() => {
+                  onSwipeTop(item.id);
+                }}
+                onSwipeBottom={() => {
+                  onSwipeBottom(item.id);
+                }}
+              >
+                <SwipableCardItem
+                  id={item.vton.tops_id}
+                  url={`https://picsum.photos/1200/900?id=${item.id}`}
+                />
+              </SwipeableCard>
+            );
+          })}
         </View>
         <XStack
           gap="$6"

@@ -9,6 +9,7 @@ import type {
 import type { Database } from "./database.types";
 
 export type User = Database["public"]["Tables"]["t_user"]["Row"];
+export type Vton = Database["public"]["Tables"]["t_vton"]["Row"];
 
 export type Gender = (typeof genders)[number];
 export type Category = (typeof categories)[number];

@@ -37,7 +37,12 @@ const ProfilePage = memo(() => {
       <YStack flex={1} items="center" pt="$8" gap="$8">
         <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpen(true)}>
           <Avatar circular size="$24">
-            <Avatar.Image src={uri ?? user?.avatar_url ?? undefined} />
+            <Avatar.Image
+              src={
+                uri ??
+                `https://looky-avatar-images.s3.ap-northeast-1.amazonaws.com/${user?.avatar_url}`
+              }
+            />
             <Avatar.Fallback
               items="center"
               justify="center"
