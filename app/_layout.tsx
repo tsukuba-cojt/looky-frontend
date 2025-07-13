@@ -9,7 +9,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect } from "react";
 import { AppState, type AppStateStatus, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
@@ -34,7 +34,8 @@ AppState.addEventListener("change", (state) => {
 
 const RootNavigator = memo(() => {
   const session = useSessionStore((state) => state.session);
-  const isAuth = useMemo(() => session !== null, [session]);
+  const isLoading = useSessionStore((state) => state.isLoading);
+  const isAuth = session !== null;
 
   const [loaded] = useFonts({
     Inter_400Regular,
@@ -44,12 +45,12 @@ const RootNavigator = memo(() => {
   });
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded || !isLoading) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, isLoading]);
 
-  if (!loaded) {
+  if (!loaded || isLoading) {
     return null;
   }
 

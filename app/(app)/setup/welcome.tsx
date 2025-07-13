@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { memo, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { Form, H1, Spinner, Text, YStack } from "tamagui";
 import type z from "zod/v4";
@@ -92,14 +92,14 @@ const WelcomePage = memo(() => {
           name: data.name,
           gender: data.gender,
           avatar_url: data.avatar ? `${data.avatar.id}.jpg` : null,
-          body_url: `${data.outfits[0].uri}.jpg`,
+          body_url: `${data.outfits[0].id}.jpg`,
         },
       ]);
 
       await insertBody(
         data.outfits.map((outfit) => ({
           user_id: session?.user.id ?? "",
-          object_key: `${outfit.uri}.jpg`,
+          object_key: `${outfit.id}.jpg`,
         })),
       );
 

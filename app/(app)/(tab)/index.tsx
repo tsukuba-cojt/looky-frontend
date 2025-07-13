@@ -18,10 +18,10 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { toast } from "sonner-native";
-import { Portal, View, XStack } from "tamagui";
+import { AnimatePresence, Portal, View, XStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { Skeleton } from "@/components/Skeleton";
@@ -64,6 +64,7 @@ const SwipableCardItem = memo(({ id, url }: SwipableCardItemProps) => {
 
 const TryOnPage = memo(() => {
   const { t } = useTranslation("try_on");
+  const { height } = useWindowDimensions();
   const session = useSessionStore((state) => state.session);
   const [items, setItems] = useState<
     { id: number; vton: Pick<Vton, "object_key" | "tops_id"> }[]
@@ -284,82 +285,89 @@ const TryOnPage = memo(() => {
   }, [swipeLeft, swipeRight, swipeBack, swipeTop, swipeBottom]);
 
   return (
-    <Portal opacity={focused ? 1 : 0}>
-      <View flex={1} items="center" justify="center" pt="$6" px="$6" gap="$6">
-        <View aspectRatio={3 / 4} w="100%">
-          {items.map((item, index) => {
-            return (
-              <SwipeableCard
-                key={index.toString()}
-                cardStyle={{
-                  width: "100%",
-                  height: "100%",
-                }}
-                index={index}
-                activeIndex={activeIndex}
-                ref={refs[index]}
-                onSwipeRight={() => onSwipeRight(item.id)}
-                onSwipeLeft={() => onSwipeLeft(item.id)}
-                onSwipeTop={() => onSwipeTop(item.id)}
-                onSwipeBottom={() => onSwipeBottom(item.id)}
-                onSwipeBack={() => onSwipeBack(item.id)}
-              >
-                <SwipableCardItem
-                  id={item.vton.tops_id}
-                  url={`https://picsum.photos/1200/900?id=${item.id}`}
-                />
-              </SwipeableCard>
-            );
-          })}
+    <AnimatePresence>
+      <Portal
+        y={focused ? 0 : height}
+        opacity={focused ? 1 : 0}
+        enterStyle={{ opacity: 0 }}
+        exitStyle={{ opacity: 0 }}
+      >
+        <View flex={1} items="center" justify="center" pt="$6" px="$6" gap="$6">
+          <View aspectRatio={3 / 4} w="100%">
+            {items.map((item, index) => {
+              return (
+                <SwipeableCard
+                  key={index.toString()}
+                  cardStyle={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  index={index}
+                  activeIndex={activeIndex}
+                  ref={refs[index]}
+                  onSwipeRight={() => onSwipeRight(item.id)}
+                  onSwipeLeft={() => onSwipeLeft(item.id)}
+                  onSwipeTop={() => onSwipeTop(item.id)}
+                  onSwipeBottom={() => onSwipeBottom(item.id)}
+                  onSwipeBack={() => onSwipeBack(item.id)}
+                >
+                  <SwipableCardItem
+                    id={item.vton.tops_id}
+                    url={`https://picsum.photos/1200/900?id=${item.id}`}
+                  />
+                </SwipeableCard>
+              );
+            })}
+          </View>
+          <XStack
+            gap="$6"
+            borderWidth={1}
+            borderColor="$borderColor"
+            px="$6"
+            py="$2"
+            bg="$background"
+            rounded="$full"
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              w="$12"
+              h="$12"
+              circular
+              onPress={swipeRight}
+            >
+              <Button.Icon>
+                <Icons.thumbsUp size="$6" />
+              </Button.Icon>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              w="$12"
+              h="$12"
+              circular
+              onPress={swipeLeft}
+            >
+              <Button.Icon>
+                <Icons.thumbsDown size="$6" />
+              </Button.Icon>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              w="$12"
+              h="$12"
+              circular
+              onPress={swipeBack}
+            >
+              <Button.Icon>
+                <Icons.rotateCcw size="$6" />
+              </Button.Icon>
+            </Button>
+          </XStack>
         </View>
-        <XStack
-          gap="$6"
-          borderWidth={1}
-          borderColor="$borderColor"
-          px="$6"
-          py="$2"
-          bg="$background"
-          rounded="$full"
-        >
-          <Button
-            variant="ghost"
-            size="icon"
-            w="$12"
-            h="$12"
-            circular
-            onPress={swipeRight}
-          >
-            <Button.Icon>
-              <Icons.thumbsUp size="$6" />
-            </Button.Icon>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            w="$12"
-            h="$12"
-            circular
-            onPress={swipeLeft}
-          >
-            <Button.Icon>
-              <Icons.thumbsDown size="$6" />
-            </Button.Icon>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            w="$12"
-            h="$12"
-            circular
-            onPress={swipeBack}
-          >
-            <Button.Icon>
-              <Icons.rotateCcw size="$6" />
-            </Button.Icon>
-          </Button>
-        </XStack>
-      </View>
-    </Portal>
+      </Portal>
+    </AnimatePresence>
   );
 });
 

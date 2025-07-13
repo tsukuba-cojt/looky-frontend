@@ -302,8 +302,33 @@
       "not_selected": "未選択",
       "not_configured": "未設定"
     },
-    "style": {
-      "title": "スタイル"
+    "outfit": {
+      "gallery": {
+        "title": "コーデ",
+        "required_error": "コーデを追加してください",
+        "submit": "変更する",
+        "cancel": "キャンセル",
+        "error": "エラーが発生しました。もう一度お試しください。"
+      },
+      "guide": {
+        "tips": "撮影のポイント",
+        "tab1": {
+          "title": "なるべくシンプルな背景",
+          "description": "背景はなるべくシンプルな場所で\n撮影しましょう"
+        },
+        "tab2": {
+          "title": "枠線に収まるように撮影",
+          "description": "画面内に表示される枠線に収まるように\n撮影しましょう"
+        },
+        "tab3": {
+          "title": "セルフタイマーを使用",
+          "description": "スマホを立ててセルフタイマーを使いがら\n撮影しましょう"
+        },
+        "get_started": "はじめる", 
+        "next": "次へ",
+        "skip": "スキップ",
+        "error": "カメラが許可されていません。設定からカメラの許可をしてください。" 
+      }
     },
     "theme": {
       "title": "テーマ",

@@ -5,7 +5,7 @@ import { Text } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 
-const ProfileLayout = memo(() => {
+const ThemeLayout = memo(() => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const pathname = usePathname();
@@ -63,4 +63,4 @@ const ProfileLayout = memo(() => {
   );
 });
 
-export default ProfileLayout;
+export default ThemeLayout;

@@ -3,6 +3,7 @@ import type {
   colors,
   genders,
   languages,
+  origins,
   subcategories,
   themes,
 } from "@/constants";
@@ -29,3 +30,5 @@ export type History = {
   text: string;
   createAt: string;
 };
+
+export type Origin = (typeof origins)[number];

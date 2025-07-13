@@ -6,14 +6,13 @@ export const useDownload = () => {
   const download = useCallback(
     async (
       _: string,
-      { arg }: { arg: { blob: Blob; bucketName: string; objectKey: string } },
+      { arg }: { arg: { bucketName: string; objectKey: string } },
     ) => {
       const { data, error } = await supabase.functions.invoke("download", {
         method: "POST",
         body: {
           bucket_name: arg.bucketName,
           object_key: arg.objectKey,
-          content_type: arg.blob.type,
         },
       });
 

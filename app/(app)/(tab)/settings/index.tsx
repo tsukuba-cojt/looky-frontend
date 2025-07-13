@@ -78,7 +78,7 @@ const SettingsPage = memo(() => {
           </View>
         </XStack>
         <YStack gap="$6">
-          <Link href="/settings/profile" asChild>
+          <Link push href="/settings/profile" asChild>
             <Button variant="ghost" justify="space-between">
               <XStack gap="$3" items="center">
                 <Button.Icon>
@@ -91,13 +91,13 @@ const SettingsPage = memo(() => {
               </Button.Icon>
             </Button>
           </Link>
-          <Link href="/settings/style" asChild>
+          <Link href="/settings/outfit" asChild>
             <Button variant="ghost" justify="space-between">
               <XStack gap="$3" items="center">
                 <Button.Icon>
                   <Icons.shirt size="$4" />
                 </Button.Icon>
-                <Button.Text>{t("settings:style.title")}</Button.Text>
+                <Button.Text>{t("settings:outfit.gallery.title")}</Button.Text>
               </XStack>
               <Button.Icon>
                 <Icons.chevronRight size="$4" />

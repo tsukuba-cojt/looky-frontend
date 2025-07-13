@@ -16,13 +16,13 @@ import { Button } from "@/components/Button";
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
 const icons = [
-  require("../../../../assets/images/guide3.png"),
-  require("../../../../assets/images/guide4.png"),
-  require("../../../../assets/images/guide5.png"),
+  require("../../../../../assets/images/guide3.png"),
+  require("../../../../../assets/images/guide4.png"),
+  require("../../../../../assets/images/guide5.png"),
 ];
 
 const GuidePage = memo(() => {
-  const { t } = useTranslation("setup");
+  const { t } = useTranslation("settings");
   const router = useRouter();
   const { width } = useWindowDimensions();
   const ref = useRef<PagerView>(null);
@@ -37,13 +37,13 @@ const GuidePage = memo(() => {
         key: "1",
         title: t("outfit.guide.tab1.title"),
         description: t("outfit.guide.tab1.description"),
-        icon: require("../../../../assets/images/guide1.png"),
+        icon: require("../../../../../assets/images/guide1.png"),
       },
       {
         key: "2",
         title: t("outfit.guide.tab2.title"),
         description: t("outfit.guide.tab2.description"),
-        icon: require("../../../../assets/images/guide2.png"),
+        icon: require("../../../../../assets/images/guide2.png"),
       },
       {
         key: "3",

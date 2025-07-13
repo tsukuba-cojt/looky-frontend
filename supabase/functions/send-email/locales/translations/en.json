@@ -1,13 +1,13 @@
 {
-  "support": "お問い合わせは <link>support@yushin.dev</link> までご連絡ください。",
+  "support": "For inquiries, please contact us at <link>support@yushin.dev</link>.",
   "footer": "© {{year}} <link>Looky</link>",
   "magic_link": {
-    "subject": "メールアドレスの認証",
-    "preview": "メールアドレスの認証を完了してください",
-    "title": "メールアドレスの認証",
-    "description": "メールアドレスの認証を受け付けました。🎉<br /><br />このたびは、Lookyにご登録いただきありがとうございます。Lookyは、自分の好みの服を簡単に探せるバーチャル試着アプリです。本サービスをご利用いただくためには、メールアドレスの認証が必要になります。",
-    "instruction": "以下の確認コードをアプリで入力すると、メールアドレスの認証が完了します。<strong>24時間以内</strong>に認証を完了してください。",
-    "warning1": "※このメールに心当たりがない場合は、誤って送信された可能性があります。何も操作せずにこのメールを削除してください。",
-    "warning2": "※認証リンクの有効期限は24時間です。期限切れの場合は、再度認証リクエストを送信してください。"
+    "subject": "Email Address Verification",
+    "preview": "Complete your email address verification",
+    "title": "Email Address Verification",
+    "description": "Your email address verification has been received. 🎉<br /><br />Thank you for registering with Looky. Looky is a virtual try-on app that makes it easy to find clothes you love. To use this service, you need to verify your email address.",
+    "instruction": "Enter the verification code below in the app to complete your email address verification. Please complete the verification within <strong>24 hours</strong>.",
+    "warning1": "※If you do not recognize this email, it may have been sent to you by mistake. Please delete this email without taking any action.",
+    "warning2": "※The verification link is valid for 24 hours. If it expires, please send the verification request again."
   }
 }

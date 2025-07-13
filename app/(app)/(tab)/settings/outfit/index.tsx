@@ -1,5 +1,10 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { FlashList } from "@shopify/flash-list";
+import {
+  useDeleteMutation,
+  useInsertMutation,
+  useQuery,
+} from "@supabase-cache-helpers/postgrest-swr";
 import * as Crypto from "expo-crypto";
 import { Image } from "expo-image";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
@@ -10,44 +15,105 @@ import {
   useRouter,
 } from "expo-router";
 import { useCallback } from "react";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Form, H1, Spinner, Text, View, YStack } from "tamagui";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as R from "remeda";
+import { toast } from "sonner-native";
+import { Form, Spinner, Text, View, YStack } from "tamagui";
 import { z } from "zod/v4";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
+import { Skeleton } from "@/components/Skeleton";
+import { origins } from "@/constants";
+import { useDownload } from "@/hooks/useDownload";
+import { useUpload } from "@/hooks/useUpload";
+import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const outfitsSchema = z.object({
   outfits: z
-    .array(z.object({ id: z.uuid(), uri: z.string() }))
+    .array(
+      z.object({ id: z.string(), uri: z.string(), origin: z.enum(origins) }),
+    )
     .nonempty({ error: "required_error" }),
 });
 type FormData = z.infer<typeof outfitsSchema>;
 
 const GalleryPage = () => {
-  const { t } = useTranslation("setup");
+  const { t } = useTranslation("settings");
+  const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const { uri } = useLocalSearchParams<{ uri?: string }>();
-  const { getValues, setValue } = useFormContext<FormData>();
+
+  const insets = useSafeAreaInsets();
   const {
     control,
     formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<FormData>({
     resolver: standardSchemaResolver(outfitsSchema),
-    defaultValues: { outfits: getValues("outfits") },
   });
   const { fields, append, remove } = useFieldArray<FormData>({
     control,
     name: "outfits",
   });
 
+  const { data: outfits, isLoading } = useQuery(
+    supabase
+      .from("t_body")
+      .select("id")
+      .eq("user_id", session?.user.id ?? ""),
+    {
+      onSuccess: async ({ data }) => {
+        await Promise.all(
+          (data ?? []).map(async (outfit) => {
+            const uri = await download({
+              objectKey: `${outfit.id}.jpg`,
+              bucketName: "looky-body-images",
+            });
+
+            append({
+              id: outfit.id.toString(),
+              uri,
+              origin: "remote",
+            });
+          }),
+        );
+      },
+    },
+  );
+
+  const { trigger: download, isMutating } = useDownload();
+  const { trigger: upload } = useUpload();
+
+  const { trigger: insertBody } = useInsertMutation(
+    supabase.from("t_body"),
+    ["id"],
+    "*",
+    {
+      onError: () => {
+        toast.error(t("outfit.gallery.error"));
+      },
+    },
+  );
+
+  const { trigger: deleteBody } = useDeleteMutation(
+    supabase.from("t_body"),
+    ["id"],
+    "*",
+    {
+      onError: () => {
+        toast.error(t("outfit.gallery.error"));
+      },
+    },
+  );
+
   useFocusEffect(
     useCallback(() => {
       if (uri) {
-        append({ id: Crypto.randomUUID(), uri });
+        append({ id: Crypto.randomUUID(), uri, origin: "local" });
         router.setParams({ uri: undefined });
       }
     }, [uri, append, router]),
@@ -55,36 +121,74 @@ const GalleryPage = () => {
 
   const onSubmit = useCallback(
     async (data: FormData) => {
-      const outfits = await Promise.all(
-        data.outfits.map(async (outfit) => {
-          const context = ImageManipulator.manipulate(outfit.uri);
-          const image = await context.renderAsync();
-          const result = await image.saveAsync({
-            format: SaveFormat.JPEG,
-          });
-
-          return { id: outfit.id, uri: result.uri };
-        }),
+      await Promise.all(
+        R.pipe(
+          R.difference(
+            R.map(outfits ?? [], R.prop("id")),
+            R.map(data.outfits, R.prop("id")),
+          ),
+          R.map(async (id) => {
+            await deleteBody({ id });
+          }),
+        ),
       );
 
-      setValue("outfits", outfits);
-      router.push("/setup/welcome");
+      const ids = await Promise.all(
+        R.pipe(
+          R.filter(data.outfits, (outfit) => outfit.origin === "local"),
+          R.map(async (outfit) => {
+            const context = ImageManipulator.manipulate(outfit.uri);
+            const image = await context.renderAsync();
+            const result = await image.saveAsync({
+              format: SaveFormat.JPEG,
+            });
+
+            const blob = await (await fetch(result.uri)).blob();
+
+            await upload({
+              blob,
+              bucketName: "looky-body-images",
+              objectKey: `${outfit.id}.jpg`,
+            });
+
+            return outfit.id;
+          }),
+        ),
+      );
+
+      await insertBody(
+        ids.map((id) => ({ id, user_id: session?.user.id ?? "" })),
+      );
+
+      router.back();
     },
-    [router, setValue],
+    [deleteBody, insertBody, outfits, router, session, upload],
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <YStack flex={1} pt="$8" pb="$6" px="$8" gap="$8">
-        <YStack gap="$1">
-          <H1 fontSize="$2xl" fontWeight="bold">
-            {t("outfit.gallery.title")}
-          </H1>
-          <Text fontSize="$md" color="$mutedColor">
-            {t("outfit.gallery.description")}
-          </Text>
-        </YStack>
-        <Form flex={1} onSubmit={handleSubmit(onSubmit)}>
+    <View flex={1} pt="$8" pb={insets.bottom} px="$8">
+      <Form flex={1} justify="space-between" onSubmit={handleSubmit(onSubmit)}>
+        {isLoading || isMutating ? (
+          <FlashList
+            numColumns={2}
+            scrollEnabled={false}
+            data={Array.from({ length: 4 })}
+            renderItem={({ index }) => (
+              <View
+                pt={index > 1 ? 20 : 0}
+                pl={index % 2 === 1 ? 10 : 0}
+                pr={index % 2 === 0 ? 10 : 0}
+              >
+                <Skeleton
+                  w="100%"
+                  aspectRatio={3 / 4}
+                  rounded="$2xl"
+                  boxShadow="$sm"
+                />
+              </View>
+            )}
+          />
+        ) : (
           <FlashList
             numColumns={2}
             scrollEnabled={false}
@@ -151,7 +255,7 @@ const GalleryPage = () => {
                     href={{
                       pathname: "/camera",
                       params: {
-                        from: "/setup/outfit/gallery",
+                        from: "/settings/outfit",
                       },
                     }}
                     asChild
@@ -179,25 +283,25 @@ const GalleryPage = () => {
               </View>
             )}
           />
-          <YStack gap="$3">
-            <Form.Trigger asChild disabled={isSubmitting}>
-              <Button variant="primary">
-                {isSubmitting ? (
-                  <Button.Icon>
-                    <Spinner color="white" />
-                  </Button.Icon>
-                ) : (
-                  <Button.Text>{t("outfit.gallery.next")}</Button.Text>
-                )}
-              </Button>
-            </Form.Trigger>
-            <Text fontSize="$xs" color="$placeholderColor" text="center">
-              {t("outfit.gallery.note")}
-            </Text>
-          </YStack>
-        </Form>
-      </YStack>
-    </SafeAreaView>
+        )}
+        <YStack gap="$3">
+          <Form.Trigger asChild disabled={isSubmitting}>
+            <Button variant="primary">
+              {isSubmitting ? (
+                <Button.Icon>
+                  <Spinner color="white" />
+                </Button.Icon>
+              ) : (
+                <Button.Text>{t("outfit.gallery.submit")}</Button.Text>
+              )}
+            </Button>
+          </Form.Trigger>
+          <Button variant="ghost" onPress={router.back}>
+            <Button.Text>{t("outfit.gallery.cancel")}</Button.Text>
+          </Button>
+        </YStack>
+      </Form>
+    </View>
   );
 };
 
