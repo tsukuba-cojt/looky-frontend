@@ -86,7 +86,9 @@ const HeightPage = memo(() => {
             render={({ field: { onChange, value } }) => (
               <YStack gap="$1.5">
                 <XStack>
-                  <Label htmlFor="height">{t("profile.height.label")}</Label>
+                  <Label htmlFor="height" unstyled color="$color">
+                    {t("profile.height.label")}
+                  </Label>
                   <Text color="$destructiveBackground">*</Text>
                 </XStack>
                 <XStack position="relative" items="center">

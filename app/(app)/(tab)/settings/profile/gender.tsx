@@ -95,7 +95,7 @@ const GenderPage = memo(() => {
           render={({ field: { onChange, value } }) => (
             <YStack gap="$1.5">
               <XStack>
-                <Label htmlFor="gender">
+                <Label htmlFor="gender" unstyled color="$color">
                   {t("settings:profile.gender.label")}
                 </Label>
                 <Text color="$destructiveBackground">*</Text>
@@ -141,7 +141,7 @@ const GenderPage = memo(() => {
                   <Select.ScrollUpButton />
                   <Select.Viewport>
                     <Select.Group>
-                      <Select.Label />
+                      <Select.Label unstyled color="$color" />
                       {genders.map((option, index) => {
                         const isActive = value === option;
 

@@ -27,7 +27,13 @@ const ThemePage = memo(() => {
               <RadioGroup.Item id={id} value={item} size="$10">
                 <RadioGroup.Indicator />
               </RadioGroup.Item>
-              <Label flex={1} htmlFor={id} fontWeight="$medium">
+              <Label
+                flex={1}
+                htmlFor={id}
+                fontWeight="$medium"
+                unstyled
+                color="$color"
+              >
                 {t(`theme.${item}`)}
               </Label>
             </XStack>

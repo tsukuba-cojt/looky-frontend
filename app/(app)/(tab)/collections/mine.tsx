@@ -24,8 +24,9 @@ const MinePage = memo(() => {
             <Button
               key={index.toString()}
               variant={category === item ? "primary" : "outline"}
-              h="$8"
+              h="auto"
               px="$3"
+              py="$2"
               rounded="$full"
               boxShadow="none"
               onPress={() => setCategory(item)}

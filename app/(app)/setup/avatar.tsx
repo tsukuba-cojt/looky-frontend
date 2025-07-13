@@ -86,7 +86,7 @@ const AvatarPage = memo(() => {
               >
                 <YStack position="relative">
                   <Avatar circular size="$40">
-                    <Avatar.Image src={uri} />
+                    {uri && <Avatar.Image src={uri} />}
                     <Avatar.Fallback
                       items="center"
                       justify="center"

@@ -66,7 +66,9 @@ const NamePage = memo(() => {
               render={({ field: { onChange, value } }) => (
                 <YStack gap="$1.5">
                   <XStack>
-                    <Label htmlFor="name">{t("name.label")}</Label>
+                    <Label htmlFor="name" unstyled color="$color">
+                      {t("name.label")}
+                    </Label>
                     <Text color="$destructiveBackground">*</Text>
                   </XStack>
                   <Input

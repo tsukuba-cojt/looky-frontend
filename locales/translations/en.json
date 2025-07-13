@@ -115,16 +115,16 @@
   },
   "onboarding": {
     "tab1": {
-      "title": "Try On Clothes in Your Photos",
-      "description": "No need to physically wear clothes; easily try on various outfits."
+      "title": "Try clothes on your photo",
+      "description": "No need to actually wear the clothes—\nfreely test out many styles."
     },
     "tab2": {
-      "title": "Curate Your Style with Swipes",
-      "description": "Swipe left or right to discover more clothes that match your preferences."
+      "title": "Swipe to filter your favorites",
+      "description": "Swipe images left or right\nand quickly surface outfits you like."
     },
     "tab3": {
-      "title": "Find Clothes That Suit You",
-      "description": "Experiment a lot and find outfits you love."
+      "title": "Find clothes that suit you",
+      "description": "Try plenty of options\nand discover your perfect look."
     },
     "get_started": "Get Started",
     "next": "Next",
@@ -168,17 +168,17 @@
       },
       "guide": {
         "tips": "Photo Tips",
-        "tab1": {
-          "title": "Use a simple background",
-          "description": "Try to take the photo in front of a simple, uncluttered background."
+        "tab1": {          
+          "title": "Keep the background simple",
+          "description": "Shoot in a place\nwith a simple background."
         },
         "tab2": {
           "title": "Stay within the frame",
-          "description": "Make sure your entire body fits within the on-screen frame."
+          "description": "Make sure you fit inside the frame\nshown on the screen."
         },
         "tab3": {
           "title": "Use the self-timer",
-          "description": "Set up your phone and use the self-timer to take the photo."
+          "description": "Set your phone upright and take the photo\nusing the self-timer."
         },
         "get_started": "Get Started",
         "next": "Next",
@@ -302,8 +302,8 @@
       "not_selected": "Not selected",
       "not_configured": "Not configured"
     },
-    "style": {
-      "title": "Style"
+    "outfit": {
+      "title": "Outfit"
     },
     "theme": {
       "title": "Theme",

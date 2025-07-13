@@ -12,7 +12,8 @@ import {
 import { useCallback } from "react";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { SafeAreaView, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Form, H1, Spinner, Text, View, YStack } from "tamagui";
 import { z } from "zod/v4";
 import { Button } from "@/components/Button";

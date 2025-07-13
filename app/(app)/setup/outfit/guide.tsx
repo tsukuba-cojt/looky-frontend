@@ -3,11 +3,12 @@ import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, SafeAreaView, useWindowDimensions } from "react-native";
+import { Animated, useWindowDimensions } from "react-native";
 import { SlidingDot } from "react-native-animated-pagination-dots";
 import PagerView, {
   type PagerViewOnPageScrollEventData,
 } from "react-native-pager-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { H1, Text, useTheme, YStack } from "tamagui";
 import { Button } from "@/components/Button";
@@ -144,7 +145,7 @@ const GuidePage = memo(() => {
       >
         {data.map(({ key, title, description, icon }, index) => {
           return (
-            <YStack key={key} flex={1} items="center" pt={48} gap="$12">
+            <YStack key={key} flex={1} items="center" pt="$12" gap="$12">
               <YStack gap="$6">
                 <H1 text="center" fontSize="$2xl" fontWeight="$bold">
                   {t("outfit.guide.tips")}
@@ -156,7 +157,7 @@ const GuidePage = memo(() => {
                 />
               </YStack>
               <YStack gap="$6">
-                <H1 fontSize="$2xl" fontWeight="$bold">
+                <H1 text="center" fontSize="$2xl" fontWeight="$bold">
                   {title}
                 </H1>
                 <Text text="center" color="$mutedColor">

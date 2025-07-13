@@ -69,7 +69,9 @@ const EmailPage = memo(() => {
             render={({ field: { onChange, value } }) => (
               <YStack gap="$1.5">
                 <XStack>
-                  <Label htmlFor="email">{t("profile.email.label")}</Label>
+                  <Label htmlFor="email" unstyled color="$color">
+                    {t("profile.email.label")}
+                  </Label>
                   <Text color="$destructiveBackground">*</Text>
                 </XStack>
                 <Input

@@ -18,7 +18,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { toast } from "sonner-native";
 import { AnimatePresence, Portal, View, XStack } from "tamagui";
@@ -64,6 +64,7 @@ const SwipableCardItem = memo(({ id, url }: SwipableCardItemProps) => {
 
 const TryOnPage = memo(() => {
   const { t } = useTranslation("try_on");
+  const { height } = useWindowDimensions();
   const session = useSessionStore((state) => state.session);
   const [items, setItems] = useState<
     { id: number; vton: Pick<Vton, "object_key" | "tops_id"> }[]
@@ -286,6 +287,7 @@ const TryOnPage = memo(() => {
   return (
     <AnimatePresence>
       <Portal
+        y={focused ? 0 : height}
         opacity={focused ? 1 : 0}
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}

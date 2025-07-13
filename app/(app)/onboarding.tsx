@@ -2,11 +2,12 @@ import { Image } from "expo-image";
 import { Link, useRouter } from "expo-router";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated, SafeAreaView, useWindowDimensions } from "react-native";
+import { Animated, useWindowDimensions } from "react-native";
 import { SlidingDot } from "react-native-animated-pagination-dots";
 import PagerView, {
   type PagerViewOnPageScrollEventData,
 } from "react-native-pager-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { H1, Text, useTheme, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 
@@ -99,7 +100,7 @@ const OnboardingPage = () => {
                 transition={200}
               />
               <YStack gap="$6">
-                <H1 fontSize="$2xl" fontWeight="$bold">
+                <H1 text="center" fontSize="$2xl" fontWeight="$bold">
                   {title}
                 </H1>
                 <Text text="center" color="$mutedColor">

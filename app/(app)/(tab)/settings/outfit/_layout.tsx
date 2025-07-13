@@ -5,7 +5,7 @@ import { Text } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 
-const LanguageLayout = memo(() => {
+const ProfileLayout = memo(() => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const pathname = usePathname();
@@ -56,11 +56,11 @@ const LanguageLayout = memo(() => {
       <Stack.Screen
         name="index"
         options={{
-          title: t("language.title"),
+          title: t("outfit.title"),
         }}
       />
     </Stack>
   );
 });
 
-export default LanguageLayout;
+export default ProfileLayout;

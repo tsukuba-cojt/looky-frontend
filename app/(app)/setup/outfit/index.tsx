@@ -2,7 +2,7 @@ import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { H1, Text, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 

@@ -74,8 +74,9 @@ const DiscoverPage = memo(() => {
           <XStack gap="$2">
             <Button
               variant="outline"
-              h="$8"
+              h="auto"
               px="$3"
+              py="$1.5"
               gap="$1"
               rounded="$full"
               boxShadow="none"
@@ -88,8 +89,9 @@ const DiscoverPage = memo(() => {
             </Button>
             <Button
               variant="outline"
-              h="$8"
+              h="auto"
               px="$3"
+              py="$1.5"
               gap="$1"
               rounded="$full"
               boxShadow="none"
@@ -102,8 +104,9 @@ const DiscoverPage = memo(() => {
             </Button>
             <Button
               variant="outline"
-              h="$8"
+              h="auto"
               px="$3"
+              py="$1.5"
               gap="$1"
               rounded="$full"
               boxShadow="none"

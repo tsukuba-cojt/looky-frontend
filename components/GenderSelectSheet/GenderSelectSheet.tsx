@@ -45,7 +45,13 @@ export const GenderSelectSheet = memo(
                   <RadioGroup.Item id={id} value={item}>
                     <RadioGroup.Indicator />
                   </RadioGroup.Item>
-                  <Label flex={1} htmlFor={id} fontWeight="$medium">
+                  <Label
+                    flex={1}
+                    htmlFor={id}
+                    fontWeight="$medium"
+                    unstyled
+                    color="$color"
+                  >
                     {t(`gender.${item}`)}
                   </Label>
                 </XStack>
