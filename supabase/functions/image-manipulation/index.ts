@@ -22,9 +22,7 @@ Deno.serve(async (req) => {
   const result = ImageMagick.read(
     content,
     (img): Uint8Array => {
-      img.resize(500, 300);
-      img.blur(60, 5);
-
+      img.resize(500, 500);
       return img.write(
         (data) => data,
       );
