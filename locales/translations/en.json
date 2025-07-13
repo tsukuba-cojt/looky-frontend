@@ -303,7 +303,32 @@
       "not_configured": "Not configured"
     },
     "outfit": {
-      "title": "Outfit"
+      "gallery": {
+        "title": "Outfits",
+        "required_error": "Full-Body is required.",
+        "submit": "Change",
+        "cancel": "Cancel",
+        "error": "Something went wrong. Please try again."
+      },
+      "guide": {
+        "tips": "Photo Tips",
+        "tab1": {          
+          "title": "Keep the background simple",
+          "description": "Shoot in a place\nwith a simple background."
+        },
+        "tab2": {
+          "title": "Stay within the frame",
+          "description": "Make sure you fit inside the frame\nshown on the screen."
+        },
+        "tab3": {
+          "title": "Use the self-timer",
+          "description": "Set your phone upright and take the photo\nusing the self-timer."
+        },
+        "get_started": "Get Started",
+        "next": "Next",
+        "skip": "Skip",
+        "error": "Camera access is not allowed. Please allow camera access in your settings."
+      }
     },
     "theme": {
       "title": "Theme",

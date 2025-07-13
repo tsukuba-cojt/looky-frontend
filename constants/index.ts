@@ -64,3 +64,5 @@ export const colors = {
 export const languages = ["en", "ja", "system"] as const;
 
 export const themes = ["light", "dark", "system"] as const;
+
+export const origins = ["local", "remote"] as const;

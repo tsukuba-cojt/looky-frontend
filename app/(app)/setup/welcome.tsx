@@ -92,14 +92,14 @@ const WelcomePage = memo(() => {
           name: data.name,
           gender: data.gender,
           avatar_url: data.avatar ? `${data.avatar.id}.jpg` : null,
-          body_url: `${data.outfits[0].uri}.jpg`,
+          body_url: `${data.outfits[0].id}.jpg`,
         },
       ]);
 
       await insertBody(
         data.outfits.map((outfit) => ({
           user_id: session?.user.id ?? "",
-          object_key: `${outfit.uri}.jpg`,
+          object_key: `${outfit.id}.jpg`,
         })),
       );
 

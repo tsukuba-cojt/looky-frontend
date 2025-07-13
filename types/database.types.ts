@@ -17,20 +17,17 @@ export type Database = {
       t_body: {
         Row: {
           created_at: string;
-          id: number;
-          object_key: string | null;
+          id: string;
           user_id: string | null;
         };
         Insert: {
           created_at?: string;
-          id?: number;
-          object_key?: string | null;
+          id?: string;
           user_id?: string | null;
         };
         Update: {
           created_at?: string;
-          id?: number;
-          object_key?: string | null;
+          id?: string;
           user_id?: string | null;
         };
         Relationships: [
@@ -84,6 +81,7 @@ export type Database = {
       };
       t_task: {
         Row: {
+          clothes_part: Database["public"]["Enums"]["part"];
           created_at: string;
           id: number;
           status: Database["public"]["Enums"]["status"] | null;
@@ -91,6 +89,7 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          clothes_part?: Database["public"]["Enums"]["part"];
           created_at?: string;
           id?: number;
           status?: Database["public"]["Enums"]["status"] | null;
@@ -98,6 +97,7 @@ export type Database = {
           user_id: string;
         };
         Update: {
+          clothes_part?: Database["public"]["Enums"]["part"];
           created_at?: string;
           id?: number;
           status?: Database["public"]["Enums"]["status"] | null;

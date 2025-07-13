@@ -97,7 +97,7 @@ const SettingsPage = memo(() => {
                 <Button.Icon>
                   <Icons.shirt size="$4" />
                 </Button.Icon>
-                <Button.Text>{t("settings:outfit.title")}</Button.Text>
+                <Button.Text>{t("settings:outfit.gallery.title")}</Button.Text>
               </XStack>
               <Button.Icon>
                 <Icons.chevronRight size="$4" />
