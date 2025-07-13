@@ -2,7 +2,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useCursorInfiniteScrollQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
-import { memo, useMemo, useState } from "react";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { Spinner, View, XStack, YStack } from "tamagui";
@@ -30,16 +30,14 @@ const DiscoverPage = memo(() => {
       () =>
         supabase
           .from("t_clothes")
-          .select("id,gender,category,object_key")
+          .select("id,object_key")
+          .order("created_at", { ascending: true })
           .order("id", { ascending: true })
           .limit(12),
-      { orderBy: "id", uqOrderBy: "id" },
+      { orderBy: "created_at", uqOrderBy: "id" },
     );
 
-  const isRefreshing = useMemo(
-    () => !isLoading && isValidating,
-    [isLoading, isValidating],
-  );
+  const isRefreshing = !isLoading && isValidating;
 
   return (
     <>
@@ -152,7 +150,7 @@ const DiscoverPage = memo(() => {
             }}
             ListFooterComponent={() =>
               isRefreshing && (
-                <View mt="$4" justify="center">
+                <View pt="$4" justify="center">
                   <Spinner color="$mutedColor" />
                 </View>
               )

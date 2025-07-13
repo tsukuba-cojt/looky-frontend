@@ -5,7 +5,7 @@ export const Skeleton = memo((props: ViewProps) => {
   return (
     <View
       animation="pulse"
-      rounded="$md"
+      rounded="$full"
       enterStyle={{
         opacity: 0.5,
       }}

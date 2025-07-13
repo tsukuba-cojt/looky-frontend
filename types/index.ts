@@ -23,3 +23,9 @@ export type Color = keyof typeof colors;
 export type Language = (typeof languages)[number];
 
 export type Theme = (typeof themes)[number];
+
+export type History = {
+  id: string;
+  text: string;
+  createAt: string;
+};

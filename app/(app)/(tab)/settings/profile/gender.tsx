@@ -110,7 +110,7 @@ const GenderPage = memo(() => {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <Skeleton w="$16" h={getFontSize("$md")} rounded="$full" />
+                    <Skeleton w="$16" h={getFontSize("$md")} />
                   ) : (
                     <Select.Value
                       placeholder={t("settings:profile.gender.placeholder")}

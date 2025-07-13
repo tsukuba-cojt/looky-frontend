@@ -52,8 +52,8 @@ const SettingsPage = memo(() => {
           <View flex={1}>
             {isLoading ? (
               <YStack gap="$2">
-                <Skeleton w="$16" h={getFontSize("$xl")} rounded="$full" />
-                <Skeleton w="$32" h={getFontSize("$sm")} rounded="$full" />
+                <Skeleton w="$16" h={getFontSize("$xl")} />
+                <Skeleton w="$32" h={getFontSize("$sm")} />
               </YStack>
             ) : (
               <YStack gap="$2">

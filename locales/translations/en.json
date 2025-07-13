@@ -231,7 +231,9 @@
     "filter": "Filter",
     "not_selected": "Not selected",
     "search": "Search",
-    "clear": "Clear"
+    "clear": "Clear",
+    "delete": "Delete",
+    "empty_placeholder": "No results found."
   },
   "collections": {
     "title": "Collections",
