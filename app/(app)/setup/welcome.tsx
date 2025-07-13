@@ -53,6 +53,17 @@ const WelcomePage = memo(() => {
     },
   );
 
+  const { trigger: insertBody } = useInsertMutation(
+    supabase.from("t_body"),
+    ["id"],
+    "*",
+    {
+      onError: () => {
+        toast.error(t("welcome.error"));
+      },
+    },
+  );
+
   const onSubmit = useCallback(
     async (data: FormData) => {
       if (data.avatar) {
@@ -85,6 +96,13 @@ const WelcomePage = memo(() => {
         },
       ]);
 
+      await insertBody(
+        data.outfits.map((outfit) => ({
+          user_id: session?.user.id ?? "",
+          object_key: `${outfit.uri}.jpg`,
+        })),
+      );
+
       await insertTask(
         Array.from({ length: 3 }, () => ({
           user_id: session?.user.id ?? "",
@@ -92,7 +110,7 @@ const WelcomePage = memo(() => {
         })),
       );
     },
-    [insertTask, insertUser, session, upload],
+    [insertBody, insertTask, insertUser, session, upload],
   );
 
   return (
