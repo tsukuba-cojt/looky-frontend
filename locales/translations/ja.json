@@ -231,7 +231,9 @@
     "filter": "絞り込む",
     "not_selected": "未選択",
     "search": "検索する",
-    "clear": "クリア"
+    "clear": "クリア",
+    "delete": "削除",
+    "empty_placeholder": "結果がありません。"
   },
   "collections": {
     "title": "コレクション",

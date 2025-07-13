@@ -27,21 +27,22 @@ export type SwipableCardRef =
   | {
       swipeRight: () => void;
       swipeLeft: () => void;
-      swipeBack: () => void;
       swipeTop: () => void;
       swipeBottom: () => void;
+      swipeBack: () => void;
     }
   | undefined;
 
-export type SwipableCardProps = {
+export interface SwipableCardProps {
   index: number;
   activeIndex: SharedValue<number>;
   onSwipeRight?: (index: number) => void;
   onSwipeLeft?: (index: number) => void;
   onSwipeTop?: (index: number) => void;
   onSwipeBottom?: (index: number) => void;
+  onSwipeBack?: (index: number) => void;
   cardStyle?: StyleProp<ViewStyle>;
-};
+}
 
 const userConfig = {
   damping: 20,
@@ -62,6 +63,7 @@ export const SwipeableCard = memo(
         onSwipeRight,
         onSwipeTop,
         onSwipeBottom,
+        onSwipeBack,
         cardStyle,
         children,
       },
@@ -99,11 +101,12 @@ export const SwipeableCard = memo(
       }, [index, activeIndex, maxTranslateY, onSwipeBottom, translateY]);
 
       const swipeBack = useCallback(() => {
+        onSwipeBack?.(index);
         cancelAnimation(translateX);
         cancelAnimation(translateY);
         translateX.value = withSpring(0, userConfig);
         translateY.value = withSpring(0, userConfig);
-      }, [translateX, translateY]);
+      }, [translateX, translateY, onSwipeBack, index]);
 
       useImperativeHandle(ref, () => {
         return {

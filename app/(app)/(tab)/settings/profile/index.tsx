@@ -61,7 +61,7 @@ const ProfilePage = memo(() => {
               <Button.Text>{t("settings:profile.name.title")}</Button.Text>
               <XStack flex={1} gap="$4" justify="flex-end">
                 {isLoading ? (
-                  <Skeleton w="$20" h={getFontSize("$md")} rounded="$full" />
+                  <Skeleton w="$20" h={getFontSize("$md")} />
                 ) : (
                   <Button.Text color={user?.name ? "$color" : "$mutedColor"}>
                     {user?.name ?? t("settings:profile.not_configured")}
@@ -78,7 +78,7 @@ const ProfilePage = memo(() => {
               <Button.Text>{t("settings:profile.email.title")}</Button.Text>
               <XStack flex={1} gap="$4" justify="flex-end">
                 {isLoading ? (
-                  <Skeleton w="$20" h={getFontSize("$md")} rounded="$full" />
+                  <Skeleton w="$20" h={getFontSize("$md")} />
                 ) : (
                   <Button.Text
                     color={session?.user.email ? "$color" : "$mutedColor"}
@@ -98,7 +98,7 @@ const ProfilePage = memo(() => {
               <Button.Text>{t("settings:profile.gender.title")}</Button.Text>
               <XStack flex={1} gap="$4" justify="flex-end">
                 {isLoading ? (
-                  <Skeleton w="$20" h={getFontSize("$md")} rounded="$full" />
+                  <Skeleton w="$20" h={getFontSize("$md")} />
                 ) : (
                   <Button.Text color={user?.gender ? "$color" : "$mutedColor"}>
                     {user?.gender
@@ -117,7 +117,7 @@ const ProfilePage = memo(() => {
               <Button.Text>{t("settings:profile.height.title")}</Button.Text>
               <XStack flex={1} gap="$4" justify="flex-end">
                 {isLoading ? (
-                  <Skeleton w="$20" h={getFontSize("$md")} rounded="$full" />
+                  <Skeleton w="$20" h={getFontSize("$md")} />
                 ) : (
                   <Button.Text color={user?.height ? "$color" : "$mutedColor"}>
                     {user?.height

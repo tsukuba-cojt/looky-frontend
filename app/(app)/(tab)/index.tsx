@@ -266,6 +266,13 @@ const TryOnPage = memo(() => {
     [insertTask, session, updateFeedback],
   );
 
+  const onSwipeBack = useCallback(
+    async (id: number) => {
+      await updateFeedback({ id, feedback: null });
+    },
+    [updateFeedback],
+  );
+
   useImperativeHandle(ref, () => {
     return {
       swipeLeft,
@@ -291,18 +298,11 @@ const TryOnPage = memo(() => {
                 index={index}
                 activeIndex={activeIndex}
                 ref={refs[index]}
-                onSwipeRight={() => {
-                  onSwipeRight(item.id);
-                }}
-                onSwipeLeft={() => {
-                  onSwipeLeft(item.id);
-                }}
-                onSwipeTop={() => {
-                  onSwipeTop(item.id);
-                }}
-                onSwipeBottom={() => {
-                  onSwipeBottom(item.id);
-                }}
+                onSwipeRight={() => onSwipeRight(item.id)}
+                onSwipeLeft={() => onSwipeLeft(item.id)}
+                onSwipeTop={() => onSwipeTop(item.id)}
+                onSwipeBottom={() => onSwipeBottom(item.id)}
+                onSwipeBack={() => onSwipeBack(item.id)}
               >
                 <SwipableCardItem
                   id={item.vton.tops_id}

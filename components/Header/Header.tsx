@@ -28,7 +28,7 @@ export const Header = memo(({ title, user, isLoading }: HeaderProps) => {
         {title}
       </H1>
       {isLoading ? (
-        <Skeleton w="$9" h="$9" rounded="$full" />
+        <Skeleton w="$9" h="$9" />
       ) : (
         <Link href="/settings" asChild>
           <Avatar circular size="$9">

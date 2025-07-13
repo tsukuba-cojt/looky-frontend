@@ -45,28 +45,40 @@ export type Database = {
       };
       t_clothes: {
         Row: {
-          category: Database["public"]["Enums"]["part"] | null;
+          category: string | null;
+          color: string | null;
           created_at: string;
           gender: Database["public"]["Enums"]["gender"] | null;
           id: number;
           invalid: boolean | null;
+          name: string | null;
           object_key: string | null;
+          part: Database["public"]["Enums"]["part"] | null;
+          subcategory: string | null;
         };
         Insert: {
-          category?: Database["public"]["Enums"]["part"] | null;
+          category?: string | null;
+          color?: string | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
           invalid?: boolean | null;
+          name?: string | null;
           object_key?: string | null;
+          part?: Database["public"]["Enums"]["part"] | null;
+          subcategory?: string | null;
         };
         Update: {
-          category?: Database["public"]["Enums"]["part"] | null;
+          category?: string | null;
+          color?: string | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
           invalid?: boolean | null;
+          name?: string | null;
           object_key?: string | null;
+          part?: Database["public"]["Enums"]["part"] | null;
+          subcategory?: string | null;
         };
         Relationships: [];
       };
