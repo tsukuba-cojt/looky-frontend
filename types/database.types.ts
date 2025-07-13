@@ -79,6 +79,42 @@ export type Database = {
         };
         Relationships: [];
       };
+      t_like: {
+        Row: {
+          clothes_id: number;
+          created_at: string;
+          id: number;
+          user_id: string;
+        };
+        Insert: {
+          clothes_id: number;
+          created_at?: string;
+          id?: number;
+          user_id: string;
+        };
+        Update: {
+          clothes_id?: number;
+          created_at?: string;
+          id?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "t_like_clothes_id_fkey";
+            columns: ["clothes_id"];
+            isOneToOne: false;
+            referencedRelation: "t_clothes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "t_like_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "t_user";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       t_task: {
         Row: {
           clothes_part: Database["public"]["Enums"]["part"];
