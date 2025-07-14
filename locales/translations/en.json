@@ -44,12 +44,12 @@
       },
       "dresses": {
         "label": "Dresses",
-        "casual_dresses": "Casual Dresses",
-        "evening_dresses": "Evening Dresses",
-        "cocktail_dresses": "Cocktail Dresses",
-        "summer_dresses": "Summer Dresses",
-        "maxi_dresses": "Maxi Dresses",
-        "shirt_dresses": "Shirt Dresses"
+        "casual": "Casual Dresses",
+        "evening": "Evening Dresses",
+        "cocktail": "Cocktail Dresses",
+        "summer": "Summer Dresses",
+        "maxi": "Maxi Dresses",
+        "shirt": "Shirt Dresses"
       }
     },
     "color": {
@@ -213,12 +213,17 @@
     "cancel": "Cancel"
   },
   "loading": {
-    "title": "Generating",
+    "title": "Generating...",
     "description": "We are finding the perfect outfit for you.\nPlease wait a moment.",
     "error": "Something went wrong. Please try again."
   },
   "try_on": {
-    "title": "Try On"
+    "title": "Try On",
+    "loading": {
+      "title": "Generating...",
+      "description": "We are finding the perfect outfit for you.\nPlease wait a moment."
+    },
+    "error": "Something went wrong. Please try again."
   },
   "discover": {
     "title": "Discover",
@@ -234,7 +239,7 @@
     "clear": "Clear",
     "delete": "Delete",
     "empty_placeholder": "No results found.",
-    "error": "エラーが発生しました。もう一度お試しください。"
+    "error": "Something went wrong. Please try again."
   },
   "collections": {
     "title": "Collections",

@@ -7,6 +7,7 @@ import {
 } from "@supabase-cache-helpers/postgrest-swr";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
+import LottieView from "lottie-react-native";
 import {
   createRef,
   memo,
@@ -21,7 +22,15 @@ import { useTranslation } from "react-i18next";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { toast } from "sonner-native";
-import { AnimatePresence, Portal, View, XStack } from "tamagui";
+import {
+  AnimatePresence,
+  H1,
+  Portal,
+  Text,
+  View,
+  XStack,
+  YStack,
+} from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { Skeleton } from "@/components/Skeleton";
@@ -32,35 +41,6 @@ import {
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 import type { Vton } from "@/types";
-
-interface SwipableCardItemProps {
-  id: number;
-  url: string;
-}
-
-const SwipableCardItem = memo(({ id, url }: SwipableCardItemProps) => {
-  return (
-    <View position="relative" overflow="hidden" rounded="$3xl" boxShadow="$sm">
-      <View position="absolute" inset={0} bg="$mutedBackground" />
-      <Skeleton position="absolute" inset={0} />
-      <Link
-        href={{
-          pathname: "/details/[id]",
-          params: { id },
-        }}
-        asChild
-      >
-        <TouchableOpacity activeOpacity={0.6}>
-          <Image
-            style={{ width: "100%", height: "100%" }}
-            source={url}
-            transition={200}
-          />
-        </TouchableOpacity>
-      </Link>
-    </View>
-  );
-});
 
 const TryOnPage = memo(() => {
   const { t } = useTranslation("try_on");
@@ -146,10 +126,11 @@ const TryOnPage = memo(() => {
   );
 
   const ref = useRef<SwipableCardRef>(null);
+  const animation = useRef<LottieView>(null);
   const activeIndex = useSharedValue(0);
   const focused = useIsFocused();
 
-  const length = useMemo(() => items.length, [items]);
+  const length = useMemo(() => items.length + 1, [items]);
 
   const refs = useMemo(() => {
     const tmp: RefObject<SwipableCardRef | null>[] = [];
@@ -161,6 +142,7 @@ const TryOnPage = memo(() => {
 
   const worklet = useCallback(() => {
     "worklet";
+
     if (activeIndex.value < length) {
       activeIndex.value++;
     }
@@ -203,15 +185,13 @@ const TryOnPage = memo(() => {
   }, [refs, worklet, activeIndex]);
 
   const swipeBack = useCallback(() => {
-    const prevIndex = activeIndex.value - 1;
-
-    if (prevIndex < 0 || !refs[prevIndex]) {
+    if (activeIndex.value < 1) {
       return;
     }
 
-    if (refs[prevIndex]) {
-      refs[prevIndex].current?.swipeBack();
-      activeIndex.value = prevIndex;
+    if (refs[activeIndex.value - 1]) {
+      refs[activeIndex.value - 1].current?.swipeBack();
+      activeIndex.value = activeIndex.value - 1;
     }
   }, [activeIndex, refs]);
 
@@ -292,7 +272,15 @@ const TryOnPage = memo(() => {
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       >
-        <View flex={1} items="center" justify="center" pt="$6" px="$6" gap="$6">
+        <View
+          position="relative"
+          flex={1}
+          items="center"
+          justify="center"
+          pt="$6"
+          px="$6"
+          gap="$6"
+        >
           <View aspectRatio={3 / 4} w="100%">
             {items.map((item, index) => {
               return (
@@ -311,13 +299,76 @@ const TryOnPage = memo(() => {
                   onSwipeBottom={() => onSwipeBottom(item.id)}
                   onSwipeBack={() => onSwipeBack(item.id)}
                 >
-                  <SwipableCardItem
-                    id={item.vton.tops_id}
-                    url={`https://picsum.photos/1200/900?id=${item.id}`}
-                  />
+                  <View
+                    position="relative"
+                    overflow="hidden"
+                    rounded="$3xl"
+                    boxShadow="$sm"
+                  >
+                    <View position="absolute" inset={0} bg="$mutedBackground" />
+                    <Skeleton position="absolute" inset={0} />
+                    <Link
+                      href={{
+                        pathname: "/details/[id]",
+                        params: { id: item.vton.tops_id },
+                      }}
+                      asChild
+                    >
+                      <TouchableOpacity activeOpacity={0.6}>
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={`https://picsum.photos/1200/900?id=${item.id}`}
+                          transition={200}
+                        />
+                      </TouchableOpacity>
+                    </Link>
+                  </View>
                 </SwipeableCard>
               );
             })}
+            <SwipeableCard
+              cardStyle={{
+                width: "100%",
+                height: "100%",
+              }}
+              disabled
+              index={items.length}
+              activeIndex={activeIndex}
+              ref={refs[items.length]}
+            >
+              <YStack
+                flex={1}
+                items="center"
+                justify="center"
+                borderWidth={1}
+                borderColor="$borderColor"
+                rounded="$3xl"
+                boxShadow="$sm"
+                gap="$6"
+              >
+                <YStack>
+                  <View w={200} h={200} rounded="$full" bg="$mutedBackground">
+                    <LottieView
+                      autoPlay
+                      ref={animation}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      source={require("../../../assets/loading.json")}
+                    />
+                  </View>
+                </YStack>
+                <YStack items="center" gap="$4">
+                  <H1 fontWeight="$bold" fontSize="$3xl">
+                    {t("loading.title")}
+                  </H1>
+                  <Text text="center" fontSize="$sm" lineHeight="$sm">
+                    {t("loading.description")}
+                  </Text>
+                </YStack>
+              </YStack>
+            </SwipeableCard>
           </View>
           <XStack
             gap="$6"

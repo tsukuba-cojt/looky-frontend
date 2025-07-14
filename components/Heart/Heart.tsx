@@ -14,39 +14,41 @@ interface HeartProps extends ViewProps {
   active: boolean;
 }
 
-export const Heart = memo(({ size, color, active, ...props }: HeartProps) => {
-  return (
-    <>
-      <AnimatePresence>
-        {!active && (
-          <View
-            position="absolute"
-            w={size ?? "$4"}
-            h={size ?? "$4"}
-            animation="quick"
-            enterStyle={{ opacity: 0, scale: 0 }}
-            exitStyle={{ opacity: 0, scale: 0 }}
-            {...props}
-          >
-            <Icons.heart size={size ?? "$4"} color={color} />
-          </View>
-        )}
-      </AnimatePresence>
+export const Heart = memo(
+  ({ size = "$4", color, active, ...props }: HeartProps) => {
+    return (
+      <>
+        <AnimatePresence>
+          {!active && (
+            <View
+              position="absolute"
+              w={size}
+              h={size}
+              animation="quick"
+              enterStyle={{ opacity: 0, scale: 0 }}
+              exitStyle={{ opacity: 0, scale: 0 }}
+              {...props}
+            >
+              <Icons.heart size={size} color={color} />
+            </View>
+          )}
+        </AnimatePresence>
 
-      <AnimatePresence>
-        {active && (
-          <View
-            w={size ?? "$4"}
-            h={size ?? "$4"}
-            animation="quick"
-            enterStyle={{ opacity: 0, scale: 0 }}
-            exitStyle={{ opacity: 0, scale: 0 }}
-            {...props}
-          >
-            <Icons.heart size={size ?? "$4"} color="red" fill="red" />
-          </View>
-        )}
-      </AnimatePresence>
-    </>
-  );
-});
+        <AnimatePresence>
+          {active && (
+            <View
+              w={size}
+              h={size}
+              animation="quick"
+              enterStyle={{ opacity: 0, scale: 0 }}
+              exitStyle={{ opacity: 0, scale: 0 }}
+              {...props}
+            >
+              <Icons.heart size={size} color="red" fill="red" />
+            </View>
+          )}
+        </AnimatePresence>
+      </>
+    );
+  },
+);

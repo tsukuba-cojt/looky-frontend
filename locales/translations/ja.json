@@ -44,12 +44,12 @@
       },
       "dresses": {
         "label": "ワンピース",
-        "casual_dresses": "カジュアルワンピース",
-        "evening_dresses": "イブニングドレス",
-        "cocktail_dresses": "カクテルドレス",
-        "summer_dresses": "サマードレス",
-        "maxi_dresses": "マキシドレス",
-        "shirt_dresses": "シャツワンピース"
+        "casual": "カジュアルワンピース",
+        "evening": "イブニングドレス",
+        "cocktail": "カクテルドレス",
+        "summer": "サマードレス",
+        "maxi": "マキシドレス",
+        "shirt": "シャツワンピース"
       }
     },
     "color": {
@@ -213,12 +213,17 @@
     "cancel": "キャンセル"
   },
   "loading": {
-    "title": "生成中",
+    "title": "生成中...",
     "description": "あなたにぴったりの服を見つけています。\nしばらくお待ちください。",
     "error": "エラーが発生しました。もう一度お試しください。"
   },
   "try_on": {
-    "title": "試着する"
+    "title": "試着する",
+    "loading": {
+      "title": "生成中...",
+      "description": "あなたにぴったりの服を見つけています。\nしばらくお待ちください。"
+    },
+    "error": "エラーが発生しました。もう一度お試しください。"
   },
   "discover": {
     "title": "見つける",
