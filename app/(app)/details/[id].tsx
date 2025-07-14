@@ -2,6 +2,7 @@ import {
   useDeleteMutation,
   useInsertMutation,
   useQuery,
+  useRevalidateTables,
 } from "@supabase-cache-helpers/postgrest-swr";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
@@ -36,20 +37,27 @@ const DetailsPage = memo(() => {
       .maybeSingle(),
   );
 
+  const revalidateTables = useRevalidateTables([
+    { schema: "public", table: "t_clothes" },
+    { schema: "public", table: "t_like" },
+  ]);
+
   const { trigger: insertLike } = useInsertMutation(
     supabase.from("t_like"),
     ["id"],
     "*",
     {
-      onSuccess: () => {
+      onSuccess: async () => {
         // @ts-expect-error
-        mutate((prev) => {
+        await mutate((prev) => {
           if (!prev) {
             return;
           }
 
           return { ...prev, data: { ...prev.data, like: [{ count: 1 }] } };
-        }, false);
+        });
+
+        await revalidateTables();
       },
       onError: () => {
         toast.error(t("error"));
@@ -62,16 +70,17 @@ const DetailsPage = memo(() => {
     ["clothes_id", "user_id"],
     "*",
     {
-      onSuccess: () => {
+      onSuccess: async () => {
         // @ts-expect-error
-        mutate((prev) => {
-          console.log("delete", prev);
+        await mutate((prev) => {
           if (!prev) {
             return;
           }
 
           return { ...prev, data: { ...prev.data, like: [{ count: 0 }] } };
-        }, false);
+        });
+
+        await revalidateTables();
       },
       onError: () => {
         toast.error(t("error"));

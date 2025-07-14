@@ -90,11 +90,8 @@ const ClothesPage = memo(() => {
           data={data}
           onEndReached={loadMore}
           estimatedItemSize={240}
-          contentContainerStyle={{
-            paddingHorizontal: 24,
-          }}
           overrideProps={{
-            contentContainerStyle: { flexGrow: 1 },
+            contentContainerStyle: { flexGrow: 1, paddingHorizontal: 24 },
           }}
           ListFooterComponent={() =>
             isRefreshing && (

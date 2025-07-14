@@ -233,7 +233,8 @@
     "search": "検索する",
     "clear": "クリア",
     "delete": "削除",
-    "empty_placeholder": "結果がありません。"
+    "empty_placeholder": "結果がありません。",
+    "error": "エラーが発生しました。もう一度お試しください。"
   },
   "collections": {
     "title": "コレクション",

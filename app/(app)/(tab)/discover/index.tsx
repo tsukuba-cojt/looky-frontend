@@ -3,6 +3,7 @@ import {
   useCursorInfiniteScrollQuery,
   useDeleteMutation,
   useInsertMutation,
+  useRevalidateTables,
 } from "@supabase-cache-helpers/postgrest-swr";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
@@ -55,14 +56,19 @@ const DiscoverPage = memo(() => {
       },
     );
 
+  const revalidateTables = useRevalidateTables([
+    { schema: "public", table: "t_clothes" },
+    { schema: "public", table: "t_like" },
+  ]);
+
   const { trigger: insertLike } = useInsertMutation(
     supabase.from("t_like"),
     ["id"],
     "*",
     {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         // @ts-expect-error
-        mutate((prev) => {
+        await mutate((prev) => {
           if (!prev) {
             return;
           }
@@ -81,7 +87,9 @@ const DiscoverPage = memo(() => {
           );
 
           return next;
-        }, false);
+        });
+
+        await revalidateTables();
       },
       onError: () => {
         toast.error(t("error"));
@@ -94,9 +102,9 @@ const DiscoverPage = memo(() => {
     ["clothes_id", "user_id"],
     "*",
     {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         // @ts-expect-error
-        mutate((prev) => {
+        await mutate((prev) => {
           if (!prev) {
             return;
           }
@@ -115,7 +123,9 @@ const DiscoverPage = memo(() => {
           );
 
           return next;
-        }, false);
+        });
+
+        await revalidateTables();
       },
       onError: () => {
         toast.error(t("error"));
