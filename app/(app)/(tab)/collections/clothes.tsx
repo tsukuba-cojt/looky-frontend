@@ -5,7 +5,7 @@ import { Link } from "expo-router";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
-import { Spinner, View, XStack, YStack } from "tamagui";
+import { H1, Spinner, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Skeleton } from "@/components/Skeleton";
 import { categories } from "@/constants";
@@ -18,14 +18,14 @@ const ClothesPage = memo(() => {
   const session = useSessionStore((state) => state.session);
   const [category, setCategory] = useState<Category>("tops");
 
-  const { data, loadMore, isLoading, isValidating } =
+  const { data: items, loadMore, isLoading, isValidating } =
     useCursorInfiniteScrollQuery(
       () =>
         supabase
           .from("t_like")
           .select(`
           id,
-          clothes: t_clothes (*)
+          clothes: t_clothes (object_key)
         `)
           .eq("user_id", session?.user.id ?? "")
           .order("created_at", { ascending: true })
@@ -87,7 +87,7 @@ const ClothesPage = memo(() => {
       ) : (
         <FlashList
           numColumns={2}
-          data={data}
+          data={items}
           onEndReached={loadMore}
           estimatedItemSize={240}
           overrideProps={{
@@ -100,7 +100,24 @@ const ClothesPage = memo(() => {
               </View>
             )
           }
-          ListEmptyComponent={() => <View flex={1}></View>}
+          ListEmptyComponent={() => (
+            <YStack flex={1} pt="$20" items="center" gap="$6">
+              <View w={200} h={200} rounded="$full" bg="$mutedBackground" />
+              <YStack items="center" gap="$4">
+                <H1 fontWeight="$bold" fontSize="$xl">
+                  {t("collections:clothes.empty.title")}
+                </H1>
+                <Text
+                  text="center"
+                  fontSize="$sm"
+                  lineHeight="$sm"
+                  color="$mutedColor"
+                >
+                  {t("collections:clothes.empty.description")}
+                </Text>
+              </YStack>
+            </YStack>
+          )}
           renderItem={({ item, index }) => (
             <View
               pt={index > 1 ? 16 : 0}
