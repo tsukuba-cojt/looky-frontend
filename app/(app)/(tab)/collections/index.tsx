@@ -7,12 +7,12 @@ import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { H1, Spinner, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
+import { Skeleton } from "@/components/Skeleton";
 import { categories } from "@/constants";
 import { useDownload } from "@/hooks/useDownload";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 import type { Category, UserVton, Vton } from "@/types";
-import { Skeleton } from "@/components/Skeleton";
 
 type Item = Pick<UserVton, "id"> & {
   vton: Pick<Vton, "tops_id" | "object_key"> | null;

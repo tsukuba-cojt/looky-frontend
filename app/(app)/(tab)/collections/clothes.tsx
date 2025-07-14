@@ -18,24 +18,28 @@ const ClothesPage = memo(() => {
   const session = useSessionStore((state) => state.session);
   const [category, setCategory] = useState<Category>("tops");
 
-  const { data: items, loadMore, isLoading, isValidating } =
-    useCursorInfiniteScrollQuery(
-      () =>
-        supabase
-          .from("t_like")
-          .select(`
+  const {
+    data: items,
+    loadMore,
+    isLoading,
+    isValidating,
+  } = useCursorInfiniteScrollQuery(
+    () =>
+      supabase
+        .from("t_like")
+        .select(`
           id,
           clothes: t_clothes (object_key)
         `)
-          .eq("user_id", session?.user.id ?? "")
-          .order("created_at", { ascending: true })
-          .order("id", { ascending: true })
-          .limit(12),
-      {
-        orderBy: "id",
-        uqOrderBy: "id",
-      },
-    );
+        .eq("user_id", session?.user.id ?? "")
+        .order("created_at", { ascending: true })
+        .order("id", { ascending: true })
+        .limit(12),
+    {
+      orderBy: "id",
+      uqOrderBy: "id",
+    },
+  );
 
   const isRefreshing = !isLoading && isValidating;
 
