@@ -238,16 +238,24 @@
     "search": "Search",
     "clear": "Clear",
     "delete": "Delete",
-    "empty_placeholder": "No results found.",
+    "empty": "No results found.",
     "error": "Something went wrong. Please try again."
   },
   "collections": {
     "title": "Collections",
     "outfit": {
-      "title": "Liked Outfits"
+      "title": "Liked Outfits",
+      "empty": {
+        "title": "You haven't any outfits",
+        "description": "When you find an outfit you like\ngive it a like to add it to your collection."
+      }
     },
     "clothes": {
-      "title": "Liked Clothes"
+      "title": "Liked Clothes",
+      "empty": {
+        "title": "You haven't any clothes",
+        "description": "When you find a piece of clothing you like\ngive it a like to add it to your collection."
+      }
     }
   },
   "settings": {
