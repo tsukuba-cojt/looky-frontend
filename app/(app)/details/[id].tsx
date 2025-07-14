@@ -1,27 +1,85 @@
-import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
+import {
+  useDeleteMutation,
+  useInsertMutation,
+  useQuery,
+} from "@supabase-cache-helpers/postgrest-swr";
+import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { toast } from "sonner-native";
 import { ScrollView, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
+import { Heart } from "@/components/Heart";
 import { Icons } from "@/components/Icons";
 import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 const DetailsPage = memo(() => {
   const { t } = useTranslation("details");
+  const session = useSessionStore((state) => state.session);
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const { data } = useQuery(
+  const { data, mutate } = useQuery(
     supabase
       .from("t_clothes")
-      .select("id,object_key")
+      .select(`
+        id,
+        object_key,
+        like: t_like (count)
+      `)
       .eq("id", Number(id))
       .maybeSingle(),
   );
+
+  const { trigger: insertLike } = useInsertMutation(
+    supabase.from("t_like"),
+    ["id"],
+    "*",
+    {
+      onSuccess: () => {
+        // @ts-expect-error
+        mutate((prev) => {
+          if (!prev) {
+            return;
+          }
+
+          return { ...prev, data: { ...prev.data, like: [{ count: 1 }] } };
+        }, false);
+      },
+      onError: () => {
+        toast.error(t("error"));
+      },
+    },
+  );
+
+  const { trigger: deleteLike } = useDeleteMutation(
+    supabase.from("t_like"),
+    ["clothes_id", "user_id"],
+    "*",
+    {
+      onSuccess: () => {
+        // @ts-expect-error
+        mutate((prev) => {
+          console.log("delete", prev);
+          if (!prev) {
+            return;
+          }
+
+          return { ...prev, data: { ...prev.data, like: [{ count: 0 }] } };
+        }, false);
+      },
+      onError: () => {
+        toast.error(t("error"));
+      },
+    },
+  );
+
+  const isLiked = (data?.like[0].count ?? 0) > 0;
 
   return (
     <>
@@ -97,9 +155,28 @@ const DetailsPage = memo(() => {
               <Icons.shoppingCart size="$5" />
             </Button.Icon>
           </Button>
-          <Button variant="outline" size="icon">
+          <Button
+            variant="outline"
+            size="icon"
+            onPress={async () => {
+              await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              if (isLiked) {
+                await deleteLike({
+                  clothes_id: Number(id),
+                  user_id: session?.user.id ?? "",
+                });
+              } else {
+                await insertLike([
+                  {
+                    clothes_id: Number(id),
+                    user_id: session?.user.id ?? "",
+                  },
+                ]);
+              }
+            }}
+          >
             <Button.Icon>
-              <Icons.heart size="$5" fill="red" color="red" />
+              <Heart size="$5" active={isLiked} />
             </Button.Icon>
           </Button>
         </XStack>

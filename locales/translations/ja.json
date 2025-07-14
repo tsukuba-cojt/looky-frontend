@@ -237,11 +237,11 @@
   },
   "collections": {
     "title": "コレクション",
-    "like": {
+    "outfit": {
       "title": "いいねしたコーデ"
     },
-    "mine": {
-      "title": "あなたのコーデ"
+    "clothes": {
+      "title": "いいねしたアイテム"
     }
   },
   "settings": {

@@ -71,7 +71,7 @@ const SearchPage = memo(() => {
           .order("created_at", { ascending: true })
           .order("id", { ascending: true })
           .limit(10),
-      { orderBy: "created_at", uqOrderBy: "id" },
+      { orderBy: "id", uqOrderBy: "id" },
     );
 
   const onSearch = useCallback(

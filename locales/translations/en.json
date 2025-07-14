@@ -237,11 +237,11 @@
   },
   "collections": {
     "title": "Collections",
-    "like": {
+    "outfit": {
       "title": "Liked Outfits"
     },
-    "mine": {
-      "title": "My Outfits"
+    "clothes": {
+      "title": "Liked Clothes"
     }
   },
   "settings": {

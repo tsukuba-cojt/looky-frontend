@@ -12,7 +12,7 @@ const data = Array.from({ length: 40 }, (_, i) => ({
   url: `https://picsum.photos/1200/900?random=${i + 1}`,
 }));
 
-const LikePage = memo(() => {
+const OutfitPage = memo(() => {
   const { t } = useTranslation(["common", "collections"]);
   const [category, setCategory] = useState<Category>("tops");
 
@@ -75,4 +75,4 @@ const LikePage = memo(() => {
   );
 });
 
-export default LikePage;
+export default OutfitPage;
