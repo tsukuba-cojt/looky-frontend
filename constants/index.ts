@@ -32,14 +32,7 @@ export const categories = ["tops", "bottoms", "dresses"] as const;
 export const subcategories = {
   tops: ["t_shirts", "blouses", "tank_tops", "polos", "tunics", "hoodies"],
   bottoms: ["jeans", "pants", "shorts", "leggings", "skirts", "capris"],
-  dresses: [
-    "casual_dresses",
-    "evening_dresses",
-    "cocktail_dresses",
-    "summer_dresses",
-    "maxi_dresses",
-    "shirt_dresses",
-  ],
+  dresses: ["casual", "evening", "cocktail", "summer", "maxi", "shirt"],
 } as const;
 
 export const colors = {

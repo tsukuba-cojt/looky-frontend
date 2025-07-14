@@ -7,6 +7,7 @@ import {
 } from "@supabase-cache-helpers/postgrest-swr";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
+import LottieView from "lottie-react-native";
 import {
   createRef,
   memo,
@@ -69,6 +70,7 @@ const TryOnPage = memo(() => {
   const [items, setItems] = useState<
     { id: number; vton: Pick<Vton, "object_key" | "tops_id"> }[]
   >([]);
+  const [isVisible, setIsVisible] = useState(false);
 
   const { mutate } = useQuery(
     supabase
@@ -98,6 +100,8 @@ const TryOnPage = memo(() => {
 
           return [...prev, ...next];
         });
+
+        setIsVisible(false);
       },
     },
   );
@@ -146,6 +150,7 @@ const TryOnPage = memo(() => {
   );
 
   const ref = useRef<SwipableCardRef>(null);
+  const animation = useRef<LottieView>(null);
   const activeIndex = useSharedValue(0);
   const focused = useIsFocused();
 
@@ -161,6 +166,7 @@ const TryOnPage = memo(() => {
 
   const worklet = useCallback(() => {
     "worklet";
+
     if (activeIndex.value < length) {
       activeIndex.value++;
     }
@@ -203,15 +209,13 @@ const TryOnPage = memo(() => {
   }, [refs, worklet, activeIndex]);
 
   const swipeBack = useCallback(() => {
-    const prevIndex = activeIndex.value - 1;
-
-    if (prevIndex < 0 || !refs[prevIndex]) {
+    if (activeIndex.value < 1) {
       return;
     }
 
-    if (refs[prevIndex]) {
-      refs[prevIndex].current?.swipeBack();
-      activeIndex.value = prevIndex;
+    if (refs[activeIndex.value - 1]) {
+      refs[activeIndex.value - 1].current?.swipeBack();
+      activeIndex.value = activeIndex.value - 1;
     }
   }, [activeIndex, refs]);
 
@@ -292,7 +296,15 @@ const TryOnPage = memo(() => {
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       >
-        <View flex={1} items="center" justify="center" pt="$6" px="$6" gap="$6">
+        <View
+          position="relative"
+          flex={1}
+          items="center"
+          justify="center"
+          pt="$6"
+          px="$6"
+          gap="$6"
+        >
           <View aspectRatio={3 / 4} w="100%">
             {items.map((item, index) => {
               return (
@@ -318,6 +330,26 @@ const TryOnPage = memo(() => {
                 </SwipeableCard>
               );
             })}
+            {isVisible && (
+              <View
+                flex={1}
+                scale={1 - 0.07}
+                animation="slow"
+                enterStyle={{ opacity: 0 }}
+              >
+                <View w={300} h={300} rounded="$full" bg="$mutedBackground">
+                  <LottieView
+                    autoPlay
+                    ref={animation}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    source={require("../../../assets/loading.json")}
+                  />
+                </View>
+              </View>
+            )}
           </View>
           <XStack
             gap="$6"
