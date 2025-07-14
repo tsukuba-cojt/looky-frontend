@@ -46,13 +46,13 @@ const CollectionsLayout = memo(() => {
               color={focused ? "$primaryBackground" : "$color"}
               opacity={focused ? 1 : 0.6}
             >
-              {t("like.title")}
+              {t("outfit.title")}
             </Text>
           ),
         }}
       />
       <MaterialTopTabs.Screen
-        name="mine"
+        name="clothes"
         options={{
           tabBarLabel: ({ focused }) => (
             <Text
@@ -60,7 +60,7 @@ const CollectionsLayout = memo(() => {
               color={focused ? "$primaryBackground" : "$color"}
               opacity={focused ? 1 : 0.6}
             >
-              {t("mine.title")}
+              {t("clothes.title")}
             </Text>
           ),
         }}

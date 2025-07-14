@@ -1,41 +1,137 @@
 import { FlashList } from "@shopify/flash-list";
-import { useCursorInfiniteScrollQuery } from "@supabase-cache-helpers/postgrest-swr";
+import {
+  useCursorInfiniteScrollQuery,
+  useDeleteMutation,
+  useInsertMutation,
+  useRevalidateTables,
+} from "@supabase-cache-helpers/postgrest-swr";
+import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
+import * as R from "remeda";
+import { toast } from "sonner-native";
 import { Spinner, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { CategorySelectSheet } from "@/components/CategorySelectSheet";
 import { ColorPickerSheet } from "@/components/ColorPickerSheet/ColorPickerSheet";
 import { GenderSelectSheet } from "@/components/GenderSelectSheet";
+import { Heart } from "@/components/Heart";
 import { Icons } from "@/components/Icons";
 import { Input } from "@/components/Input";
 import { Skeleton } from "@/components/Skeleton";
 import { useSheet } from "@/hooks/useSheet";
 import { supabase } from "@/lib/client";
+import { useSessionStore } from "@/stores/useSessionStore";
 import type { Category, Color, Gender } from "@/types";
 
 const DiscoverPage = memo(() => {
   const { t } = useTranslation("discover");
+  const session = useSessionStore((state) => state.session);
   const [gender, setGender] = useState<Gender>();
   const [category, setCategory] = useState<Category>();
   const [color, setColor] = useState<Color>();
 
   const { open, getSheetProps } = useSheet();
 
-  const { data, loadMore, isLoading, isValidating } =
+  const { data, loadMore, isLoading, isValidating, mutate } =
     useCursorInfiniteScrollQuery(
       () =>
         supabase
           .from("t_clothes")
-          .select("id,object_key")
+          .select(`
+            id,
+            object_key,
+            like: t_like (count)
+          `)
+          .eq("like.user_id", session?.user.id ?? "")
           .order("created_at", { ascending: true })
           .order("id", { ascending: true })
           .limit(12),
-      { orderBy: "created_at", uqOrderBy: "id" },
+      {
+        orderBy: "id",
+        uqOrderBy: "id",
+      },
     );
+
+  const revalidateTables = useRevalidateTables([
+    { schema: "public", table: "t_clothes" },
+    { schema: "public", table: "t_like" },
+  ]);
+
+  const { trigger: insertLike } = useInsertMutation(
+    supabase.from("t_like"),
+    ["id"],
+    "*",
+    {
+      onSuccess: async (data) => {
+        // @ts-expect-error
+        await mutate((prev) => {
+          if (!prev) {
+            return;
+          }
+
+          const next = R.pipe(
+            prev,
+            R.flat(),
+            R.map((clothes) =>
+              clothes.id === data?.[0].clothes_id
+                ? {
+                    ...clothes,
+                    like: [{ count: 1 }],
+                  }
+                : clothes,
+            ),
+          );
+
+          return next;
+        });
+
+        await revalidateTables();
+      },
+      onError: () => {
+        toast.error(t("error"));
+      },
+    },
+  );
+
+  const { trigger: deleteLike } = useDeleteMutation(
+    supabase.from("t_like"),
+    ["clothes_id", "user_id"],
+    "*",
+    {
+      onSuccess: async (data) => {
+        // @ts-expect-error
+        await mutate((prev) => {
+          if (!prev) {
+            return;
+          }
+
+          const next = R.pipe(
+            prev,
+            R.flat(),
+            R.map((clothes) =>
+              clothes.id === data?.clothes_id
+                ? {
+                    ...clothes,
+                    like: [{ count: 0 }],
+                  }
+                : clothes,
+            ),
+          );
+
+          return next;
+        });
+
+        await revalidateTables();
+      },
+      onError: () => {
+        toast.error(t("error"));
+      },
+    },
+  );
 
   const isRefreshing = !isLoading && isValidating;
 
@@ -158,57 +254,83 @@ const DiscoverPage = memo(() => {
                 </View>
               )
             }
-            renderItem={({ item, index }) => (
-              <Link
-                href={{
-                  pathname: "/details/[id]",
-                  params: { id: item.id },
-                }}
-                asChild
-              >
-                <TouchableOpacity activeOpacity={0.6}>
-                  <View
-                    pt={index > 1 ? 16 : 0}
-                    pl={index % 2 === 1 ? 8 : 0}
-                    pr={index % 2 === 0 ? 8 : 0}
-                  >
+            renderItem={({ item, index }) => {
+              const isLiked = item.like?.[0]?.count > 0;
+
+              return (
+                <Link
+                  href={{
+                    pathname: "/details/[id]",
+                    params: { id: item.id },
+                  }}
+                  asChild
+                >
+                  <TouchableOpacity activeOpacity={0.6}>
                     <View
-                      position="relative"
-                      w="100%"
-                      aspectRatio={3 / 4}
-                      rounded="$2xl"
-                      boxShadow="$sm"
-                      overflow="hidden"
-                      bg="$mutedBackground"
+                      pt={index > 1 ? 16 : 0}
+                      pl={index % 2 === 1 ? 8 : 0}
+                      pr={index % 2 === 0 ? 8 : 0}
                     >
-                      <Image
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                        }}
-                        source={`https://looky-clothes-images.s3.ap-northeast-1.amazonaws.com/${item.object_key}`}
-                        transition={200}
-                      />
-                      <View position="absolute" b={8} r={8}>
-                        <TouchableOpacity activeOpacity={0.6}>
-                          <View
-                            p="$2"
-                            items="center"
-                            justify="center"
-                            bg="black"
-                            rounded="$full"
-                            opacity={0.8}
-                            boxShadow="$shadow.xl"
+                      <View
+                        position="relative"
+                        w="100%"
+                        aspectRatio={3 / 4}
+                        rounded="$2xl"
+                        boxShadow="$sm"
+                        overflow="hidden"
+                        bg="$mutedBackground"
+                      >
+                        <Image
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                          source={`https://looky-clothes-images.s3.ap-northeast-1.amazonaws.com/${item.object_key}`}
+                          transition={200}
+                        />
+                        <View position="absolute" b={8} r={8}>
+                          <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={async () => {
+                              await Haptics.impactAsync(
+                                Haptics.ImpactFeedbackStyle.Light,
+                              );
+                              if (isLiked) {
+                                await deleteLike({
+                                  clothes_id: item.id,
+                                  user_id: session?.user.id ?? "",
+                                });
+                              } else {
+                                await insertLike([
+                                  {
+                                    clothes_id: item.id,
+                                    user_id: session?.user.id ?? "",
+                                  },
+                                ]);
+                              }
+                            }}
                           >
-                            <Icons.heart size="$4" color="white" />
-                          </View>
-                        </TouchableOpacity>
+                            <View
+                              position="relative"
+                              w="$8"
+                              h="$8"
+                              items="center"
+                              justify="center"
+                              bg="black"
+                              rounded="$full"
+                              opacity={0.8}
+                              boxShadow="$shadow.xl"
+                            >
+                              <Heart color="white" active={isLiked} />
+                            </View>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
-              </Link>
-            )}
+                  </TouchableOpacity>
+                </Link>
+              );
+            }}
           />
         )}
       </YStack>

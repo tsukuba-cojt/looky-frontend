@@ -233,15 +233,16 @@
     "search": "Search",
     "clear": "Clear",
     "delete": "Delete",
-    "empty_placeholder": "No results found."
+    "empty_placeholder": "No results found.",
+    "error": "エラーが発生しました。もう一度お試しください。"
   },
   "collections": {
     "title": "Collections",
-    "like": {
+    "outfit": {
       "title": "Liked Outfits"
     },
-    "mine": {
-      "title": "My Outfits"
+    "clothes": {
+      "title": "Liked Clothes"
     }
   },
   "settings": {

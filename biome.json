@@ -14,7 +14,9 @@
       "./**/*.jsx",
       "!**/node_modules/**",
       "!**/.storybook/**",
-      "!**/supabase/**"
+      "!**/supabase/**",
+      "!**/android/**",
+      "!**/ios/**"
     ]
   },
   "formatter": {
