@@ -13,7 +13,8 @@
     "storybook:web": "cross-env STORYBOOK_ENABLED='true' expo start --web",
     "lint": "biome lint --write",
     "check": "biome check --write",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "prepare": "husky"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.1",
@@ -91,6 +92,7 @@
     "@types/react": "~19.0.10",
     "babel-loader": "^8.4.1",
     "cross-env": "^7.0.3",
+    "husky": "^9.1.7",
     "moti": "^0.30.0",
     "react-dom": "19.0.0",
     "react-native-svg-transformer": "^1.5.1",
