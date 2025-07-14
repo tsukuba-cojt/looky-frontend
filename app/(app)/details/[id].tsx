@@ -33,6 +33,7 @@ const DetailsPage = memo(() => {
         object_key,
         like: t_like (count)
       `)
+      .eq("like.user_id", session?.user.id ?? "")
       .eq("id", Number(id))
       .maybeSingle(),
   );

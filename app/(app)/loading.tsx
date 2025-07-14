@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import { memo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { H1, Text, View, XStack, YStack } from "tamagui";
+import { H1, Text, View, YStack } from "tamagui";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
@@ -60,33 +60,9 @@ const LoadingPage = memo(() => {
         />
       </View>
       <YStack items="center" gap="$6">
-        <XStack items="flex-end" gap="$1">
-          <H1 fontWeight="$bold" fontSize="$4xl" color="$primaryColor">
-            {t("title")}
-          </H1>
-          <XStack gap="$1.5">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <View
-                key={index.toString()}
-                animation={[
-                  "pulse",
-                  {
-                    // @ts-expect-error
-                    delay: index * 200,
-
-                    // @ts-expect-error
-                    duration: 500,
-                  },
-                ]}
-                w="$1.5"
-                h="$1.5"
-                enterStyle={{ opacity: 0.5 }}
-                rounded="$full"
-                bg="$primaryColor"
-              />
-            ))}
-          </XStack>
-        </XStack>
+        <H1 fontWeight="$bold" fontSize="$4xl" color="$primaryColor">
+          {t("title")}
+        </H1>
         <Text
           text="center"
           fontWeight="$bold"

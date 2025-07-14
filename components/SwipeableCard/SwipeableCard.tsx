@@ -36,6 +36,7 @@ export type SwipableCardRef =
 export interface SwipableCardProps {
   index: number;
   activeIndex: SharedValue<number>;
+  disabled?: boolean;
   onSwipeRight?: (index: number) => void;
   onSwipeLeft?: (index: number) => void;
   onSwipeTop?: (index: number) => void;
@@ -59,6 +60,7 @@ export const SwipeableCard = memo(
       {
         index,
         activeIndex,
+        disabled = false,
         onSwipeLeft,
         onSwipeRight,
         onSwipeTop,
@@ -77,36 +79,77 @@ export const SwipeableCard = memo(
       const maxTranslateY = height * 1.5;
 
       const swipeRight = useCallback(() => {
+        if (disabled) {
+          return;
+        }
+
         onSwipeRight?.(index);
         translateX.value = withSpring(maxTranslateX, userConfig);
         activeIndex.value++;
-      }, [index, activeIndex, maxTranslateX, onSwipeRight, translateX]);
+      }, [
+        index,
+        activeIndex,
+        maxTranslateX,
+        onSwipeRight,
+        translateX,
+        disabled,
+      ]);
 
       const swipeLeft = useCallback(() => {
+        if (disabled) {
+          return;
+        }
+
         onSwipeLeft?.(index);
         translateX.value = withSpring(-maxTranslateX, userConfig);
         activeIndex.value++;
-      }, [index, activeIndex, maxTranslateX, onSwipeLeft, translateX]);
+      }, [
+        index,
+        activeIndex,
+        maxTranslateX,
+        onSwipeLeft,
+        translateX,
+        disabled,
+      ]);
 
       const swipeTop = useCallback(() => {
+        if (disabled) {
+          return;
+        }
+
         onSwipeTop?.(index);
         translateY.value = withSpring(-maxTranslateY, userConfig);
         activeIndex.value++;
-      }, [index, activeIndex, maxTranslateY, onSwipeTop, translateY]);
+      }, [index, activeIndex, maxTranslateY, onSwipeTop, translateY, disabled]);
 
       const swipeBottom = useCallback(() => {
+        if (disabled) {
+          return;
+        }
+
         onSwipeBottom?.(index);
         translateY.value = withSpring(maxTranslateY, userConfig);
         activeIndex.value++;
-      }, [index, activeIndex, maxTranslateY, onSwipeBottom, translateY]);
+      }, [
+        index,
+        activeIndex,
+        maxTranslateY,
+        onSwipeBottom,
+        translateY,
+        disabled,
+      ]);
 
       const swipeBack = useCallback(() => {
+        if (disabled) {
+          return;
+        }
+
         onSwipeBack?.(index);
         cancelAnimation(translateX);
         cancelAnimation(translateY);
         translateX.value = withSpring(0, userConfig);
         translateY.value = withSpring(0, userConfig);
-      }, [translateX, translateY, onSwipeBack, index]);
+      }, [translateX, translateY, onSwipeBack, index, disabled]);
 
       useImperativeHandle(ref, () => {
         return {
@@ -191,6 +234,14 @@ export const SwipeableCard = memo(
           ],
         };
       });
+
+      if (disabled) {
+        return (
+          <Animated.View style={[cardStyle, animatedStyles]}>
+            {children}
+          </Animated.View>
+        );
+      }
 
       return (
         <GestureDetector gesture={panGesture}>

@@ -213,12 +213,16 @@
     "cancel": "Cancel"
   },
   "loading": {
-    "title": "Generating",
+    "title": "Generating...",
     "description": "We are finding the perfect outfit for you.\nPlease wait a moment.",
     "error": "Something went wrong. Please try again."
   },
   "try_on": {
     "title": "Try On",
+    "loading": {
+      "title": "Generating...",
+      "description": "We are finding the perfect outfit for you.\nPlease wait a moment."
+    },
     "error": "Something went wrong. Please try again."
   },
   "discover": {
