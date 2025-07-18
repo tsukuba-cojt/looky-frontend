@@ -4,7 +4,9 @@ import {
   useDeleteMutation,
   useInsertMutation,
   useQuery,
+  useUpdateMutation,
 } from "@supabase-cache-helpers/postgrest-swr";
+import { useFileUrl, useUpload } from "@supabase-cache-helpers/storage-swr";
 import * as Crypto from "expo-crypto";
 import { Image } from "expo-image";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
@@ -27,19 +29,116 @@ import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { Skeleton } from "@/components/Skeleton";
 import { origins } from "@/constants";
-import { useDownload } from "@/hooks/useDownload";
-import { useUpload } from "@/hooks/useUpload";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
 const outfitsSchema = z.object({
   outfits: z
     .array(
-      z.object({ id: z.string(), uri: z.string(), origin: z.enum(origins) }),
+      z.object({
+        key: z.string(),
+        uri: z.string().nullable(),
+        origin: z.enum(origins),
+      }),
     )
     .nonempty({ error: "required_error" }),
 });
 type FormData = z.infer<typeof outfitsSchema>;
+
+type BodyItemProps = {
+  body: FormData["outfits"][number] | null;
+  onDelete: () => void;
+};
+
+const BodyItem = ({ body, onDelete }: BodyItemProps) => {
+  const session = useSessionStore((state) => state.session);
+  const { data: url, isLoading } = useFileUrl(
+    supabase.storage.from("body"),
+    body && body.origin === "remote"
+      ? `${session?.user.id}/${body.key}.jpg`
+      : null,
+    "private",
+    {
+      ensureExistence: true,
+      expiresIn: 3600,
+    },
+  );
+
+  if (isLoading) {
+    return (
+      <Skeleton w="100%" aspectRatio={3 / 4} rounded="$2xl" boxShadow="$sm" />
+    );
+  }
+
+  if (!body) {
+    return (
+      <Link
+        href={{
+          pathname: "/camera",
+          params: {
+            from: "/settings/outfit",
+          },
+        }}
+        asChild
+      >
+        <TouchableOpacity activeOpacity={0.6}>
+          <View
+            w="100%"
+            aspectRatio={3 / 4}
+            items="center"
+            justify="center"
+            rounded="$2xl"
+            boxShadow="$sm"
+            overflow="hidden"
+            borderStyle="dashed"
+            borderWidth={1}
+            borderColor="$borderColor"
+          >
+            <View p="$4" bg="$mutedBackground" rounded="$full">
+              <Icons.camera size="$6" color="$mutedColor" />
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Link>
+    );
+  }
+
+  return (
+    <View
+      position="relative"
+      w="100%"
+      aspectRatio={3 / 4}
+      rounded="$2xl"
+      boxShadow="$sm"
+      overflow="hidden"
+      bg="$mutedBackground"
+    >
+      <Image
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+        source={url ?? body.uri}
+        transition={200}
+      />
+      <View position="absolute" t={8} r={8}>
+        <TouchableOpacity activeOpacity={0.6} onPress={onDelete}>
+          <View
+            p="$2"
+            items="center"
+            justify="center"
+            bg="black"
+            rounded="$full"
+            opacity={0.8}
+            boxShadow="$shadow.xl"
+          >
+            <Icons.x size="$4" color="white" />
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const GalleryPage = () => {
   const { t } = useTranslation("settings");
@@ -55,7 +154,7 @@ const GalleryPage = () => {
   } = useForm<FormData>({
     resolver: standardSchemaResolver(outfitsSchema),
   });
-  const { fields, append, remove } = useFieldArray<FormData>({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "outfits",
   });
@@ -67,26 +166,31 @@ const GalleryPage = () => {
       .eq("user_id", session?.user.id ?? ""),
     {
       onSuccess: async ({ data }) => {
-        await Promise.all(
-          (data ?? []).map(async (outfit) => {
-            const uri = await download({
-              objectKey: `${outfit.id}.jpg`,
-              bucketName: "looky-body-images",
-            });
+        if (!data) {
+          return;
+        }
 
-            append({
-              id: outfit.id.toString(),
-              uri,
-              origin: "remote",
-            });
-          }),
+        append(
+          data.map((outfit) => ({
+            key: outfit.id,
+            uri: null,
+            origin: "remote",
+          })),
         );
       },
     },
   );
 
-  const { trigger: download, isMutating } = useDownload();
-  const { trigger: upload } = useUpload();
+  const { trigger: updateUser } = useUpdateMutation(
+    supabase.from("t_user"),
+    ["id"],
+    "*",
+    {
+      onError: () => {
+        toast.error(t("outfit.gallery.error"));
+      },
+    },
+  );
 
   const { trigger: insertBody } = useInsertMutation(
     supabase.from("t_body"),
@@ -110,10 +214,12 @@ const GalleryPage = () => {
     },
   );
 
+  const { trigger: uploadBody } = useUpload(supabase.storage.from("body"));
+
   useFocusEffect(
     useCallback(() => {
       if (uri) {
-        append({ id: Crypto.randomUUID(), uri, origin: "local" });
+        append({ key: Crypto.randomUUID(), uri, origin: "local" });
         router.setParams({ uri: undefined });
       }
     }, [uri, append, router]),
@@ -125,7 +231,7 @@ const GalleryPage = () => {
         R.pipe(
           R.difference(
             R.map(outfits ?? [], R.prop("id")),
-            R.map(data.outfits, R.prop("id")),
+            R.map(data.outfits, R.prop("key")),
           ),
           R.map(async (id) => {
             await deleteBody({ id });
@@ -133,42 +239,51 @@ const GalleryPage = () => {
         ),
       );
 
-      const ids = await Promise.all(
+      const files = await Promise.all(
         R.pipe(
-          R.filter(data.outfits, (outfit) => outfit.origin === "local"),
+          data.outfits,
+          R.filter((outfit) => outfit.origin === "local"),
           R.map(async (outfit) => {
-            const context = ImageManipulator.manipulate(outfit.uri);
+            const context = ImageManipulator.manipulate(outfit.uri as string);
             const image = await context.renderAsync();
             const result = await image.saveAsync({
               format: SaveFormat.JPEG,
             });
 
-            const blob = await (await fetch(result.uri)).blob();
+            const arrayBuffer = await (await fetch(result.uri)).arrayBuffer();
+            const file = {
+              data: arrayBuffer,
+              name: `${outfit.key}.jpg`,
+              type: "image/jpeg",
+            };
 
-            await upload({
-              blob,
-              bucketName: "looky-body-images",
-              objectKey: `${outfit.id}.jpg`,
-            });
-
-            return outfit.id;
+            return file;
           }),
         ),
       );
+      await uploadBody({ path: session?.user.id, files });
 
       await insertBody(
-        ids.map((id) => ({ id, user_id: session?.user.id ?? "" })),
+        R.pipe(
+          R.filter(data.outfits, (outfit) => outfit.origin === "local"),
+          R.map((outfit) => ({
+            id: outfit.key,
+            user_id: session?.user.id ?? "",
+          })),
+        ),
       );
+
+      await updateUser({ id: session?.user.id, body_id: data.outfits[0].key });
 
       router.back();
     },
-    [deleteBody, insertBody, outfits, router, session, upload],
+    [deleteBody, insertBody, outfits, router, session, updateUser, uploadBody],
   );
 
   return (
     <View flex={1} pt="$8" pb={insets.bottom} px="$8">
       <Form flex={1} justify="space-between" onSubmit={handleSubmit(onSubmit)}>
-        {isLoading || isMutating ? (
+        {isLoading ? (
           <FlashList
             numColumns={2}
             scrollEnabled={false}
@@ -213,73 +328,7 @@ const GalleryPage = () => {
                 pl={index % 2 === 1 ? 10 : 0}
                 pr={index % 2 === 0 ? 10 : 0}
               >
-                {item ? (
-                  <View
-                    position="relative"
-                    w="100%"
-                    aspectRatio={3 / 4}
-                    rounded="$2xl"
-                    boxShadow="$sm"
-                    overflow="hidden"
-                    bg="$mutedBackground"
-                  >
-                    <Image
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                      }}
-                      source={item.uri}
-                      transition={200}
-                    />
-                    <View position="absolute" t={8} r={8}>
-                      <TouchableOpacity
-                        activeOpacity={0.6}
-                        onPress={() => remove(index)}
-                      >
-                        <View
-                          p="$2"
-                          items="center"
-                          justify="center"
-                          bg="black"
-                          rounded="$full"
-                          opacity={0.8}
-                          boxShadow="$shadow.xl"
-                        >
-                          <Icons.x size="$4" color="white" />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                ) : (
-                  <Link
-                    href={{
-                      pathname: "/camera",
-                      params: {
-                        from: "/settings/outfit",
-                      },
-                    }}
-                    asChild
-                  >
-                    <TouchableOpacity activeOpacity={0.6}>
-                      <View
-                        w="100%"
-                        aspectRatio={3 / 4}
-                        items="center"
-                        justify="center"
-                        rounded="$2xl"
-                        boxShadow="$sm"
-                        overflow="hidden"
-                        borderStyle="dashed"
-                        borderWidth={1}
-                        borderColor="$borderColor"
-                      >
-                        <View p="$4" bg="$mutedBackground" rounded="$full">
-                          <Icons.camera size="$6" color="$mutedColor" />
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  </Link>
-                )}
+                <BodyItem body={item} onDelete={() => remove(index)} />
               </View>
             )}
           />

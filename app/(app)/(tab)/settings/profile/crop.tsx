@@ -2,7 +2,7 @@ import { SaveFormat, useImageManipulator } from "expo-image-manipulator";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, useWindowDimensions } from "react-native";
+import { Image } from "react-native";
 import {
   Gesture,
   GestureDetector,
@@ -25,7 +25,8 @@ const CropPage = memo(() => {
   const { t } = useTranslation("crop");
   const router = useRouter();
   const { uri, from } = useLocalSearchParams<{ uri: string; from: string }>();
-  const { width, height } = useWindowDimensions();
+  const [width, setWidth] = useState<number>(0);
+  const [height, setHeight] = useState<number>(0);
   const insets = useSafeAreaInsets();
 
   const context = useImageManipulator(uri ?? "");
@@ -48,7 +49,16 @@ const CropPage = memo(() => {
   const radius = useMemo(() => diameter / 2, [diameter]);
 
   useEffect(() => {
+    if (!uri) {
+      return;
+    }
+
+    if (width === 0 || height === 0) {
+      return;
+    }
+
     setIsLoading(true);
+
     Image.getSize(uri, (width, height) => {
       if (height > width) {
         size.value = {
@@ -69,7 +79,7 @@ const CropPage = memo(() => {
 
       setIsLoading(false);
     });
-  }, [uri, translateX, translateY, scale, size, diameter]);
+  }, [uri, translateX, translateY, scale, size, diameter, width, height]);
 
   const worklet = useCallback(() => {
     "worklet";
@@ -188,7 +198,14 @@ const CropPage = memo(() => {
   ]);
 
   return (
-    <YStack flex={1} bg="black">
+    <YStack
+      flex={1}
+      bg="black"
+      onLayout={(e) => {
+        setWidth(e.nativeEvent.layout.width);
+        setHeight(e.nativeEvent.layout.height);
+      }}
+    >
       <XStack
         position="absolute"
         t="$0"
@@ -196,8 +213,8 @@ const CropPage = memo(() => {
         z="$50"
         items="center"
         justify="space-between"
-        h={insets.top + 50}
-        pt="$20"
+        h={insets.top + 20}
+        pt="$4"
         px="$6"
         pb="$4"
       >
@@ -212,10 +229,10 @@ const CropPage = memo(() => {
         <Animated.View
           style={{
             position: "absolute",
-            top: insets.top + 50,
+            top: insets.top + 20,
             left: 0,
             right: 0,
-            bottom: insets.bottom + 50,
+            bottom: insets.bottom + 20,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -224,7 +241,7 @@ const CropPage = memo(() => {
           <View
             position="absolute"
             t={
-              (height - insets.top - insets.bottom - 100) / 2 -
+              (height - insets.top - insets.bottom - 40) / 2 -
               (radius + Math.max(width, height) * 1.5)
             }
             l={width / 2 - (radius + Math.max(width, height) * 1.5)}
@@ -237,7 +254,7 @@ const CropPage = memo(() => {
           />
           <View
             position="absolute"
-            t={(height - insets.top - insets.bottom - 100) / 2 - radius}
+            t={(height - insets.top - insets.bottom - 40) / 2 - radius}
             l={width / 2 - radius}
             w={diameter}
             h={diameter}

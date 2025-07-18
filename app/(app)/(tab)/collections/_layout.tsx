@@ -46,7 +46,7 @@ const CollectionsLayout = memo(() => {
               color={focused ? "$primaryBackground" : "$color"}
               opacity={focused ? 1 : 0.6}
             >
-              {t("outfit.title")}
+              {t("vton.title")}
             </Text>
           ),
         }}

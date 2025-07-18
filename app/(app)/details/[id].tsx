@@ -4,6 +4,8 @@ import {
   useQuery,
   useRevalidateTables,
 } from "@supabase-cache-helpers/postgrest-swr";
+import { useFileUrl } from "@supabase-cache-helpers/storage-swr";
+import * as Crypto from "expo-crypto";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -16,6 +18,7 @@ import { ScrollView, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Heart } from "@/components/Heart";
 import { Icons } from "@/components/Icons";
+import { Skeleton } from "@/components/Skeleton";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 
@@ -25,16 +28,19 @@ const DetailsPage = memo(() => {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const { data, mutate } = useQuery(
+  const {
+    data,
+    mutate,
+    isLoading: isLoadingClothes,
+  } = useQuery(
     supabase
       .from("t_clothes")
       .select(`
         id,
-        object_key,
         like: t_like (count)
       `)
       .eq("like.user_id", session?.user.id ?? "")
-      .eq("id", Number(id))
+      .eq("id", id)
       .maybeSingle(),
   );
 
@@ -89,6 +95,17 @@ const DetailsPage = memo(() => {
     },
   );
 
+  const { data: url, isLoading: isLoadingImage } = useFileUrl(
+    supabase.storage.from("clothes"),
+    `${data?.id}.jpg`,
+    "public",
+    {
+      ensureExistence: true,
+    },
+  );
+
+  const isLoading = isLoadingClothes || isLoadingImage;
+
   const isLiked = (data?.like[0].count ?? 0) > 0;
 
   return (
@@ -96,54 +113,58 @@ const DetailsPage = memo(() => {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView>
           <YStack flex={1} gap="$4">
-            <View
-              position="relative"
-              w="100%"
-              aspectRatio={3 / 4}
-              bg="$mutedBackground"
-            >
-              <XStack
-                position="absolute"
-                t="$5"
-                z="$50"
+            {isLoading ? (
+              <Skeleton w="100%" aspectRatio={3 / 4} rounded="$none" />
+            ) : (
+              <View
+                position="relative"
                 w="100%"
-                px="$5"
-                items="center"
-                justify="space-between"
+                aspectRatio={3 / 4}
+                bg="$mutedBackground"
               >
-                <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
-                  <View
-                    p="$2"
-                    items="center"
-                    justify="center"
-                    bg="black"
-                    rounded="$full"
-                    opacity={0.8}
-                    boxShadow="$shadow.xl"
-                  >
-                    <Icons.chevronLeft size="$5" color="white" />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.6}>
-                  <View
-                    p="$2"
-                    items="center"
-                    justify="center"
-                    bg="black"
-                    rounded="$full"
-                    opacity={0.8}
-                    boxShadow="$shadow.xl"
-                  >
-                    <Icons.ellipsis size="$5" color="white" />
-                  </View>
-                </TouchableOpacity>
-              </XStack>
-              <Image
-                source={`https://looky-clothes-images.s3.ap-northeast-1.amazonaws.com/${data?.object_key}`}
-                style={{ width: "100%", height: "100%" }}
-                transition={200}
-              />
-            </View>
+                <XStack
+                  position="absolute"
+                  t="$5"
+                  z="$50"
+                  w="100%"
+                  px="$5"
+                  items="center"
+                  justify="space-between"
+                >
+                  <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
+                    <View
+                      p="$2"
+                      items="center"
+                      justify="center"
+                      bg="black"
+                      rounded="$full"
+                      opacity={0.8}
+                      boxShadow="$shadow.xl"
+                    >
+                      <Icons.chevronLeft size="$5" color="white" />
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={0.6}>
+                    <View
+                      p="$2"
+                      items="center"
+                      justify="center"
+                      bg="black"
+                      rounded="$full"
+                      opacity={0.8}
+                      boxShadow="$shadow.xl"
+                    >
+                      <Icons.ellipsis size="$5" color="white" />
+                    </View>
+                  </TouchableOpacity>
+                </XStack>
+                <Image
+                  source={url}
+                  style={{ width: "100%", height: "100%" }}
+                  transition={200}
+                />
+              </View>
+            )}
           </YStack>
         </ScrollView>
       </SafeAreaView>
@@ -172,13 +193,14 @@ const DetailsPage = memo(() => {
               await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               if (isLiked) {
                 await deleteLike({
-                  clothes_id: Number(id),
+                  clothes_id: id,
                   user_id: session?.user.id ?? "",
                 });
               } else {
                 await insertLike([
                   {
-                    clothes_id: Number(id),
+                    id: Crypto.randomUUID(),
+                    clothes_id: id,
                     user_id: session?.user.id ?? "",
                   },
                 ]);

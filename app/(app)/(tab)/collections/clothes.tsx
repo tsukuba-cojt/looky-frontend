@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useCursorInfiniteScrollQuery } from "@supabase-cache-helpers/postgrest-swr";
+import { useFileUrl } from "@supabase-cache-helpers/storage-swr";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { memo, useState } from "react";
@@ -13,33 +14,80 @@ import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
 import type { Category } from "@/types";
 
+interface ClothesItemProps {
+  id: string;
+}
+
+const ClothesItem = memo(({ id }: ClothesItemProps) => {
+  const { data: url, isLoading } = useFileUrl(
+    supabase.storage.from("clothes"),
+    `${id}.jpg`,
+    "public",
+    {
+      ensureExistence: true,
+    },
+  );
+
+  if (isLoading) {
+    return (
+      <Skeleton w="100%" aspectRatio={3 / 4} rounded="$2xl" boxShadow="$sm" />
+    );
+  }
+
+  return (
+    <Link
+      href={{
+        pathname: "/details/[id]",
+        params: { id },
+      }}
+      asChild
+    >
+      <TouchableOpacity activeOpacity={0.6}>
+        <View
+          w="100%"
+          aspectRatio={3 / 4}
+          rounded="$2xl"
+          boxShadow="$sm"
+          overflow="hidden"
+          bg="$mutedBackground"
+        >
+          <Image
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            source={url}
+            transition={200}
+          />
+        </View>
+      </TouchableOpacity>
+    </Link>
+  );
+});
+
 const ClothesPage = memo(() => {
   const { t } = useTranslation(["common", "collections"]);
   const session = useSessionStore((state) => state.session);
   const [category, setCategory] = useState<Category>("tops");
 
-  const {
-    data: items,
-    loadMore,
-    isLoading,
-    isValidating,
-  } = useCursorInfiniteScrollQuery(
-    () =>
-      supabase
-        .from("t_like")
-        .select(`
+  const { data, loadMore, isLoading, isValidating } =
+    useCursorInfiniteScrollQuery(
+      () =>
+        supabase
+          .from("t_like")
+          .select(`
           id,
-          clothes: t_clothes (object_key)
+          clothes: t_clothes (id)
         `)
-        .eq("user_id", session?.user.id ?? "")
-        .order("created_at", { ascending: true })
-        .order("id", { ascending: true })
-        .limit(12),
-    {
-      orderBy: "id",
-      uqOrderBy: "id",
-    },
-  );
+          .eq("user_id", session?.user.id ?? "")
+          .order("created_at", { ascending: true })
+          .order("id", { ascending: true })
+          .limit(12),
+      {
+        orderBy: "id",
+        uqOrderBy: "id",
+      },
+    );
 
   const isRefreshing = !isLoading && isValidating;
 
@@ -91,7 +139,7 @@ const ClothesPage = memo(() => {
       ) : (
         <FlashList
           numColumns={2}
-          data={items}
+          data={data}
           onEndReached={loadMore}
           estimatedItemSize={240}
           overrideProps={{
@@ -106,7 +154,16 @@ const ClothesPage = memo(() => {
           }
           ListEmptyComponent={() => (
             <YStack flex={1} pt="$20" items="center" gap="$6">
-              <View w={200} h={200} rounded="$full" bg="$mutedBackground" />
+              <View w={200} h={200} rounded="$full" bg="$mutedBackground">
+                <Image
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  source={require("../../../../assets/images/empty.png")}
+                  transition={200}
+                />
+              </View>
               <YStack items="center" gap="$4">
                 <H1 fontWeight="$bold" fontSize="$xl">
                   {t("collections:clothes.empty.title")}
@@ -128,33 +185,7 @@ const ClothesPage = memo(() => {
               pl={index % 2 === 1 ? 8 : 0}
               pr={index % 2 === 0 ? 8 : 0}
             >
-              <Link
-                href={{
-                  pathname: "/details/[id]",
-                  params: { id: item.id },
-                }}
-                asChild
-              >
-                <TouchableOpacity activeOpacity={0.6}>
-                  <View
-                    w="100%"
-                    aspectRatio={3 / 4}
-                    rounded="$2xl"
-                    boxShadow="$sm"
-                    overflow="hidden"
-                    bg="$mutedBackground"
-                  >
-                    <Image
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                      }}
-                      source={`https://looky-clothes-images.s3.ap-northeast-1.amazonaws.com/${item.clothes.object_key}`}
-                      transition={200}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </Link>
+              <ClothesItem id={item.clothes.id} />
             </View>
           )}
         />

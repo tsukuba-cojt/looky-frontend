@@ -1,6 +1,5 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import * as Crypto from "expo-crypto";
-import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import {
   Link,
   useLocalSearchParams,
@@ -21,7 +20,7 @@ import { ImagePickerSheet } from "@/components/ImagePickerSheet";
 const avatarSchema = z.object({
   avatar: z.object(
     {
-      id: z.uuid(),
+      key: z.uuid(),
       uri: z.string(),
     },
     {
@@ -44,18 +43,13 @@ const AvatarPage = memo(() => {
   } = useForm<FormData>({
     resolver: standardSchemaResolver(avatarSchema),
     defaultValues: {
-      avatar: uri ? { id: Crypto.randomUUID(), uri } : getValues("avatar"),
+      avatar: uri ? { key: Crypto.randomUUID(), uri } : getValues("avatar"),
     },
   });
 
   const onSubmit = useCallback(
     async (data: FormData) => {
-      const context = ImageManipulator.manipulate(data.avatar?.uri ?? "");
-      const image = await context.renderAsync();
-      const result = await image.saveAsync({
-        format: SaveFormat.JPEG,
-      });
-      setValue("avatar", { id: data.avatar.id, uri: result.uri });
+      setValue("avatar", { key: data.avatar.key, uri: data.avatar.uri });
       router.push("/setup/outfit");
     },
     [router, setValue],
