@@ -15,7 +15,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 import type { Category, Vton } from "@/types";
 
 interface VtonItemProps {
-  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dresses_id">;
+  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dress_id">;
 }
 
 const VtonItem = memo(({ vton }: VtonItemProps) => {
@@ -41,7 +41,7 @@ const VtonItem = memo(({ vton }: VtonItemProps) => {
     <Link
       href={{
         pathname: "/details/[id]",
-        params: { id: vton.tops_id || vton.bottoms_id || vton.dresses_id },
+        params: { id: vton.tops_id || vton.bottoms_id || vton.dress_id },
       }}
       asChild
     >
@@ -80,7 +80,7 @@ const VtonPage = memo(() => {
           .from("t_user_vton")
           .select(`
           id,
-          vton: t_vton (id, tops_id, bottoms_id, dresses_id)
+          vton: t_vton (id, tops_id, bottoms_id, dress_id)
         `)
           .eq("user_id", session?.user.id ?? "")
           .eq("feedback", "like")

@@ -30,7 +30,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 import type { Category, Color, Gender } from "@/types";
 
 interface ClothesItemProps {
-  id: string;
+  id: number;
   isLiked: boolean;
   insertLike: () => Promise<void>;
   deleteLike: () => Promise<void>;

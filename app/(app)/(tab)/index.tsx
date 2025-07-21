@@ -22,6 +22,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
+import * as R from "remeda";
 import { toast } from "sonner-native";
 import {
   AnimatePresence,
@@ -45,7 +46,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 import type { Vton } from "@/types";
 
 interface SwipableCardItemProps {
-  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dresses_id">;
+  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dress_id">;
 }
 
 const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
@@ -68,7 +69,7 @@ const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
       <Link
         href={{
           pathname: "/details/[id]",
-          params: { id: vton.tops_id || vton.bottoms_id || vton.dresses_id },
+          params: { id: vton.tops_id || vton.bottoms_id || vton.dress_id },
         }}
         asChild
       >
@@ -84,23 +85,48 @@ const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
   );
 };
 
+type Item = {
+  id: string;
+  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dress_id">;
+};
+
 const TryOnPage = memo(() => {
   const { t } = useTranslation("try_on");
   const { height } = useWindowDimensions();
   const session = useSessionStore((state) => state.session);
+  const [items, setItems] = useState<Item[]>([]);
   const [isVisible, setIsVisble] = useState(false);
 
-  const { data, mutate } = useQuery(
+  const { mutate } = useQuery(
     supabase
       .from("t_user_vton")
       .select(`
           id,
-          vton: t_vton (id,tops_id,bottoms_id,dresses_id)
+          vton: t_vton (id,tops_id,bottoms_id,dress_id)
         `)
       .eq("user_id", session?.user.id ?? "")
       .is("feedback", null)
       .order("created_at", { ascending: true })
       .limit(3),
+    {
+      onSuccess: ({ data }) => {
+        if (!data) {
+          return;
+        }
+
+        setItems((prev) => {
+          const next = R.pipe(
+            R.differenceWith(data, prev, (a, b) => a.id === b.id),
+            R.map((item) => ({
+              id: item.id,
+              vton: item.vton,
+            })),
+          );
+
+          return [...prev, ...next];
+        });
+      },
+    },
   );
 
   const { trigger: insertTask } = useInsertMutation(
@@ -153,7 +179,7 @@ const TryOnPage = memo(() => {
   const animation = useRef<LottieView>(null);
   const activeIndex = useSharedValue(0);
 
-  const length = useMemo(() => data?.length ?? 0 + 1, [data]);
+  const length = useMemo(() => items.length + 1, [items]);
 
   const refs = useMemo(() => {
     const tmp: RefObject<SwipableCardRef | null>[] = [];
@@ -328,7 +354,7 @@ const TryOnPage = memo(() => {
           gap="$6"
         >
           <View aspectRatio={3 / 4} w="100%">
-            {data?.map((item, index) => {
+            {items.map((item, index) => {
               return (
                 <SwipeableCard
                   key={index.toString()}
@@ -355,9 +381,9 @@ const TryOnPage = memo(() => {
                 height: "100%",
               }}
               disabled
-              index={data?.length ?? 0}
+              index={items.length}
               activeIndex={activeIndex}
-              ref={refs[data?.length ?? 0]}
+              ref={refs[items.length]}
             >
               <YStack
                 flex={1}

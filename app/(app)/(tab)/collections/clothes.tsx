@@ -15,7 +15,7 @@ import { useSessionStore } from "@/stores/useSessionStore";
 import type { Category } from "@/types";
 
 interface ClothesItemProps {
-  id: string;
+  id: number;
 }
 
 const ClothesItem = memo(({ id }: ClothesItemProps) => {

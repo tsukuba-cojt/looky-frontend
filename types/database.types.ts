@@ -47,7 +47,7 @@ export type Database = {
           created_at: string;
           description: string | null;
           gender: Database["public"]["Enums"]["gender"] | null;
-          id: string;
+          id: number;
           invalid: boolean | null;
           part: Database["public"]["Enums"]["part"] | null;
           subcategory: Database["public"]["Enums"]["subcategory"] | null;
@@ -59,7 +59,7 @@ export type Database = {
           created_at?: string;
           description?: string | null;
           gender?: Database["public"]["Enums"]["gender"] | null;
-          id: string;
+          id?: number;
           invalid?: boolean | null;
           part?: Database["public"]["Enums"]["part"] | null;
           subcategory?: Database["public"]["Enums"]["subcategory"] | null;
@@ -71,7 +71,7 @@ export type Database = {
           created_at?: string;
           description?: string | null;
           gender?: Database["public"]["Enums"]["gender"] | null;
-          id?: string;
+          id?: number;
           invalid?: boolean | null;
           part?: Database["public"]["Enums"]["part"] | null;
           subcategory?: Database["public"]["Enums"]["subcategory"] | null;
@@ -81,19 +81,19 @@ export type Database = {
       };
       t_like: {
         Row: {
-          clothes_id: string;
+          clothes_id: number;
           created_at: string;
           id: string;
           user_id: string;
         };
         Insert: {
-          clothes_id: string;
+          clothes_id: number;
           created_at?: string;
           id: string;
           user_id: string;
         };
         Update: {
-          clothes_id?: string;
+          clothes_id?: number;
           created_at?: string;
           id?: string;
           user_id?: string;
@@ -226,25 +226,25 @@ export type Database = {
       };
       t_vton: {
         Row: {
-          bottoms_id: string | null;
+          bottoms_id: number | null;
           created_at: string;
-          dresses_id: string | null;
+          dress_id: number | null;
           id: string;
-          tops_id: string | null;
+          tops_id: number | null;
         };
         Insert: {
-          bottoms_id?: string | null;
+          bottoms_id?: number | null;
           created_at?: string;
-          dresses_id?: string | null;
+          dress_id?: number | null;
           id: string;
-          tops_id?: string | null;
+          tops_id?: number | null;
         };
         Update: {
-          bottoms_id?: string | null;
+          bottoms_id?: number | null;
           created_at?: string;
-          dresses_id?: string | null;
+          dress_id?: number | null;
           id?: string;
-          tops_id?: string | null;
+          tops_id?: number | null;
         };
         Relationships: [
           {
@@ -255,8 +255,8 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "t_vton_dresses_id_fkey";
-            columns: ["dresses_id"];
+            foreignKeyName: "t_vton_dress_id_fkey";
+            columns: ["dress_id"];
             isOneToOne: false;
             referencedRelation: "t_clothes";
             referencedColumns: ["id"];
