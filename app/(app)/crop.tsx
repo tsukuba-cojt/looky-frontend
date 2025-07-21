@@ -1,4 +1,4 @@
-import { SaveFormat, useImageManipulator } from "expo-image-manipulator";
+import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,8 +27,6 @@ const CropPage = memo(() => {
   const { uri, from } = useLocalSearchParams<{ uri: string; from: string }>();
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-
-  const context = useImageManipulator(uri ?? "");
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -149,6 +147,7 @@ const CropPage = memo(() => {
       return {};
     }
 
+    const context = ImageManipulator.manipulate(uri);
     context
       .resize({
         width: size.value.width,
@@ -176,7 +175,7 @@ const CropPage = memo(() => {
       params: { uri: result.uri },
     });
   }, [
-    context,
+    uri,
     diameter,
     from,
     radius,
