@@ -243,7 +243,7 @@
   },
   "collections": {
     "title": "コレクション",
-    "outfit": {
+    "vton": {
       "title": "いいねしたコーデ",
       "empty": {
         "title": "コーデがありません",
@@ -314,7 +314,8 @@
         "error": "エラーが発生しました。もう一度お試しください。"
       },
       "not_selected": "未選択",
-      "not_configured": "未設定"
+      "not_configured": "未設定",
+      "error": "エラーが発生しました。もう一度お試しください。"
     },
     "outfit": {
       "gallery": {

@@ -35,8 +35,6 @@ app.post("/send-email", async (c) => {
       };
     };
 
-    console.log(email_action_type);
-
     await i18n.changeLanguage("ja");
 
     const html = await renderAsync(

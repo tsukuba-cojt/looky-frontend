@@ -29,15 +29,18 @@ importers:
       '@react-navigation/native':
         specifier: ^7.1.6
         version: 7.1.14(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      '@react-navigation/stack':
-        specifier: ^7.4.2
-        version: 7.4.2(@react-navigation/native@7.1.14(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-gesture-handler@2.24.0(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.4.0(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-screens@4.11.1(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@shopify/flash-list':
         specifier: 2.0.0-rc.11
         version: 2.0.0-rc.11(@babel/runtime@7.27.6)(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@supabase-cache-helpers/postgrest-swr':
         specifier: ^2.0.1
         version: 2.0.1(@supabase/postgrest-js@1.19.4)(react@19.0.0)(swr@2.3.3(react@19.0.0))
+      '@supabase-cache-helpers/storage-swr':
+        specifier: ^1.1.5
+        version: 1.1.5(@supabase/storage-js@2.10.2)(react@19.0.0)(swr@2.3.3(react@19.0.0))
+      '@supabase/storage-js':
+        specifier: ^2.10.2
+        version: 2.10.2
       '@supabase/supabase-js':
         specifier: ^2.49.8
         version: 2.50.2
@@ -1590,16 +1593,6 @@ packages:
   '@react-navigation/routers@7.4.1':
     resolution: {integrity: sha512-42mZrMzQ0LfKxUb5OHIurYrPYyRsXFLolucILrvm21f0O40Sw0Ufh1bnn/jRqnxZZu7wvpUGIGYM8nS9zVE1Aw==}
 
-  '@react-navigation/stack@7.4.2':
-    resolution: {integrity: sha512-QlqBxKBfKVx/XRH04pRRGQ92tO1fV0RL7YEw5G4pew6CNY26102dVQl5A39ZztvlvEDQbCQkatyDS7i2xR1QiA==}
-    peerDependencies:
-      '@react-navigation/native': ^7.1.14
-      react: '>= 18.2.0'
-      react-native: '*'
-      react-native-gesture-handler: '>= 2.0.0'
-      react-native-safe-area-context: '>= 4.0.0'
-      react-native-screens: '>= 4.0.0'
-
   '@repeaterjs/repeater@3.0.6':
     resolution: {integrity: sha512-Javneu5lsuhwNCryN+pXH93VPQ8g0dBX7wItHFgYiwQmzE1sVdg5tWHiOgHywzL2W21XQopa7IwIEnNbmeUJYA==}
 
@@ -1867,6 +1860,16 @@ packages:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       swr: ^2.2.0
 
+  '@supabase-cache-helpers/storage-core@0.1.5':
+    resolution: {integrity: sha512-t6Fq3UYTkOadhcjWmz8HSDYNEztezODrEzrur90XdrTUn7Df4BcrMBb4OVHxB3f3SwZTrih/ZNdyENZwwRKgNQ==}
+
+  '@supabase-cache-helpers/storage-swr@1.1.5':
+    resolution: {integrity: sha512-spYmaM7Go99cl2yBA+jIWRyV3rzUN2goQqPMw7AthJlZUr0t4c4WF9MQ9BYROqLog6gwa+QMXfXVwah8vv1jJg==}
+    peerDependencies:
+      '@supabase/storage-js': ^2.7.1
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      swr: ^2.2.0
+
   '@supabase/auth-js@2.70.0':
     resolution: {integrity: sha512-BaAK/tOAZFJtzF1sE3gJ2FwTjLf4ky3PSvcvLGEgEmO4BSBkwWKu8l67rLLIBZPDnCyV7Owk2uPyKHa0kj5QGg==}
 
@@ -1882,6 +1885,9 @@ packages:
 
   '@supabase/realtime-js@2.11.15':
     resolution: {integrity: sha512-HQKRnwAqdVqJW/P9TjKVK+/ETpW4yQ8tyDPPtRMKOH4Uh3vQD74vmj353CYs8+YwVBKubeUOOEpI9CT8mT4obw==}
+
+  '@supabase/storage-js@2.10.2':
+    resolution: {integrity: sha512-ZTbxw2NXwdVLM+klKH83jI8mWskx3kpDcTZCxTtsVH1JoR5YUM70U6bNCc3foSdOlR0T4lGYjVJcL3WaZUou1Q==}
 
   '@supabase/storage-js@2.7.1':
     resolution: {integrity: sha512-asYHcyDR1fKqrMpytAS1zjyEfvxuOIp1CIXX7ji4lHHcJKqyk+sLl/Vxgm4sN6u8zvuUtae9e4kDxQP2qrwWBA==}
@@ -7920,19 +7926,6 @@ snapshots:
     dependencies:
       nanoid: 3.3.11
 
-  '@react-navigation/stack@7.4.2(@react-navigation/native@7.1.14(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-gesture-handler@2.24.0(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.4.0(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-screens@4.11.1(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
-    dependencies:
-      '@react-navigation/elements': 2.5.2(@react-navigation/native@7.1.14(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.4.0(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      '@react-navigation/native': 7.1.14(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      color: 4.2.3
-      react: 19.0.0
-      react-native: 0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0)
-      react-native-gesture-handler: 2.24.0(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      react-native-safe-area-context: 5.4.0(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      react-native-screens: 4.11.1(react-native@0.79.4(@babel/core@7.27.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-    transitivePeerDependencies:
-      - '@react-native-masked-view/masked-view'
-
   '@repeaterjs/repeater@3.0.6': {}
 
   '@rollup/rollup-android-arm-eabi@4.44.1':
@@ -8240,6 +8233,15 @@ snapshots:
       server-only: 0.0.1
       swr: 2.3.3(react@19.0.0)
 
+  '@supabase-cache-helpers/storage-core@0.1.5': {}
+
+  '@supabase-cache-helpers/storage-swr@1.1.5(@supabase/storage-js@2.10.2)(react@19.0.0)(swr@2.3.3(react@19.0.0))':
+    dependencies:
+      '@supabase-cache-helpers/storage-core': 0.1.5
+      '@supabase/storage-js': 2.10.2
+      react: 19.0.0
+      swr: 2.3.3(react@19.0.0)
+
   '@supabase/auth-js@2.70.0':
     dependencies:
       '@supabase/node-fetch': 2.6.15
@@ -8266,6 +8268,10 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  '@supabase/storage-js@2.10.2':
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
 
   '@supabase/storage-js@2.7.1':
     dependencies:

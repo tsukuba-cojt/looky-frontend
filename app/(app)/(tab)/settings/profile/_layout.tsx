@@ -84,6 +84,14 @@ const ProfileLayout = memo(() => {
             title: t("profile.height.title"),
           }}
         />
+
+        <Stack.Screen
+          name="crop"
+          options={{
+            headerShown: false,
+            title: t("profile.height.title"),
+          }}
+        />
       </Stack>
     </PortalProvider>
   );

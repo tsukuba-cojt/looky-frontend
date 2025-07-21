@@ -1,12 +1,13 @@
-import { useIsFocused } from "@react-navigation/native";
 import {
   useInsertMutation,
   useQuery,
   useSubscription,
   useUpdateMutation,
 } from "@supabase-cache-helpers/postgrest-swr";
+import { useFileUrl } from "@supabase-cache-helpers/storage-swr";
+import * as Crypto from "expo-crypto";
 import { Image } from "expo-image";
-import { Link } from "expo-router";
+import { Link, useFocusEffect } from "expo-router";
 import LottieView from "lottie-react-native";
 import {
   createRef,
@@ -21,6 +22,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
+import * as R from "remeda";
 import { toast } from "sonner-native";
 import {
   AnimatePresence,
@@ -39,23 +41,68 @@ import {
   SwipeableCard,
 } from "@/components/SwipeableCard";
 import { supabase } from "@/lib/client";
+import { wait } from "@/lib/utilts";
 import { useSessionStore } from "@/stores/useSessionStore";
 import type { Vton } from "@/types";
+
+interface SwipableCardItemProps {
+  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dress_id">;
+}
+
+const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
+  const session = useSessionStore((state) => state.session);
+
+  const { data: url } = useFileUrl(
+    supabase.storage.from("vton"),
+    `${session?.user.id}/${vton.id}.jpg`,
+    "private",
+    {
+      ensureExistence: true,
+      expiresIn: 3600,
+    },
+  );
+
+  return (
+    <View position="relative" overflow="hidden" rounded="$3xl" boxShadow="$sm">
+      <View position="absolute" inset={0} bg="$mutedBackground" />
+      <Skeleton position="absolute" inset={0} />
+      <Link
+        href={{
+          pathname: "/details/[id]",
+          params: { id: vton.tops_id || vton.bottoms_id || vton.dress_id },
+        }}
+        asChild
+      >
+        <TouchableOpacity activeOpacity={0.6}>
+          <Image
+            style={{ width: "100%", height: "100%" }}
+            source={url}
+            transition={200}
+          />
+        </TouchableOpacity>
+      </Link>
+    </View>
+  );
+};
+
+type Item = {
+  id: string;
+  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dress_id">;
+};
 
 const TryOnPage = memo(() => {
   const { t } = useTranslation("try_on");
   const { height } = useWindowDimensions();
   const session = useSessionStore((state) => state.session);
-  const [items, setItems] = useState<
-    { id: number; vton: Pick<Vton, "object_key" | "tops_id"> }[]
-  >([]);
+  const [items, setItems] = useState<Item[]>([]);
+  const [isVisible, setIsVisble] = useState(false);
 
   const { mutate } = useQuery(
     supabase
       .from("t_user_vton")
       .select(`
           id,
-          vton: t_vton (object_key,tops_id)
+          vton: t_vton (id,tops_id,bottoms_id,dress_id)
         `)
       .eq("user_id", session?.user.id ?? "")
       .is("feedback", null)
@@ -68,13 +115,13 @@ const TryOnPage = memo(() => {
         }
 
         setItems((prev) => {
-          const ids = new Set(prev.map((item) => item.id));
-          const next = data
-            .filter((item) => !ids.has(item.id))
-            .map((item) => ({
+          const next = R.pipe(
+            R.differenceWith(data, prev, (a, b) => a.id === b.id),
+            R.map((item) => ({
               id: item.id,
-              vton: item.vton as NonNullable<typeof item.vton>,
-            }));
+              vton: item.vton,
+            })),
+          );
 
           return [...prev, ...next];
         });
@@ -120,6 +167,9 @@ const TryOnPage = memo(() => {
           if (payload.new.status === "success") {
             await mutate();
           }
+
+          if (payload.new.status === "error") {
+          }
         }
       },
     },
@@ -128,7 +178,6 @@ const TryOnPage = memo(() => {
   const ref = useRef<SwipableCardRef>(null);
   const animation = useRef<LottieView>(null);
   const activeIndex = useSharedValue(0);
-  const focused = useIsFocused();
 
   const length = useMemo(() => items.length + 1, [items]);
 
@@ -196,12 +245,14 @@ const TryOnPage = memo(() => {
   }, [activeIndex, refs]);
 
   const onSwipeRight = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       await updateFeedback({ id, feedback: "like" });
       await insertTask([
         {
+          id: Crypto.randomUUID(),
           user_id: session?.user.id ?? "",
           status: "pending",
+          part: "Upper-body",
         },
       ]);
     },
@@ -209,12 +260,14 @@ const TryOnPage = memo(() => {
   );
 
   const onSwipeTop = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       await updateFeedback({ id, feedback: "love" });
       await insertTask([
         {
+          id: Crypto.randomUUID(),
           user_id: session?.user.id ?? "",
           status: "pending",
+          part: "Upper-body",
         },
       ]);
     },
@@ -222,12 +275,14 @@ const TryOnPage = memo(() => {
   );
 
   const onSwipeLeft = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       await updateFeedback({ id, feedback: "nope" });
       await insertTask([
         {
+          id: Crypto.randomUUID(),
           user_id: session?.user.id ?? "",
           status: "pending",
+          part: "Upper-body",
         },
       ]);
     },
@@ -235,12 +290,14 @@ const TryOnPage = memo(() => {
   );
 
   const onSwipeBottom = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       await updateFeedback({ id, feedback: "hate" });
       await insertTask([
         {
+          id: Crypto.randomUUID(),
           user_id: session?.user.id ?? "",
           status: "pending",
+          part: "Upper-body",
         },
       ]);
     },
@@ -248,7 +305,7 @@ const TryOnPage = memo(() => {
   );
 
   const onSwipeBack = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       await updateFeedback({ id, feedback: null });
     },
     [updateFeedback],
@@ -264,11 +321,26 @@ const TryOnPage = memo(() => {
     };
   }, [swipeLeft, swipeRight, swipeBack, swipeTop, swipeBottom]);
 
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        await wait(0.2);
+        setIsVisble(true);
+      })();
+
+      return () => {
+        setIsVisble(false);
+      };
+    }, []),
+  );
+
   return (
     <AnimatePresence>
       <Portal
-        y={focused ? 0 : height}
-        opacity={focused ? 1 : 0}
+        y={isVisible ? 0 : height}
+        animation="quick"
+        animateOnly={["opacity"]}
+        opacity={isVisible ? 1 : 0}
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       >
@@ -299,30 +371,7 @@ const TryOnPage = memo(() => {
                   onSwipeBottom={() => onSwipeBottom(item.id)}
                   onSwipeBack={() => onSwipeBack(item.id)}
                 >
-                  <View
-                    position="relative"
-                    overflow="hidden"
-                    rounded="$3xl"
-                    boxShadow="$sm"
-                  >
-                    <View position="absolute" inset={0} bg="$mutedBackground" />
-                    <Skeleton position="absolute" inset={0} />
-                    <Link
-                      href={{
-                        pathname: "/details/[id]",
-                        params: { id: item.vton.tops_id },
-                      }}
-                      asChild
-                    >
-                      <TouchableOpacity activeOpacity={0.6}>
-                        <Image
-                          style={{ width: "100%", height: "100%" }}
-                          source={`https://picsum.photos/1200/900?id=${item.id}`}
-                          transition={200}
-                        />
-                      </TouchableOpacity>
-                    </Link>
-                  </View>
+                  <SwipableCardItem vton={item.vton} />
                 </SwipeableCard>
               );
             })}

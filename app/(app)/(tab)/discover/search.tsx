@@ -1,4 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
 import { FlashList } from "@shopify/flash-list";
 import { useCursorInfiniteScrollQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Link, useRouter } from "expo-router";
@@ -66,8 +65,8 @@ const SearchPage = memo(() => {
       () =>
         supabase
           .from("t_clothes")
-          .select("id,name")
-          .ilike("name", `%${query}%`)
+          .select("id, title")
+          .ilike("title", `%${query}%`)
           .order("created_at", { ascending: true })
           .order("id", { ascending: true })
           .limit(10),
@@ -75,17 +74,17 @@ const SearchPage = memo(() => {
     );
 
   const onSearch = useCallback(
-    (text: string) => {
+    (id: string, text: string) => {
       setHistory((prev) => {
         if (!prev) {
           return "[]";
         }
 
         const history = JSON.parse(prev) as History[];
-        const next = [
-          { id: createId(), text, createdAt: Date.now() },
-          ...history,
-        ].slice(0, 30);
+        const next = [{ id, text, createdAt: Date.now() }, ...history].slice(
+          0,
+          30,
+        );
 
         return JSON.stringify(next);
       });
@@ -112,7 +111,7 @@ const SearchPage = memo(() => {
   const isRefreshing = !isLoading && isValidating;
 
   const debouncer = useMemo(
-    () => R.funnel(() => mutate(), { minQuietPeriodMs: 2000 }),
+    () => R.funnel(() => mutate(), { minQuietPeriodMs: 200 }),
     [mutate],
   );
 
@@ -196,14 +195,21 @@ const SearchPage = memo(() => {
                 )
               }
               renderItem={({ item }) => (
-                <Link href={`/discover/${item.id}`} asChild>
+                <Link
+                  href={{
+                    pathname: "/details/[id]",
+                    params: { id: item.id },
+                  }}
+                  asChild
+                >
                   <Button
                     variant="ghost"
                     h="$14"
                     px="$8"
                     onPress={() => {
-                      if (item.name) {
-                        onSearch(item.name);
+                      router.dismiss();
+                      if (item.title) {
+                        onSearch(item.id, item.title);
                       }
                     }}
                   >
@@ -214,7 +220,7 @@ const SearchPage = memo(() => {
                             <Icons.search size="$4" />
                           </View>
                         </Button.Icon>
-                        <Text fontSize="$lg">{item.name}</Text>
+                        <Text fontSize="$lg">{item.title}</Text>
                       </XStack>
                       <Button.Icon>
                         <Icons.chevronRight size="$5" color="$mutedColor" />
@@ -257,21 +263,38 @@ const SearchPage = memo(() => {
                       />
                     )}
                   >
-                    <Button variant="ghost" h="$14" px="$8">
-                      <XStack w="100%" items="center" justify="space-between">
-                        <XStack items="center" gap="$3">
+                    <Link
+                      href={{
+                        pathname: "/details/[id]",
+                        params: { id: item.id },
+                      }}
+                      asChild
+                    >
+                      <Button
+                        variant="ghost"
+                        h="$14"
+                        px="$8"
+                        onPress={() => router.dismiss()}
+                      >
+                        <XStack w="100%" items="center" justify="space-between">
+                          <XStack items="center" gap="$3">
+                            <Button.Icon>
+                              <View
+                                p="$2"
+                                rounded="$full"
+                                bg="$mutedBackground"
+                              >
+                                <Icons.clock size="$4" />
+                              </View>
+                            </Button.Icon>
+                            <Text fontSize="$lg">{item.text}</Text>
+                          </XStack>
                           <Button.Icon>
-                            <View p="$2" rounded="$full" bg="$mutedBackground">
-                              <Icons.clock size="$4" />
-                            </View>
+                            <Icons.chevronRight size="$5" color="$mutedColor" />
                           </Button.Icon>
-                          <Text fontSize="$lg">{item.text}</Text>
                         </XStack>
-                        <Button.Icon>
-                          <Icons.chevronRight size="$5" color="$mutedColor" />
-                        </Button.Icon>
-                      </XStack>
-                    </Button>
+                      </Button>
+                    </Link>
                   </Swipeable>
                 )}
               />

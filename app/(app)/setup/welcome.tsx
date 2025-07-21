@@ -1,4 +1,9 @@
-import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
+import {
+  useInsertMutation,
+  useUpdateMutation,
+} from "@supabase-cache-helpers/postgrest-swr";
+import { useUpload } from "@supabase-cache-helpers/storage-swr";
+import * as Crypto from "expo-crypto";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { memo, useCallback } from "react";
@@ -9,7 +14,6 @@ import { toast } from "sonner-native";
 import { Form, H1, Spinner, Text, YStack } from "tamagui";
 import type z from "zod/v4";
 import { Button } from "@/components/Button";
-import { useUpload } from "@/hooks/useUpload";
 import { supabase } from "@/lib/client";
 import type { setupSchema } from "@/schemas/app";
 import { useSessionStore } from "@/stores/useSessionStore";
@@ -25,15 +29,25 @@ const WelcomePage = memo(() => {
     formState: { isSubmitting },
   } = useFormContext<FormData>();
 
-  const { trigger: upload } = useUpload();
-
   const { trigger: insertUser } = useInsertMutation(
     supabase.from("t_user"),
     ["id"],
     "*",
     {
+      onError: (error) => {
+        console.error(error);
+        toast.error(t("welcome.error"));
+      },
+    },
+  );
+
+  const { trigger: updateUser } = useUpdateMutation(
+    supabase.from("t_user"),
+    ["id"],
+    "*",
+    {
       onSuccess: () => {
-        router.replace("/loading");
+        router.push("/loading");
       },
       onError: () => {
         toast.error(t("welcome.error"));
@@ -47,7 +61,8 @@ const WelcomePage = memo(() => {
     ["id"],
     "*",
     {
-      onError: () => {
+      onError: (error) => {
+        console.error(error);
         toast.error(t("welcome.error"));
       },
     },
@@ -58,59 +73,87 @@ const WelcomePage = memo(() => {
     ["id"],
     "*",
     {
-      onError: () => {
+      onError: (error) => {
+        console.error(error);
         toast.error(t("welcome.error"));
       },
     },
   );
 
+  const { trigger: uploadAvatar } = useUpload(supabase.storage.from("avatar"), {
+    onError: (error) => {
+      console.error(error);
+      toast.error(t("welcome.error"));
+    },
+  });
+  const { trigger: uploadBody } = useUpload(supabase.storage.from("body"), {
+    onError: (error) => {
+      console.error(error);
+      toast.error(t("welcome.error"));
+    },
+  });
+
   const onSubmit = useCallback(
     async (data: FormData) => {
       if (data.avatar) {
-        const blob = await (await fetch(data.avatar.uri)).blob();
-        await upload({
-          blob,
-          bucketName: "looky-avatar-images",
-          objectKey: `${data.avatar.id}.jpg`,
-        });
+        const arrayBuffer = await (await fetch(data.avatar.uri)).arrayBuffer();
+        const file = {
+          data: arrayBuffer,
+          name: `${session?.user.id}.jpg`,
+          type: "image/jpeg",
+        };
+        await uploadAvatar({ files: [file] });
       }
 
-      await Promise.all(
+      const files = await Promise.all(
         data.outfits.map(async (outfit) => {
-          const blob = await (await fetch(outfit.uri)).blob();
-          await upload({
-            blob,
-            bucketName: "looky-body-images",
-            objectKey: `${outfit.id}.jpg`,
-          });
+          const arrayBuffer = await (await fetch(outfit.uri)).arrayBuffer();
+          const file = {
+            data: arrayBuffer,
+            name: `${outfit.key}.jpg`,
+            type: "image/jpeg",
+          };
+
+          return file;
         }),
       );
+      await uploadBody({ path: session?.user.id, files });
 
       await insertUser([
         {
-          id: session?.user.id ?? "",
+          id: session?.user.id,
           name: data.name,
           gender: data.gender,
-          avatar_url: data.avatar ? `${data.avatar.id}.jpg` : null,
-          body_url: `${data.outfits[0].id}.jpg`,
         },
       ]);
 
       await insertBody(
         data.outfits.map((outfit) => ({
-          user_id: session?.user.id ?? "",
-          object_key: `${outfit.id}.jpg`,
+          id: outfit.key,
+          user_id: session?.user.id,
         })),
       );
 
+      await updateUser({ id: session?.user.id, body_id: data.outfits[0].key });
+
       await insertTask(
         Array.from({ length: 3 }, () => ({
+          id: Crypto.randomUUID(),
           user_id: session?.user.id ?? "",
+          part: "Upper-body",
           status: "pending",
         })),
       );
     },
-    [insertBody, insertTask, insertUser, session, upload],
+    [
+      insertBody,
+      insertTask,
+      insertUser,
+      session,
+      uploadAvatar,
+      uploadBody,
+      updateUser,
+    ],
   );
 
   return (

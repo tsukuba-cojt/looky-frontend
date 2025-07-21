@@ -42,40 +42,40 @@ export type Database = {
       };
       t_clothes: {
         Row: {
-          category: string | null;
-          color: string | null;
+          category: Database["public"]["Enums"]["category"] | null;
+          color: Database["public"]["Enums"]["color"] | null;
           created_at: string;
+          description: string | null;
           gender: Database["public"]["Enums"]["gender"] | null;
           id: number;
           invalid: boolean | null;
-          name: string | null;
-          object_key: string | null;
           part: Database["public"]["Enums"]["part"] | null;
-          subcategory: string | null;
+          subcategory: Database["public"]["Enums"]["subcategory"] | null;
+          title: string | null;
         };
         Insert: {
-          category?: string | null;
-          color?: string | null;
+          category?: Database["public"]["Enums"]["category"] | null;
+          color?: Database["public"]["Enums"]["color"] | null;
           created_at?: string;
+          description?: string | null;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
           invalid?: boolean | null;
-          name?: string | null;
-          object_key?: string | null;
           part?: Database["public"]["Enums"]["part"] | null;
-          subcategory?: string | null;
+          subcategory?: Database["public"]["Enums"]["subcategory"] | null;
+          title?: string | null;
         };
         Update: {
-          category?: string | null;
-          color?: string | null;
+          category?: Database["public"]["Enums"]["category"] | null;
+          color?: Database["public"]["Enums"]["color"] | null;
           created_at?: string;
+          description?: string | null;
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: number;
           invalid?: boolean | null;
-          name?: string | null;
-          object_key?: string | null;
           part?: Database["public"]["Enums"]["part"] | null;
-          subcategory?: string | null;
+          subcategory?: Database["public"]["Enums"]["subcategory"] | null;
+          title?: string | null;
         };
         Relationships: [];
       };
@@ -83,19 +83,19 @@ export type Database = {
         Row: {
           clothes_id: number;
           created_at: string;
-          id: number;
+          id: string;
           user_id: string;
         };
         Insert: {
           clothes_id: number;
           created_at?: string;
-          id?: number;
+          id: string;
           user_id: string;
         };
         Update: {
           clothes_id?: number;
           created_at?: string;
-          id?: number;
+          id?: string;
           user_id?: string;
         };
         Relationships: [
@@ -117,25 +117,25 @@ export type Database = {
       };
       t_task: {
         Row: {
-          clothes_part: Database["public"]["Enums"]["part"];
           created_at: string;
-          id: number;
+          id: string;
+          part: Database["public"]["Enums"]["part"];
           status: Database["public"]["Enums"]["status"] | null;
           updated_at: string;
           user_id: string;
         };
         Insert: {
-          clothes_part?: Database["public"]["Enums"]["part"];
           created_at?: string;
-          id?: number;
+          id: string;
+          part?: Database["public"]["Enums"]["part"];
           status?: Database["public"]["Enums"]["status"] | null;
           updated_at?: string;
           user_id: string;
         };
         Update: {
-          clothes_part?: Database["public"]["Enums"]["part"];
           created_at?: string;
-          id?: number;
+          id?: string;
+          part?: Database["public"]["Enums"]["part"];
           status?: Database["public"]["Enums"]["status"] | null;
           updated_at?: string;
           user_id?: string;
@@ -152,8 +152,7 @@ export type Database = {
       };
       t_user: {
         Row: {
-          avatar_url: string | null;
-          body_url: string | null;
+          body_id: string | null;
           created_at: string;
           gender: string | null;
           height: number | null;
@@ -161,8 +160,7 @@ export type Database = {
           name: string | null;
         };
         Insert: {
-          avatar_url?: string | null;
-          body_url?: string | null;
+          body_id?: string | null;
           created_at?: string;
           gender?: string | null;
           height?: number | null;
@@ -170,37 +168,44 @@ export type Database = {
           name?: string | null;
         };
         Update: {
-          avatar_url?: string | null;
-          body_url?: string | null;
+          body_id?: string | null;
           created_at?: string;
           gender?: string | null;
           height?: number | null;
           id?: string;
           name?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "t_user_body_id_fkey";
+            columns: ["body_id"];
+            isOneToOne: false;
+            referencedRelation: "t_body";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       t_user_vton: {
         Row: {
           created_at: string;
           feedback: Database["public"]["Enums"]["feedback"] | null;
-          id: number;
+          id: string;
           user_id: string | null;
-          vton_id: number | null;
+          vton_id: string;
         };
         Insert: {
           created_at?: string;
           feedback?: Database["public"]["Enums"]["feedback"] | null;
-          id?: number;
+          id: string;
           user_id?: string | null;
-          vton_id?: number | null;
+          vton_id: string;
         };
         Update: {
           created_at?: string;
           feedback?: Database["public"]["Enums"]["feedback"] | null;
-          id?: number;
+          id?: string;
           user_id?: string | null;
-          vton_id?: number | null;
+          vton_id?: string;
         };
         Relationships: [
           {
@@ -221,24 +226,41 @@ export type Database = {
       };
       t_vton: {
         Row: {
+          bottoms_id: number | null;
           created_at: string;
-          id: number;
-          object_key: string;
-          tops_id: number;
+          dress_id: number | null;
+          id: string;
+          tops_id: number | null;
         };
         Insert: {
+          bottoms_id?: number | null;
           created_at?: string;
-          id?: number;
-          object_key: string;
-          tops_id: number;
+          dress_id?: number | null;
+          id: string;
+          tops_id?: number | null;
         };
         Update: {
+          bottoms_id?: number | null;
           created_at?: string;
-          id?: number;
-          object_key?: string;
-          tops_id?: number;
+          dress_id?: number | null;
+          id?: string;
+          tops_id?: number | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "t_vton_bottoms_id_fkey";
+            columns: ["bottoms_id"];
+            isOneToOne: false;
+            referencedRelation: "t_clothes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "t_vton_dress_id_fkey";
+            columns: ["dress_id"];
+            isOneToOne: false;
+            referencedRelation: "t_clothes";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "t_vton_tops_id_fkey";
             columns: ["tops_id"];
@@ -253,13 +275,60 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_distinct_pending_tasks: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          created_at: string;
+          id: string;
+          part: Database["public"]["Enums"]["part"];
+          status: Database["public"]["Enums"]["status"] | null;
+          updated_at: string;
+          user_id: string;
+        }[];
+      };
     };
     Enums: {
+      category: "tops" | "bottoms" | "dresses";
+      color:
+        | "red"
+        | "pink"
+        | "purple"
+        | "indigo"
+        | "blue"
+        | "cyan"
+        | "teal"
+        | "green"
+        | "lime"
+        | "yellow"
+        | "amber"
+        | "orange"
+        | "brown"
+        | "gray"
+        | "black"
+        | "white";
       feedback: "love" | "like" | "hate" | "nope";
       gender: "man" | "woman" | "unisex";
       part: "Upper-body" | "Lower-body" | "Dressed";
       status: "success" | "error" | "pending";
+      subcategory:
+        | "t_shirts"
+        | "blouses"
+        | "tank_tops"
+        | "polos"
+        | "tunics"
+        | "hoodies"
+        | "jeans"
+        | "pants"
+        | "shorts"
+        | "leggings"
+        | "skirts"
+        | "capris"
+        | "casual"
+        | "evening"
+        | "cocktail"
+        | "summer"
+        | "maxi"
+        | "shirt";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -390,10 +459,49 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      category: ["tops", "bottoms", "dresses"],
+      color: [
+        "red",
+        "pink",
+        "purple",
+        "indigo",
+        "blue",
+        "cyan",
+        "teal",
+        "green",
+        "lime",
+        "yellow",
+        "amber",
+        "orange",
+        "brown",
+        "gray",
+        "black",
+        "white",
+      ],
       feedback: ["love", "like", "hate", "nope"],
       gender: ["man", "woman", "unisex"],
       part: ["Upper-body", "Lower-body", "Dressed"],
       status: ["success", "error", "pending"],
+      subcategory: [
+        "t_shirts",
+        "blouses",
+        "tank_tops",
+        "polos",
+        "tunics",
+        "hoodies",
+        "jeans",
+        "pants",
+        "shorts",
+        "leggings",
+        "skirts",
+        "capris",
+        "casual",
+        "evening",
+        "cocktail",
+        "summer",
+        "maxi",
+        "shirt",
+      ],
     },
   },
 } as const;

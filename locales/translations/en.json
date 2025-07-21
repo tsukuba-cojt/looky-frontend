@@ -243,7 +243,7 @@
   },
   "collections": {
     "title": "Collections",
-    "outfit": {
+    "vton": {
       "title": "Liked Outfits",
       "empty": {
         "title": "You haven't any outfits",
@@ -314,7 +314,8 @@
         "error": "Something went wrong. Please try again."
       },
       "not_selected": "Not selected",
-      "not_configured": "Not configured"
+      "not_configured": "Not configured",
+      "error": "Something went wrong. Please try again."
     },
     "outfit": {
       "gallery": {

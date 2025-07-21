@@ -1,13 +1,16 @@
 import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
+import { useFileUrl, useUpload } from "@supabase-cache-helpers/storage-swr";
 import {
   Link,
+  useFocusEffect,
   useLocalSearchParams,
   usePathname,
   useRouter,
 } from "expo-router";
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
+import { toast } from "sonner-native";
 import { Avatar, getFontSize, Text, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
@@ -24,25 +27,55 @@ const ProfilePage = memo(() => {
   const { uri } = useLocalSearchParams<{ uri?: string }>();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: user, isLoading } = useQuery(
+  const { data: user, isLoading: isLoadingUser } = useQuery(
     supabase
       .from("t_user")
-      .select("id, name, avatar_url, gender, height")
+      .select("id, name, gender, height")
       .eq("id", session?.user.id ?? "")
       .maybeSingle(),
   );
+
+  const { data: url, isLoading: isLoadingAvatar } = useFileUrl(
+    supabase.storage.from("avatar"),
+    `${session?.user.id}.jpg`,
+    "private",
+    {
+      ensureExistence: true,
+      expiresIn: 3600,
+    },
+  );
+
+  const { trigger: uploadAvatar } = useUpload(supabase.storage.from("avatar"), {
+    onError: () => {
+      toast.error(t("settings.profile.error"));
+    },
+  });
+
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        if (uri) {
+          const arrayBuffer = await (await fetch(uri)).arrayBuffer();
+          const file = {
+            data: arrayBuffer,
+            name: `${session?.user.id}.jpg`,
+            type: "image/jpeg",
+          };
+          await uploadAvatar({ files: [file] });
+          router.setParams({ uri: undefined });
+        }
+      })();
+    }, [uri, router, session, uploadAvatar]),
+  );
+
+  const isLoading = isLoadingUser || isLoadingAvatar;
 
   return (
     <>
       <YStack flex={1} items="center" pt="$8" gap="$8">
         <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpen(true)}>
           <Avatar circular size="$24">
-            <Avatar.Image
-              src={
-                uri ??
-                `https://looky-avatar-images.s3.ap-northeast-1.amazonaws.com/${user?.avatar_url}`
-              }
-            />
+            <Avatar.Image src={uri ?? url} />
             <Avatar.Fallback
               items="center"
               justify="center"
@@ -138,7 +171,7 @@ const ProfilePage = memo(() => {
         onOpenChange={setIsOpen}
         onImagePicked={(uri) => {
           router.push({
-            pathname: "/crop",
+            pathname: "/settings/profile/crop",
             params: {
               uri,
               from: pathname,

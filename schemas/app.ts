@@ -6,11 +6,11 @@ export const setupSchema = z.object({
   gender: z.enum(genders).optional(),
   avatar: z
     .object({
-      id: z.uuid(),
+      key: z.uuid(),
       uri: z.string(),
     })
     .optional(),
-  outfits: z.array(z.object({ id: z.uuid(), uri: z.string() })).nonempty(),
+  outfits: z.array(z.object({ key: z.uuid(), uri: z.string() })).nonempty(),
 });
 
 export const profileSchema = z.object({

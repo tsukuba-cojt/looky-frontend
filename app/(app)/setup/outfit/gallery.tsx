@@ -21,7 +21,7 @@ import { Icons } from "@/components/Icons";
 
 const outfitsSchema = z.object({
   outfits: z
-    .array(z.object({ id: z.uuid(), uri: z.string() }))
+    .array(z.object({ key: z.uuid(), uri: z.string() }))
     .nonempty({ error: "required_error" }),
 });
 type FormData = z.infer<typeof outfitsSchema>;
@@ -47,7 +47,7 @@ const GalleryPage = () => {
   useFocusEffect(
     useCallback(() => {
       if (uri) {
-        append({ id: Crypto.randomUUID(), uri });
+        append({ key: Crypto.randomUUID(), uri });
         router.setParams({ uri: undefined });
       }
     }, [uri, append, router]),
@@ -63,7 +63,7 @@ const GalleryPage = () => {
             format: SaveFormat.JPEG,
           });
 
-          return { id: outfit.id, uri: result.uri };
+          return { key: outfit.key, uri: result.uri };
         }),
       );
 

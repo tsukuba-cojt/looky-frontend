@@ -19,7 +19,7 @@ const TabLayout = memo(() => {
   const { data: user, isLoading } = useQuery(
     supabase
       .from("t_user")
-      .select("id, name, avatar_url")
+      .select("id, name")
       .eq("id", session?.user.id ?? "")
       .maybeSingle(),
   );

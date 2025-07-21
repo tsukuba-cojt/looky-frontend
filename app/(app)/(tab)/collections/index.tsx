@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useCursorInfiniteScrollQuery } from "@supabase-cache-helpers/postgrest-swr";
+import { useFileUrl } from "@supabase-cache-helpers/storage-swr";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { memo, useState } from "react";
@@ -9,64 +10,88 @@ import { H1, Spinner, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Skeleton } from "@/components/Skeleton";
 import { categories } from "@/constants";
-import { useDownload } from "@/hooks/useDownload";
 import { supabase } from "@/lib/client";
 import { useSessionStore } from "@/stores/useSessionStore";
-import type { Category, UserVton, Vton } from "@/types";
+import type { Category, Vton } from "@/types";
 
-type Item = Pick<UserVton, "id"> & {
-  vton: Pick<Vton, "tops_id" | "object_key"> | null;
-};
+interface VtonItemProps {
+  vton: Pick<Vton, "id" | "tops_id" | "bottoms_id" | "dress_id">;
+}
 
-const OutfitPage = memo(() => {
-  const { t } = useTranslation(["common", "collections"]);
+const VtonItem = memo(({ vton }: VtonItemProps) => {
   const session = useSessionStore((state) => state.session);
-  const [category, setCategory] = useState<Category>("tops");
-  const [items, setItems] = useState<Item[]>([]);
 
-  const { loadMore, isLoading, isValidating } = useCursorInfiniteScrollQuery(
-    () =>
-      supabase
-        .from("t_user_vton")
-        .select(`
-          id,
-          vton: t_vton (tops_id,object_key)
-        `)
-        .eq("user_id", session?.user.id ?? "")
-        .eq("feedback", "like")
-        .order("created_at", { ascending: true })
-        .order("id", { ascending: true })
-        .limit(12),
+  const { data: url, isLoading } = useFileUrl(
+    supabase.storage.from("vton"),
+    `${session?.user.id}/${vton.id}.jpg`,
+    "private",
     {
-      orderBy: "id",
-      uqOrderBy: "id",
-      onSuccess: async (data) => {
-        const page = data.at(-1) ?? [];
-
-        const next = await Promise.all(
-          page.map(async (item) => {
-            if (!item.vton) {
-              return item;
-            }
-
-            const url = await download({
-              bucketName: "looky-vton-images",
-              objectKey: item.vton.object_key,
-            });
-
-            return {
-              ...item,
-              vton: { ...item.vton, object_key: url as string },
-            };
-          }),
-        );
-
-        setItems((prev) => [...prev, ...next]);
-      },
+      ensureExistence: true,
+      expiresIn: 3600,
     },
   );
 
-  const { trigger: download } = useDownload();
+  if (isLoading) {
+    return (
+      <Skeleton w="100%" aspectRatio={3 / 4} rounded="$2xl" boxShadow="$sm" />
+    );
+  }
+
+  return (
+    <Link
+      href={{
+        pathname: "/details/[id]",
+        params: { id: vton.tops_id || vton.bottoms_id || vton.dress_id },
+      }}
+      asChild
+    >
+      <TouchableOpacity activeOpacity={0.6}>
+        <View
+          w="100%"
+          aspectRatio={3 / 4}
+          rounded="$2xl"
+          boxShadow="$sm"
+          overflow="hidden"
+          bg="$mutedBackground"
+        >
+          <Image
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            source={url}
+            transition={200}
+          />
+        </View>
+      </TouchableOpacity>
+    </Link>
+  );
+});
+
+const VtonPage = memo(() => {
+  const { t } = useTranslation(["common", "collections"]);
+  const session = useSessionStore((state) => state.session);
+  const [category, setCategory] = useState<Category>("tops");
+
+  const { data, loadMore, isLoading, isValidating } =
+    useCursorInfiniteScrollQuery(
+      () =>
+        supabase
+          .from("t_user_vton")
+          .select(`
+          id,
+          vton: t_vton (id, tops_id, bottoms_id, dress_id)
+        `)
+          .eq("user_id", session?.user.id ?? "")
+          .eq("feedback", "like")
+          .order("created_at", { ascending: true })
+          .order("id", { ascending: true })
+          .limit(12),
+      {
+        orderBy: "id",
+        uqOrderBy: "id",
+      },
+    );
 
   const isRefreshing = !isLoading && isValidating;
 
@@ -118,7 +143,7 @@ const OutfitPage = memo(() => {
       ) : (
         <FlashList
           numColumns={2}
-          data={items}
+          data={data}
           onEndReached={loadMore}
           estimatedItemSize={240}
           overrideProps={{
@@ -133,10 +158,19 @@ const OutfitPage = memo(() => {
           }
           ListEmptyComponent={() => (
             <YStack flex={1} pt="$20" items="center" gap="$6">
-              <View w={200} h={200} rounded="$full" bg="$mutedBackground" />
+              <View w={200} h={200} rounded="$full" bg="$mutedBackground">
+                <Image
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  source={require("../../../../assets/images/empty.png")}
+                  transition={200}
+                />
+              </View>
               <YStack items="center" gap="$4">
                 <H1 fontWeight="$bold" fontSize="$xl">
-                  {t("collections:outfit.empty.title")}
+                  {t("collections:vton.empty.title")}
                 </H1>
                 <Text
                   text="center"
@@ -144,7 +178,7 @@ const OutfitPage = memo(() => {
                   lineHeight="$sm"
                   color="$mutedColor"
                 >
-                  {t("collections:outfit.empty.description")}
+                  {t("collections:vton.empty.description")}
                 </Text>
               </YStack>
             </YStack>
@@ -155,33 +189,7 @@ const OutfitPage = memo(() => {
               pl={index % 2 === 1 ? 8 : 0}
               pr={index % 2 === 0 ? 8 : 0}
             >
-              <Link
-                href={{
-                  pathname: "/details/[id]",
-                  params: { id: item.vton?.tops_id },
-                }}
-                asChild
-              >
-                <TouchableOpacity activeOpacity={0.6}>
-                  <View
-                    w="100%"
-                    aspectRatio={3 / 4}
-                    rounded="$2xl"
-                    boxShadow="$sm"
-                    overflow="hidden"
-                    bg="$mutedBackground"
-                  >
-                    <Image
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                      }}
-                      source={item.vton?.object_key}
-                      transition={200}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </Link>
+              <VtonItem vton={item.vton} />
             </View>
           )}
         />
@@ -190,4 +198,4 @@ const OutfitPage = memo(() => {
   );
 });
 
-export default OutfitPage;
+export default VtonPage;
