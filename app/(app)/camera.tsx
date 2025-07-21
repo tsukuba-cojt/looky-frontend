@@ -4,6 +4,7 @@ import {
   type FlashMode,
   useCameraPermissions,
 } from "expo-camera";
+import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,12 +33,26 @@ const CameraPage = memo(() => {
 
   const takePicture = useCallback(async () => {
     const picture = await ref.current?.takePictureAsync();
-    if (picture) {
-      router.dismissTo({
-        pathname: from,
-        params: { uri: picture.uri },
-      });
+
+    if (!picture) {
+      return;
     }
+
+    const context = ImageManipulator.manipulate(picture.uri);
+
+    context.resize({
+      width: 768,
+      height: 1024,
+    });
+    const image = await context.renderAsync();
+    const result = await image.saveAsync({
+      format: SaveFormat.JPEG,
+    });
+
+    router.dismissTo({
+      pathname: from,
+      params: { uri: result.uri },
+    });
   }, [router, from]);
 
   const toggleFlash = useCallback(() => {
@@ -104,9 +119,7 @@ const CameraPage = memo(() => {
             <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
               <Icons.x size="$8" color="white" />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.6}>
-              <Icons.zap size="$6" color="white" />
-            </TouchableOpacity>
+            <View />
           </XStack>
           <XStack
             animation="medium"
@@ -119,7 +132,7 @@ const CameraPage = memo(() => {
             items="center"
             justify="space-between"
           >
-            <TouchableOpacity activeOpacity={0.6} onPress={toggleFacing}>
+            <TouchableOpacity activeOpacity={0.6} onPress={toggleFlash}>
               <View
                 p="$3"
                 items="center"
@@ -129,7 +142,7 @@ const CameraPage = memo(() => {
                 opacity={0.8}
                 boxShadow="$shadow.xl"
               >
-                <Icons.image size="$6" color="white" />
+                <Icons.zap size="$6" color="white" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.6} onPress={takePicture}>
@@ -151,7 +164,7 @@ const CameraPage = memo(() => {
                 />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.6} onPress={toggleFlash}>
+            <TouchableOpacity activeOpacity={0.6} onPress={toggleFacing}>
               <View
                 p="$3"
                 items="center"
