@@ -136,6 +136,8 @@
       "description": "This name will be visible to other users. You can change it later.",
       "label": "Username",
       "placeholder": "John Doe",
+      "required_error": "Username is required.",
+      "invalid_type_error": "Username must be a string.",
       "too_short_error": "Username must be at least 3 characters long.",
       "too_long_error": "Username must be 24 characters or less.",
       "submit": "Next",

@@ -119,13 +119,7 @@ const WelcomePage = memo(() => {
       );
       await uploadBody({ path: session?.user.id, files });
 
-      await insertUser([
-        {
-          id: session?.user.id,
-          name: data.name,
-          gender: data.gender,
-        },
-      ]);
+      await insertUser([{ id: session?.user.id }]);
 
       await insertBody(
         data.outfits.map((outfit) => ({
@@ -134,7 +128,12 @@ const WelcomePage = memo(() => {
         })),
       );
 
-      await updateUser({ id: session?.user.id, body_id: data.outfits[0].key });
+      await updateUser({
+        id: session?.user.id,
+        name: data.name,
+        gender: data.gender,
+        body_id: data.outfits[0].key,
+      });
 
       await insertTask(
         Array.from({ length: 3 }, () => ({
