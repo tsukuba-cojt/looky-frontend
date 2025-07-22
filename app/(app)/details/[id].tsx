@@ -40,7 +40,7 @@ const DetailsPage = memo(() => {
         like: t_like (count)
       `)
       .eq("like.user_id", session?.user.id ?? "")
-      .eq("id", id)
+      .eq("id", Number(id))
       .maybeSingle(),
   );
 
@@ -193,14 +193,14 @@ const DetailsPage = memo(() => {
               await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               if (isLiked) {
                 await deleteLike({
-                  clothes_id: id,
+                  clothes_id: Number(id),
                   user_id: session?.user.id ?? "",
                 });
               } else {
                 await insertLike([
                   {
                     id: Crypto.randomUUID(),
-                    clothes_id: id,
+                    clothes_id: Number(id),
                     user_id: session?.user.id ?? "",
                   },
                 ]);

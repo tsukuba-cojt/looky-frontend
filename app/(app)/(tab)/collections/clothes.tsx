@@ -77,9 +77,10 @@ const ClothesPage = memo(() => {
           .from("t_like")
           .select(`
           id,
-          clothes: t_clothes (id)
+          clothes:t_clothes!inner (id)
         `)
           .eq("user_id", session?.user.id ?? "")
+          .eq("clothes.category", category)
           .order("created_at", { ascending: true })
           .order("id", { ascending: true })
           .limit(12),
@@ -185,7 +186,7 @@ const ClothesPage = memo(() => {
               pl={index % 2 === 1 ? 8 : 0}
               pr={index % 2 === 0 ? 8 : 0}
             >
-              <ClothesItem id={item.clothes.id} />
+              <ClothesItem id={item.clothes?.id} />
             </View>
           )}
         />

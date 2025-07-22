@@ -10,8 +10,8 @@ import { Icons } from "../Icons";
 import { Sheet } from "../Sheet";
 
 interface ColorPickerSheetProps extends SheetProps {
-  color: Color | undefined;
-  onColorChange: (color: Color) => void;
+  color: Color | null;
+  onColorChange: (color: Color | null) => void;
 }
 
 export const ColorPickerSheet = memo(
@@ -42,7 +42,11 @@ export const ColorPickerSheet = memo(
                 <View flex={1} p="$3" items="center">
                   <TouchableOpacity
                     activeOpacity={0.6}
-                    onPress={() => onColorChange(key as Color)}
+                    onPress={() =>
+                      color === key
+                        ? onColorChange(null)
+                        : onColorChange(key as Color)
+                    }
                   >
                     <YStack w="$16" gap="$1" items="center">
                       <View

@@ -182,7 +182,7 @@ const SearchPage = memo(() => {
                 !isRefreshing && (
                   <View pt="$4">
                     <Text text="center" color="$mutedColor">
-                      {t("empty")}
+                      {t("no_results")}
                     </Text>
                   </View>
                 )
@@ -248,7 +248,7 @@ const SearchPage = memo(() => {
                   !isRefreshing && (
                     <View pt="$4">
                       <Text text="center" color="$mutedColor">
-                        {t("empty")}
+                        {t("no_results")}
                       </Text>
                     </View>
                   )

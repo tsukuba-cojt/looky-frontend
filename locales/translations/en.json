@@ -13,11 +13,13 @@
       "error": "Camera access is not allowed. Please allow camera access in your settings."
     },
     "gender": {
+      "all": "All",
       "man": "Man",
       "woman": "Woman",
       "other": "Other"
     },
     "category": {
+      "all": "All",
       "tops": "Tops",
       "bottoms": "Bottoms",
       "outwear": "Outwear",
@@ -240,7 +242,11 @@
     "search": "Search",
     "clear": "Clear",
     "delete": "Delete",
-    "empty": "No results found.",
+    "no_results": "No results found.",
+    "empty": {
+      "title": "No items found",
+      "description": "Find the perfect items by exploring\ncategories or colors that interest you."
+    },
     "error": "Something went wrong. Please try again."
   },
   "collections": {
@@ -248,14 +254,14 @@
     "vton": {
       "title": "Liked Outfits",
       "empty": {
-        "title": "You haven't any outfits",
+        "title": "No outfits",
         "description": "When you find an outfit you like\ngive it a like to add it to your collection."
       }
     },
     "clothes": {
       "title": "Liked Clothes",
       "empty": {
-        "title": "You haven't any clothes",
+        "title": "No clothes",
         "description": "When you find a piece of clothing you like\ngive it a like to add it to your collection."
       }
     }
