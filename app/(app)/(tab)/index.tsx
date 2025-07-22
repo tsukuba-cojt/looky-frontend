@@ -51,6 +51,7 @@ interface SwipableCardItemProps {
 
 const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
   const session = useSessionStore((state) => state.session);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { data: url } = useFileUrl(
     supabase.storage.from("vton"),
@@ -65,7 +66,7 @@ const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
   return (
     <View position="relative" overflow="hidden" rounded="$3xl" boxShadow="$sm">
       <View position="absolute" inset={0} bg="$mutedBackground" />
-      <Skeleton position="absolute" inset={0} />
+      {isLoading && <Skeleton position="absolute" inset={0} />}
       <Link
         href={{
           pathname: "/details/[id]",
@@ -78,6 +79,8 @@ const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
             style={{ width: "100%", height: "100%" }}
             source={url}
             transition={200}
+            onLoadStart={() => setIsLoading(true)}
+            onLoadEnd={() => setIsLoading(false)}
           />
         </TouchableOpacity>
       </Link>

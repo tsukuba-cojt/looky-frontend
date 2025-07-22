@@ -9,8 +9,8 @@ import { RadioGroup } from "../RadioGroup";
 import { Sheet } from "../Sheet";
 
 interface CategorySelectSheetProps extends SheetProps {
-  category: Category | undefined;
-  onCategoryChange: (category: Category) => void;
+  category: "all" | Category;
+  onCategoryChange: (category: "all" | Category) => void;
 }
 
 export const CategorySelectSheet = memo(
@@ -21,7 +21,7 @@ export const CategorySelectSheet = memo(
     return (
       <Sheet
         modal
-        snapPoints={[30]}
+        snapPoints={[32]}
         position={position}
         onPositionChange={setPosition}
         dismissOnSnapToBottom
@@ -33,15 +33,15 @@ export const CategorySelectSheet = memo(
         <Sheet.Frame flex={1} px="$6" py="$8" justify="space-between">
           <RadioGroup
             value={category}
-            onValueChange={(category) => onCategoryChange(category as Category)}
+            onValueChange={(value) => onCategoryChange(value as Category)}
             px="$2"
             gap="$4"
           >
-            {categories.map((item, index) => {
+            {["all", ...categories].map((item) => {
               const id = createId();
 
               return (
-                <XStack key={index.toString()} items="center" gap="$2">
+                <XStack key={id} items="center" gap="$2">
                   <RadioGroup.Item id={id} value={item}>
                     <RadioGroup.Indicator />
                   </RadioGroup.Item>

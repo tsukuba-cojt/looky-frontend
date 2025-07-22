@@ -9,8 +9,8 @@ import { RadioGroup } from "../RadioGroup";
 import { Sheet } from "../Sheet";
 
 interface GenderSelectSheetProps extends SheetProps {
-  gender: Gender | undefined;
-  onGenderChange: (gender: Gender) => void;
+  gender: "all" | Gender;
+  onGenderChange: (gender: "all" | Gender) => void;
 }
 
 export const GenderSelectSheet = memo(
@@ -21,7 +21,7 @@ export const GenderSelectSheet = memo(
     return (
       <Sheet
         modal
-        snapPoints={[28]}
+        snapPoints={[32]}
         position={position}
         onPositionChange={setPosition}
         dismissOnSnapToBottom
@@ -33,15 +33,15 @@ export const GenderSelectSheet = memo(
         <Sheet.Frame flex={1} justify="space-between" px="$6" py="$8">
           <RadioGroup
             value={gender}
-            onValueChange={(gender) => onGenderChange(gender as Gender)}
+            onValueChange={(value) => onGenderChange(value as Gender)}
             px="$2"
             gap="$4"
           >
-            {genders.map((item, index) => {
+            {["all", ...genders].map((item) => {
               const id = createId();
 
               return (
-                <XStack key={index.toString()} items="center" gap="$2">
+                <XStack key={id} items="center" gap="$2">
                   <RadioGroup.Item id={id} value={item}>
                     <RadioGroup.Indicator />
                   </RadioGroup.Item>

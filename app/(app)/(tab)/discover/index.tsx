@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import * as R from "remeda";
 import { toast } from "sonner-native";
-import { Spinner, View, XStack, YStack } from "tamagui";
+import { H1, Spinner, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { CategorySelectSheet } from "@/components/CategorySelectSheet";
 import { ColorPickerSheet } from "@/components/ColorPickerSheet/ColorPickerSheet";
@@ -111,9 +111,9 @@ const DiscoverPage = memo(() => {
   const { t } = useTranslation("discover");
   const session = useSessionStore((state) => state.session);
   const query = useSearchQueryStore((state) => state.query);
-  const [gender, setGender] = useState<Gender>();
-  const [category, setCategory] = useState<Category>();
-  const [color, setColor] = useState<Color>();
+  const [gender, setGender] = useState<"all" | Gender>("all");
+  const [category, setCategory] = useState<"all" | Category>("all");
+  const [color, setColor] = useState<Color | null>(null);
 
   const { open, getSheetProps } = useSheet();
 
@@ -147,10 +147,10 @@ const DiscoverPage = memo(() => {
           tmp = tmp.eq("color", query.color);
         }
 
-        if (category) {
+        if (category && category !== "all") {
           tmp = tmp.eq("category", category);
         }
-        if (gender) {
+        if (gender && gender !== "all") {
           tmp = tmp.eq("gender", gender === "other" ? "unisex" : gender);
         }
         if (color) {
@@ -353,8 +353,8 @@ const DiscoverPage = memo(() => {
             data={data}
             estimatedItemSize={240}
             onEndReached={loadMore}
-            contentContainerStyle={{
-              paddingHorizontal: 24,
+            overrideProps={{
+              contentContainerStyle: { flexGrow: 1, paddingHorizontal: 24 },
             }}
             ListFooterComponent={() =>
               isRefreshing && (
@@ -363,6 +363,33 @@ const DiscoverPage = memo(() => {
                 </View>
               )
             }
+            ListEmptyComponent={() => (
+              <YStack flex={1} pt="$20" items="center" gap="$6">
+                <View w={200} h={200} rounded="$full" bg="$mutedBackground">
+                  <Image
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    source={require("../../../../assets/images/empty.png")}
+                    transition={200}
+                  />
+                </View>
+                <YStack items="center" gap="$4">
+                  <H1 fontWeight="$bold" fontSize="$xl">
+                    {t("empty.title")}
+                  </H1>
+                  <Text
+                    text="center"
+                    fontSize="$sm"
+                    lineHeight="$sm"
+                    color="$mutedColor"
+                  >
+                    {t("empty.description")}
+                  </Text>
+                </YStack>
+              </YStack>
+            )}
             renderItem={({ item, index }) => {
               const isLiked = item.like?.[0]?.count > 0;
 
