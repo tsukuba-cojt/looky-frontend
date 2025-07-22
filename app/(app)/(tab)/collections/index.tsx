@@ -75,18 +75,33 @@ const VtonPage = memo(() => {
 
   const { data, loadMore, isLoading, isValidating } =
     useCursorInfiniteScrollQuery(
-      () =>
-        supabase
+      () => {
+        const builder = supabase
           .from("t_user_vton")
           .select(`
           id,
-          vton: t_vton (id, tops_id, bottoms_id, dress_id)
+          vton: t_vton!inner (id, tops_id, bottoms_id, dress_id)
         `)
           .eq("user_id", session?.user.id ?? "")
           .eq("feedback", "like")
           .order("created_at", { ascending: true })
           .order("id", { ascending: true })
-          .limit(12),
+          .limit(12);
+
+        switch (category) {
+          case "tops":
+            builder.not("t_vton.tops_id", "is", null);
+            break;
+          case "bottoms":
+            builder.not("t_vton.bottoms_id", "is", null);
+            break;
+          case "dresses":
+            builder.not("t_vton.dress_id", "is", null);
+            break;
+        }
+
+        return builder;
+      },
       {
         orderBy: "id",
         uqOrderBy: "id",

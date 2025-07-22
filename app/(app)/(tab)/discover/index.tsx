@@ -120,7 +120,7 @@ const DiscoverPage = memo(() => {
   const { data, loadMore, isLoading, isValidating, mutate } =
     useCursorInfiniteScrollQuery(
       () => {
-        let tmp = supabase
+        let builder = supabase
           .from("t_clothes")
           .select(`
           id,
@@ -132,32 +132,35 @@ const DiscoverPage = memo(() => {
           .limit(12);
 
         if (query.category) {
-          tmp = tmp.eq("category", query.category);
+          builder = builder.eq("category", query.category);
         }
         if (query.subcategory) {
-          tmp = tmp.eq("subcategory", query.subcategory);
+          builder = builder.eq("subcategory", query.subcategory);
         }
         if (query.gender) {
-          tmp = tmp.eq(
+          builder = builder.eq(
             "gender",
             query.gender === "other" ? "unisex" : query.gender,
           );
         }
         if (query.color) {
-          tmp = tmp.eq("color", query.color);
+          builder = builder.eq("color", query.color);
         }
 
         if (category && category !== "all") {
-          tmp = tmp.eq("category", category);
+          builder = builder.eq("category", category);
         }
         if (gender && gender !== "all") {
-          tmp = tmp.eq("gender", gender === "other" ? "unisex" : gender);
+          builder = builder.eq(
+            "gender",
+            gender === "other" ? "unisex" : gender,
+          );
         }
         if (color) {
-          tmp = tmp.eq("color", color);
+          builder = builder.eq("color", color);
         }
 
-        return tmp;
+        return builder;
       },
       {
         orderBy: "id",
@@ -200,7 +203,8 @@ const DiscoverPage = memo(() => {
 
         await revalidateTables();
       },
-      onError: () => {
+      onError: (error) => {
+        console.error(error);
         toast.error(t("error"));
       },
     },
