@@ -136,6 +136,8 @@
       "description": "他のユーザーに公開されるお名前です。後から変更することもできます。",
       "label": "ユーザー名",
       "placeholder": "山田太郎",
+      "required_error": "ユーザー名を入力してください。",
+      "invalid_type_error": "ユーザー名は文字列で入力してください。",
       "too_short_error": "ユーザー名は3文字以上で入力してください。",
       "too_long_error": "ユーザー名は24文字以内で入力してください。",
       "submit": "次へ",

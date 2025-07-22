@@ -4,7 +4,11 @@ import {
   type FlashMode,
   useCameraPermissions,
 } from "expo-camera";
-import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
+import {
+  type ActionCrop,
+  ImageManipulator,
+  SaveFormat,
+} from "expo-image-manipulator";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,10 +44,29 @@ const CameraPage = memo(() => {
 
     const context = ImageManipulator.manipulate(picture.uri);
 
-    context.resize({
-      width: 768,
-      height: 1024,
-    });
+    const ratio = 3 / 4;
+    let crop: ActionCrop["crop"];
+
+    if (picture.width / picture.height > ratio) {
+      const width = picture.height * ratio;
+      crop = {
+        originX: (picture.width - width) / 2,
+        originY: 0,
+        width,
+        height: picture.height,
+      };
+    } else {
+      const height = picture.width / ratio;
+      crop = {
+        originX: 0,
+        originY: (picture.height - height) / 2,
+        width: picture.width,
+        height,
+      };
+    }
+
+    context.crop(crop).resize({ width: 768, height: 1024 });
+
     const image = await context.renderAsync();
     const result = await image.saveAsync({
       format: SaveFormat.JPEG,

@@ -74,7 +74,7 @@ const SearchPage = memo(() => {
     );
 
   const onSearch = useCallback(
-    (id: string, text: string) => {
+    (id: number, text: string) => {
       setHistory((prev) => {
         if (!prev) {
           return "[]";

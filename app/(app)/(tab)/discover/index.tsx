@@ -26,6 +26,7 @@ import { Input } from "@/components/Input";
 import { Skeleton } from "@/components/Skeleton";
 import { useSheet } from "@/hooks/useSheet";
 import { supabase } from "@/lib/client";
+import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 import { useSessionStore } from "@/stores/useSessionStore";
 import type { Category, Color, Gender } from "@/types";
 
@@ -109,6 +110,7 @@ const ClothesItem = memo(
 const DiscoverPage = memo(() => {
   const { t } = useTranslation("discover");
   const session = useSessionStore((state) => state.session);
+  const query = useSearchQueryStore((state) => state.query);
   const [gender, setGender] = useState<Gender>();
   const [category, setCategory] = useState<Category>();
   const [color, setColor] = useState<Color>();
@@ -117,17 +119,46 @@ const DiscoverPage = memo(() => {
 
   const { data, loadMore, isLoading, isValidating, mutate } =
     useCursorInfiniteScrollQuery(
-      () =>
-        supabase
+      () => {
+        let tmp = supabase
           .from("t_clothes")
           .select(`
-            id,
-            like: t_like (count)
-          `)
+          id,
+          like: t_like (count)
+        `)
           .eq("like.user_id", session?.user.id ?? "")
           .order("created_at", { ascending: true })
           .order("id", { ascending: true })
-          .limit(12),
+          .limit(12);
+
+        if (query.category) {
+          tmp = tmp.eq("category", query.category);
+        }
+        if (query.subcategory) {
+          tmp = tmp.eq("subcategory", query.subcategory);
+        }
+        if (query.gender) {
+          tmp = tmp.eq(
+            "gender",
+            query.gender === "other" ? "unisex" : query.gender,
+          );
+        }
+        if (query.color) {
+          tmp = tmp.eq("color", query.color);
+        }
+
+        if (category) {
+          tmp = tmp.eq("category", category);
+        }
+        if (gender) {
+          tmp = tmp.eq("gender", gender === "other" ? "unisex" : gender);
+        }
+        if (color) {
+          tmp = tmp.eq("color", color);
+        }
+
+        return tmp;
+      },
       {
         orderBy: "id",
         uqOrderBy: "id",

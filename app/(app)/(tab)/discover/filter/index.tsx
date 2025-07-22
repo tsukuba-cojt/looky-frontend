@@ -107,9 +107,11 @@ const FilterPage = memo(() => {
         </Link>
       </YStack>
       <YStack w="100%" gap="$3" px="$8">
-        <Button variant="primary">
-          <Button.Text>{t("discover:search")}</Button.Text>
-        </Button>
+        <Link asChild href="/discover" dismissTo>
+          <Button variant="primary">
+            <Button.Text>{t("discover:search")}</Button.Text>
+          </Button>
+        </Link>
         <Button variant="ghost" onPress={clear}>
           <Button.Text>{t("discover:clear")}</Button.Text>
         </Button>
