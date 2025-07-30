@@ -175,15 +175,7 @@ export type Database = {
           id?: string;
           name?: string | null;
         };
-        Relationships: [
-          {
-            foreignKeyName: "t_user_body_id_fkey";
-            columns: ["body_id"];
-            isOneToOne: false;
-            referencedRelation: "t_body";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       t_user_vton: {
         Row: {
