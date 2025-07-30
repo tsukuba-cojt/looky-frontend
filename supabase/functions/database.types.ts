@@ -175,15 +175,7 @@ export type Database = {
           id?: string;
           name?: string | null;
         };
-        Relationships: [
-          {
-            foreignKeyName: "t_user_body_id_fkey";
-            columns: ["body_id"];
-            isOneToOne: false;
-            referencedRelation: "t_body";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       t_user_vton: {
         Row: {
@@ -226,21 +218,21 @@ export type Database = {
       };
       t_vton: {
         Row: {
-          bottms_id: number | null;
+          bottoms_id: number | null;
           created_at: string;
           dress_id: number | null;
           id: string;
           tops_id: number | null;
         };
         Insert: {
-          bottms_id?: number | null;
+          bottoms_id?: number | null;
           created_at?: string;
           dress_id?: number | null;
           id: string;
           tops_id?: number | null;
         };
         Update: {
-          bottms_id?: number | null;
+          bottoms_id?: number | null;
           created_at?: string;
           dress_id?: number | null;
           id?: string;
@@ -248,8 +240,8 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "t_vton_bottms_id_fkey";
-            columns: ["bottms_id"];
+            foreignKeyName: "t_vton_bottoms_id_fkey";
+            columns: ["bottoms_id"];
             isOneToOne: false;
             referencedRelation: "t_clothes";
             referencedColumns: ["id"];
