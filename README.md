@@ -21,6 +21,10 @@ Lookyは、[Campus OJT](https://tsukuba-cojt.github.io/)のプロジェクトと
 > [!CAUTION]
 > Lookyの機能は現在開発中であり、仕様は今後変更される可能性があります。
 
+<div align="center">
+  <video controls src="https://github.com/user-attachments/assets/4df2f066-543e-4c88-82b6-fd78aa8e7c2b" muted="false"></video>
+</div>
+
 <br>
 
 ## 🔧 Usage
