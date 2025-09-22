@@ -1,0 +1,58 @@
+name: 機能リクエスト
+description: 新機能の提案や改善アイデアを共有してください
+title: "[機能]: "
+labels: ["enhancement", "議論"]
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        新機能の提案ありがとうございます！できるだけ詳細にご記入ください。
+  - type: input
+    id: summary
+    attributes:
+      label: 機能の概要
+      description: 提案する機能を簡潔に説明してください。
+      placeholder: 例) ダークモードを追加
+    validations:
+      required: true
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: この機能が解決する問題
+      description: この機能が解決する課題や不便な点を説明してください。
+      placeholder: 例) 現在、夜間にUIが明るすぎて、暗い場所での使用が難しい。
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: 提案する解決策
+      description: どのように機能が動作するべきかを説明してください。
+      placeholder: 例) 設定メニューにダークモードのトグルスイッチを追加。
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 他に検討した代替案
+      description: 他に考えた方法があれば説明してください。
+      placeholder: 例) ブラウザの拡張機能を試したが、一部のUI要素と互換性がない。
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 優先度
+      description: この機能の重要度を教えてください。
+      options:
+        - 低
+        - 中
+        - 高
+        - 緊急
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 追加の情報
+      description: その他の詳細やスクリーンショットがあれば記入してください。
