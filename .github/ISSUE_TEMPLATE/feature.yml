@@ -1,6 +1,6 @@
-name: 機能リクエスト
-description: 新機能の提案や改善アイデアを共有してください
-title: "[機能]: "
+name: 新規機能
+description: 追加する機能を詳しく記述してください
+title: "[feature]: "
 labels: ["enhancement", "議論"]
 assignees:
   - octocat
@@ -8,12 +8,12 @@ body:
   - type: markdown
     attributes:
       value: |
-        新機能の提案ありがとうございます！できるだけ詳細にご記入ください。
+        追加する機能を詳しく記述してください。
   - type: input
     id: summary
     attributes:
       label: 機能の概要
-      description: 提案する機能を簡潔に説明してください。
+      description: 追加する機能を簡潔に説明してください。
       placeholder: 例) ダークモードを追加
     validations:
       required: true
