@@ -58,9 +58,9 @@ const GenderPage = memo(() => {
             control={control}
             render={({ field: { onChange, value } }) => (
               <YStack gap="$1.5">
-                  <Label htmlFor="gender" unstyled color="$color">
-                    {t("setup:gender.label")}
-                  </Label>
+                <Label htmlFor="gender" unstyled color="$color">
+                  {t("setup:gender.label")}
+                </Label>
                 <Select
                   value={value ?? undefined}
                   onValueChange={onChange}

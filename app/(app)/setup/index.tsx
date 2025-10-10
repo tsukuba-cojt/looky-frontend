@@ -65,7 +65,6 @@ const NamePage = memo(() => {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <YStack gap="$1.5">
-
                   <Label htmlFor="name" unstyled color="$color">
                     {t("name.label")}
                   </Label>
