@@ -1,0 +1,79 @@
+name: バグ報告
+description: バグを報告して改善にご協力ください
+title: "[バグ]: "
+labels:
+  - bug
+  - 要確認
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグを報告していただきありがとうございます！できるだけ詳細にご記入ください。
+
+  - type: input
+    id: summary
+    attributes:
+      label: バグの概要
+      description: バグの内容を簡潔に説明してください。
+      placeholder: 例) ログイン後にダッシュボードが表示されない
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 再現手順
+      description: バグを再現する手順を記入してください。
+      placeholder: |
+        1. '...' にアクセスする
+        2. '...' をクリックする
+        3. '...' までスクロールする
+        4. エラーが発生する
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 期待される動作
+      description: 本来どう動作すべきかを説明してください。
+      placeholder: 例) ログイン後、ダッシュボードが正しく表示されるべき。
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: 実際の動作
+      description: 実際に起こった問題を説明してください。
+      placeholder: 例) ダッシュボードが真っ白な画面になる。
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 環境
+      description: どの環境でバグが発生しましたか？(モバイルの場合はバージョン)
+      options:
+        - 本番環境
+        - ステージング環境
+        - 開発環境(develop)
+    validations:
+      required: true
+
+  - type: input
+    id: mobile-device
+    attributes:
+      label: 使用端末(モバイル)
+      description: 使用しているモバイルデバイスを記入してください。
+      placeholder: 例) iPhone 14, Samsung Galaxy S23
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 関連するログ出力
+      description: 関連するエラーログやコンソール出力を貼り付けてください。
+      render: shell
