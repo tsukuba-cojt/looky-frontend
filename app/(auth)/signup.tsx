@@ -160,7 +160,7 @@ const SignupPage = memo(() => {
                 }
               }}
             >
-              {t("signup_with_provider", { provider: "Twitter" })}
+              {t("signup_with_provider", { provider: "X" })}
             </OAuthLogInButton>
           </YStack>
         </YStack>
