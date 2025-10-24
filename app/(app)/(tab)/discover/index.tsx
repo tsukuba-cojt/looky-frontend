@@ -115,7 +115,7 @@ const DiscoverPage = memo(() => {
   const [category, setCategory] = useState<"all" | Category>("all");
   const [color, setColor] = useState<Color | null>(null);
 
-  const { getSheetProps } = useSheet();
+  const { open, getSheetProps } = useSheet();
 
   const { data, loadMore, isLoading, isValidating, mutate } =
     useCursorInfiniteScrollQuery(
@@ -279,6 +279,53 @@ const DiscoverPage = memo(() => {
                 </Button.Icon>
               </Button>
             </Link>
+          </XStack>
+          <XStack gap="$2">
+            <Button
+              variant="outline"
+              h="auto"
+              px="$3"
+              py="$1.5"
+              gap="$1"
+              rounded="$full"
+              boxShadow="none"
+              onPress={() => open("gender")}
+            >
+              <Button.Text fontSize="$sm">{t("gender")}</Button.Text>
+              <Button.Icon>
+                <Icons.chevronDown size="$4" color="$mutedColor" />
+              </Button.Icon>
+            </Button>
+            <Button
+              variant="outline"
+              h="auto"
+              px="$3"
+              py="$1.5"
+              gap="$1"
+              rounded="$full"
+              boxShadow="none"
+              onPress={() => open("category")}
+            >
+              <Button.Text fontSize="$sm">{t("category")}</Button.Text>
+              <Button.Icon>
+                <Icons.chevronDown size="$4" color="$mutedColor" />
+              </Button.Icon>
+            </Button>
+            <Button
+              variant="outline"
+              h="auto"
+              px="$3"
+              py="$1.5"
+              gap="$1"
+              rounded="$full"
+              boxShadow="none"
+              onPress={() => open("color")}
+            >
+              <Button.Text fontSize="$sm">{t("color")}</Button.Text>
+              <Button.Icon>
+                <Icons.chevronDown size="$4" color="$mutedColor" />
+              </Button.Icon>
+            </Button>
           </XStack>
         </YStack>
         {isLoading ? (
