@@ -10,25 +10,20 @@ import * as Crypto from "expo-crypto";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import * as R from "remeda";
 import { toast } from "sonner-native";
 import { H1, Spinner, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
-import { CategorySelectSheet } from "@/components/CategorySelectSheet";
-import { ColorPickerSheet } from "@/components/ColorPickerSheet/ColorPickerSheet";
-import { GenderSelectSheet } from "@/components/GenderSelectSheet";
 import { Heart } from "@/components/Heart";
 import { Icons } from "@/components/Icons";
 import { Input } from "@/components/Input";
 import { Skeleton } from "@/components/Skeleton";
-import { useSheet } from "@/hooks/useSheet";
 import { supabase } from "@/lib/client";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 import { useSessionStore } from "@/stores/useSessionStore";
-import type { Category, Color, Gender } from "@/types";
 
 interface ClothesItemProps {
   id: number;
@@ -111,11 +106,6 @@ const DiscoverPage = memo(() => {
   const { t } = useTranslation("discover");
   const session = useSessionStore((state) => state.session);
   const query = useSearchQueryStore((state) => state.query);
-  const [gender, setGender] = useState<"all" | Gender>("all");
-  const [category, setCategory] = useState<"all" | Category>("all");
-  const [color, setColor] = useState<Color | null>(null);
-
-  const { open, getSheetProps } = useSheet();
 
   const { data, loadMore, isLoading, isValidating, mutate } =
     useCursorInfiniteScrollQuery(
@@ -146,20 +136,6 @@ const DiscoverPage = memo(() => {
         if (query.color) {
           builder = builder.eq("color", query.color);
         }
-
-        if (category && category !== "all") {
-          builder = builder.eq("category", category);
-        }
-        if (gender && gender !== "all") {
-          builder = builder.eq(
-            "gender",
-            gender === "other" ? "unisex" : gender,
-          );
-        }
-        if (color) {
-          builder = builder.eq("color", color);
-        }
-
         return builder;
       },
       {
@@ -280,53 +256,6 @@ const DiscoverPage = memo(() => {
               </Button>
             </Link>
           </XStack>
-          <XStack gap="$2">
-            <Button
-              variant="outline"
-              h="auto"
-              px="$3"
-              py="$1.5"
-              gap="$1"
-              rounded="$full"
-              boxShadow="none"
-              onPress={() => open("gender")}
-            >
-              <Button.Text fontSize="$sm">{t("gender")}</Button.Text>
-              <Button.Icon>
-                <Icons.chevronDown size="$4" color="$mutedColor" />
-              </Button.Icon>
-            </Button>
-            <Button
-              variant="outline"
-              h="auto"
-              px="$3"
-              py="$1.5"
-              gap="$1"
-              rounded="$full"
-              boxShadow="none"
-              onPress={() => open("category")}
-            >
-              <Button.Text fontSize="$sm">{t("category")}</Button.Text>
-              <Button.Icon>
-                <Icons.chevronDown size="$4" color="$mutedColor" />
-              </Button.Icon>
-            </Button>
-            <Button
-              variant="outline"
-              h="auto"
-              px="$3"
-              py="$1.5"
-              gap="$1"
-              rounded="$full"
-              boxShadow="none"
-              onPress={() => open("color")}
-            >
-              <Button.Text fontSize="$sm">{t("color")}</Button.Text>
-              <Button.Icon>
-                <Icons.chevronDown size="$4" color="$mutedColor" />
-              </Button.Icon>
-            </Button>
-          </XStack>
         </YStack>
         {isLoading ? (
           <FlashList
@@ -428,21 +357,6 @@ const DiscoverPage = memo(() => {
           />
         )}
       </YStack>
-      <GenderSelectSheet
-        {...getSheetProps("gender")}
-        gender={gender}
-        onGenderChange={setGender}
-      />
-      <CategorySelectSheet
-        {...getSheetProps("category")}
-        category={category}
-        onCategoryChange={setCategory}
-      />
-      <ColorPickerSheet
-        {...getSheetProps("color")}
-        color={color}
-        onColorChange={setColor}
-      />
     </>
   );
 });
