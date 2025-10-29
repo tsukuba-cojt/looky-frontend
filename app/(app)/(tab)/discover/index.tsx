@@ -10,7 +10,7 @@ import * as Crypto from "expo-crypto";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 import * as R from "remeda";
@@ -24,7 +24,6 @@ import { Skeleton } from "@/components/Skeleton";
 import { supabase } from "@/lib/client";
 import { useSearchQueryStore } from "@/stores/useSearchQueryStore";
 import { useSessionStore } from "@/stores/useSessionStore";
-import type { Category, Color, Gender } from "@/types";
 
 interface ClothesItemProps {
   id: number;
@@ -107,9 +106,6 @@ const DiscoverPage = memo(() => {
   const { t } = useTranslation("discover");
   const session = useSessionStore((state) => state.session);
   const query = useSearchQueryStore((state) => state.query);
-  const [gender] = useState<"all" | Gender>("all");
-  const [category] = useState<"all" | Category>("all");
-  const [color] = useState<Color | null>(null);
 
   const { data, loadMore, isLoading, isValidating, mutate } =
     useCursorInfiniteScrollQuery(
@@ -140,20 +136,6 @@ const DiscoverPage = memo(() => {
         if (query.color) {
           builder = builder.eq("color", query.color);
         }
-
-        if (category && category !== "all") {
-          builder = builder.eq("category", category);
-        }
-        if (gender && gender !== "all") {
-          builder = builder.eq(
-            "gender",
-            gender === "other" ? "unisex" : gender,
-          );
-        }
-        if (color) {
-          builder = builder.eq("color", color);
-        }
-
         return builder;
       },
       {
