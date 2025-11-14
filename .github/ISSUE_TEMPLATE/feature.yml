@@ -49,8 +49,7 @@ body:
         - 普通
         - 高
         - 緊急
-      default:
-        - 1
+      default: 1
     validations:
       required: true
   - type: textarea
