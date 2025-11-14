@@ -46,9 +46,11 @@ body:
       description: この機能の重要度を教えてください。
       options:
         - 低
-        - 中
+        - 普通
         - 高
         - 緊急
+      default:
+        - 普通
     validations:
       required: true
   - type: textarea
