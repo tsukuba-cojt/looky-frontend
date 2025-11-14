@@ -50,7 +50,7 @@ body:
         - 高
         - 緊急
       default:
-        - 普通
+        - 1
     validations:
       required: true
   - type: textarea
