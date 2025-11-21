@@ -7,7 +7,7 @@ export type Json =
   | Json[];
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)";
@@ -50,6 +50,7 @@ export type Database = {
           id: number;
           invalid: boolean | null;
           part: Database["public"]["Enums"]["part"] | null;
+          purchase_url: string | null;
           subcategory: Database["public"]["Enums"]["subcategory"] | null;
           title: string | null;
         };
@@ -62,6 +63,7 @@ export type Database = {
           id?: number;
           invalid?: boolean | null;
           part?: Database["public"]["Enums"]["part"] | null;
+          purchase_url?: string | null;
           subcategory?: Database["public"]["Enums"]["subcategory"] | null;
           title?: string | null;
         };
@@ -74,6 +76,7 @@ export type Database = {
           id?: number;
           invalid?: boolean | null;
           part?: Database["public"]["Enums"]["part"] | null;
+          purchase_url?: string | null;
           subcategory?: Database["public"]["Enums"]["subcategory"] | null;
           title?: string | null;
         };
@@ -221,22 +224,28 @@ export type Database = {
           bottoms_id: number | null;
           created_at: string;
           dress_id: number | null;
+          feedback: Database["public"]["Enums"]["feedback"] | null;
           id: string;
           tops_id: number | null;
+          user_id: string | null;
         };
         Insert: {
           bottoms_id?: number | null;
           created_at?: string;
           dress_id?: number | null;
+          feedback?: Database["public"]["Enums"]["feedback"] | null;
           id: string;
           tops_id?: number | null;
+          user_id?: string | null;
         };
         Update: {
           bottoms_id?: number | null;
           created_at?: string;
           dress_id?: number | null;
+          feedback?: Database["public"]["Enums"]["feedback"] | null;
           id?: string;
           tops_id?: number | null;
+          user_id?: string | null;
         };
         Relationships: [
           {
@@ -268,7 +277,7 @@ export type Database = {
     };
     Functions: {
       get_distinct_pending_tasks: {
-        Args: Record<PropertyKey, never>;
+        Args: never;
         Returns: {
           created_at: string;
           id: string;
@@ -277,6 +286,22 @@ export type Database = {
           updated_at: string;
           user_id: string;
         }[];
+        SetofOptions: {
+          from: "*";
+          to: "t_task";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
+      insert_new_vton: {
+        Args: {
+          p_bottoms_id?: number;
+          p_dress_id?: number;
+          p_tops_id?: number;
+          p_user_id: string;
+          p_vton_id: string;
+        };
+        Returns: undefined;
       };
     };
     Enums: {
