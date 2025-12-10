@@ -227,7 +227,9 @@
       "title": "Generating...",
       "description": "We are finding the perfect outfit for you.\nPlease wait a moment."
     },
-    "error": "Something went wrong. Please try again."
+    "error": "Something went wrong. Please try again.",
+    "tops": "Tops",
+    "bottoms": "Bottoms"
   },
   "discover": {
     "title": "Discover",

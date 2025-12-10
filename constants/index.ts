@@ -1,7 +1,7 @@
 export const tabs = [
   {
     name: "index",
-    href: "/",
+    href: "/try-on",
     key: "try_on",
     icon: "galleryHorizontalEnd",
   },
