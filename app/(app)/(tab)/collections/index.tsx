@@ -77,10 +77,12 @@ const VtonPage = memo(() => {
     useCursorInfiniteScrollQuery(
       () => {
         const builder = supabase
-          .from("t_user_vton")
+          .from("t_vton")
           .select(`
           id,
-          vton: t_vton!inner (id, tops_id, bottoms_id, dress_id)
+          tops_id,
+          bottoms_id,
+          dress_id
         `)
           .eq("user_id", session?.user.id ?? "")
           .eq("feedback", "like")
@@ -90,13 +92,13 @@ const VtonPage = memo(() => {
 
         switch (category) {
           case "tops":
-            builder.not("t_vton.tops_id", "is", null);
+            builder.not("tops_id", "is", null);
             break;
           case "bottoms":
-            builder.not("t_vton.bottoms_id", "is", null);
+            builder.not("bottoms_id", "is", null);
             break;
           case "dresses":
-            builder.not("t_vton.dress_id", "is", null);
+            builder.not("dress_id", "is", null);
             break;
         }
 
@@ -204,7 +206,7 @@ const VtonPage = memo(() => {
               pl={index % 2 === 1 ? 8 : 0}
               pr={index % 2 === 0 ? 8 : 0}
             >
-              <VtonItem vton={item.vton} />
+              <VtonItem vton={item} />
             </View>
           )}
         />
