@@ -102,12 +102,10 @@ const TryOnPage = memo(() => {
 
   const { mutate } = useQuery(
     supabase
-      .from("t_vton")
+      .from("t_user_vton")
       .select(`
           id,
-          tops_id,
-          bottoms_id,
-          dress_id
+          vton: t_vton (id,tops_id,bottoms_id,dress_id)
         `)
       .eq("user_id", session?.user.id ?? "")
       .is("feedback", null)
@@ -124,7 +122,7 @@ const TryOnPage = memo(() => {
             R.differenceWith(data, prev, (a, b) => a.id === b.id),
             R.map((item) => ({
               id: item.id,
-              vton: item,
+              vton: item.vton,
             })),
           );
 
@@ -146,7 +144,7 @@ const TryOnPage = memo(() => {
   );
 
   const { trigger: updateFeedback } = useUpdateMutation(
-    supabase.from("t_vton"),
+    supabase.from("t_user_vton"),
     ["id"],
     "*",
     {
