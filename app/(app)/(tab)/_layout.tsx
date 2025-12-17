@@ -27,16 +27,26 @@ const TabLayout = memo(() => {
   return (
     <Tabs
       options={{
-        screenLayout: ({ children, route }) => (
-          <YStack flex={1}>
-            <Header
-              title={t(`tab.${route.name === "index" ? "try_on" : route.name}`)}
-              user={user ?? null}
-              isLoading={isLoading}
-            />
-            {children}
-          </YStack>
-        ),
+        screenLayout: ({ children, route }) => {
+          const getTabKey = (name: string) => {
+            if (name === "index" || name === "try-on") return "try_on";
+            return name;
+          };
+
+          const tabKey = getTabKey(route.name);
+          const titleKey = tabKey === "try_on" ? `tab.try_on` : `tab.${tabKey}`;
+
+          return (
+            <YStack flex={1}>
+              <Header
+                title={t(titleKey)}
+                user={user ?? null}
+                isLoading={isLoading}
+              />
+              {children}
+            </YStack>
+          );
+        },
       }}
     >
       <TabSlot />
