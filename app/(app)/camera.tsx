@@ -12,7 +12,7 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, Image } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { H1, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
@@ -83,7 +83,7 @@ const CameraPage = memo(() => {
     });
   }, [router, from]);
 
-const startCountdownAndCapture = useCallback(() => {
+  const startCountdownAndCapture = useCallback(() => {
     if (count !== null) return;
 
     let currentCount = 3;
@@ -91,7 +91,7 @@ const startCountdownAndCapture = useCallback(() => {
 
     const interval = setInterval(() => {
       currentCount -= 1;
-      
+
       if (currentCount > 0) {
         setCount(currentCount);
       } else {
@@ -152,37 +152,42 @@ const startCountdownAndCapture = useCallback(() => {
       />
 
       {isReady && (
-        <View 
-          position="absolute" 
-          w="100%" 
-          h="100%" 
-          items="center" 
-          justify="center" 
+        <View
+          position="absolute"
+          w="100%"
+          h="100%"
+          items="center"
+          justify="center"
           pointerEvents="none"
           z={10}
         >
-        <Image 
-          source={HUMAN_OUTLINE} 
-          style={{ width: "80%", height: "70%", opacity: 0.5, resizeMode: "contain" }} 
-        />
+          <Image
+            source={HUMAN_OUTLINE}
+            style={{
+              width: "80%",
+              height: "70%",
+              opacity: 0.5,
+              resizeMode: "contain",
+            }}
+          />
         </View>
       )}
 
       {count !== null && (
-        <View 
-          position="absolute" 
-          w="100%" 
-          h="100%" 
-          items="center" 
-          justify="center" 
+        <View
+          position="absolute"
+          w="100%"
+          h="100%"
+          items="center"
+          justify="center"
           z={20}
           pointerEvents="none"
         >
-          <Text 
-            fontSize={120} 
-            fontWeight="bold" 
-            color="white" 
-            textShadowColor="rgba(255, 255, 255, 1.0)" 
+          <Text
+            fontSize={120}
+            fontWeight="bold"
+            color="white"
+            textShadowColor="rgba(255, 255, 255, 1.0)"
             textShadowRadius={10}
           >
             {count}
@@ -233,7 +238,10 @@ const startCountdownAndCapture = useCallback(() => {
                 <Icons.zap size="$6" color="white" />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.6} onPress={startCountdownAndCapture}>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={startCountdownAndCapture}
+            >
               <View
                 p="$1"
                 borderWidth="$0.5"
