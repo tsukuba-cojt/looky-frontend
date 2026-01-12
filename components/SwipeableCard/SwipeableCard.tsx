@@ -2,6 +2,7 @@ import {
   forwardRef,
   memo,
   type PropsWithChildren,
+  type ReactNode,
   useCallback,
   useImperativeHandle,
 } from "react";
@@ -42,7 +43,13 @@ export interface SwipableCardProps {
   onSwipeTop?: (index: number) => void;
   onSwipeBottom?: (index: number) => void;
   onSwipeBack?: (index: number) => void;
-  cardStyle?: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
+  renderOverlay?: (props: {
+    translateX: SharedValue<number>;
+    translateY: SharedValue<number>;
+    thresholdX: number;
+    thresholdY: number;
+  }) => ReactNode;
 }
 
 const userConfig = {
@@ -66,7 +73,8 @@ export const SwipeableCard = memo(
         onSwipeTop,
         onSwipeBottom,
         onSwipeBack,
-        cardStyle,
+        style,
+        renderOverlay,
         children,
       },
       ref,
@@ -75,6 +83,10 @@ export const SwipeableCard = memo(
       const translateY = useSharedValue(0);
 
       const { width, height } = useWindowDimensions();
+
+      const thresholdX = width / 3;
+      const thresholdY = height / 3;
+
       const maxTranslateX = width * 1.5;
       const maxTranslateY = height * 1.5;
 
@@ -173,17 +185,18 @@ export const SwipeableCard = memo(
       const panGesture = Gesture.Pan()
         .onUpdate((event) => {
           const currentIndex = Math.floor(activeIndex.value);
-          if (currentIndex !== index) return;
+          if (currentIndex !== index) {
+            return;
+          }
 
           translateX.value = event.translationX;
           translateY.value = event.translationY;
         })
         .onFinalize((event) => {
           const currentIndex = Math.floor(activeIndex.value);
-          if (currentIndex !== index) return;
-
-          const thresholdX = width / 3;
-          const thresholdY = height / 3;
+          if (currentIndex !== index) {
+            return;
+          }
 
           if (Math.abs(event.translationY) > thresholdY) {
             if (event.translationY < 0) {
@@ -237,7 +250,7 @@ export const SwipeableCard = memo(
 
       if (disabled) {
         return (
-          <Animated.View style={[cardStyle, animatedStyles]}>
+          <Animated.View style={[style, animatedStyles]}>
             {children}
           </Animated.View>
         );
@@ -245,7 +258,13 @@ export const SwipeableCard = memo(
 
       return (
         <GestureDetector gesture={panGesture}>
-          <Animated.View style={[cardStyle, animatedStyles]}>
+          <Animated.View style={[style, animatedStyles]}>
+            {renderOverlay?.({
+              translateX,
+              translateY,
+              thresholdX,
+              thresholdY,
+            })}
             {children}
           </Animated.View>
         </GestureDetector>
