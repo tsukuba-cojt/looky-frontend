@@ -14,11 +14,13 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { H1, Text, View, XStack, YStack } from "tamagui";
 import { Button } from "@/components/Button";
 import { Icons } from "@/components/Icons";
 import { wait } from "@/lib/utilts";
+
+const HUMAN_OUTLINE = require("@/assets/images/human_outline.png");
 
 const CameraPage = memo(() => {
   const { t } = useTranslation("camera");
@@ -35,6 +37,7 @@ const CameraPage = memo(() => {
   const [flash, setFlash] = useState<FlashMode>("off");
 
   const [permission, requestPermission] = useCameraPermissions();
+  const [count, setCount] = useState<number | null>(null);
 
   const player = useAudioPlayer(require("../../assets/countdown.wav"));
 
@@ -104,6 +107,25 @@ const CameraPage = memo(() => {
       setCount(null);
     }
   }, [player, from, router]);
+
+  const startCountdownAndCapture = useCallback(() => {
+    if (count !== null) return;
+
+    let currentCount = 3;
+    setCount(currentCount);
+
+    const interval = setInterval(() => {
+      currentCount -= 1;
+
+      if (currentCount > 0) {
+        setCount(currentCount);
+      } else {
+        clearInterval(interval);
+        setCount(null);
+        takePicture();
+      }
+    }, 1000);
+  }, [count, takePicture]);
 
   const toggleFlash = useCallback(() => {
     setFlash((prev) => (prev === "off" ? "on" : "off"));

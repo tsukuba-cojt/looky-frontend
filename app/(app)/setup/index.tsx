@@ -18,7 +18,7 @@ const nameSchema = z.object({
         issue.input === undefined ? "required_error" : "invalid_type_error",
     })
     .min(3, { message: "too_short_error" })
-    .max(128, { message: "too_long_error" }),
+    .max(24, { message: "too_long_error" }),
 });
 type FormData = z.infer<typeof nameSchema>;
 
@@ -65,12 +65,9 @@ const NamePage = memo(() => {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <YStack gap="$1.5">
-                  <XStack>
-                    <Label htmlFor="name" unstyled color="$color">
-                      {t("name.label")}
-                    </Label>
-                    <Text color="$destructiveBackground">*</Text>
-                  </XStack>
+                  <Label htmlFor="name" unstyled color="$color">
+                    {t("name.label")}
+                  </Label>
                   <Input
                     placeholder={t("name.placeholder")}
                     value={value}
