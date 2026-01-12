@@ -21,7 +21,12 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
+import {
+  interpolate,
+  type SharedValue,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
 import * as R from "remeda";
 import { toast } from "sonner-native";
 import {
@@ -40,6 +45,7 @@ import {
   type SwipableCardRef,
   SwipeableCard,
 } from "@/components/SwipeableCard";
+import Overlay from "@/components/SwipeableCard/Overlay";
 import { supabase } from "@/lib/client";
 import { wait } from "@/lib/utilts";
 import { useSessionStore } from "@/stores/useSessionStore";
@@ -64,7 +70,7 @@ const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
   );
 
   return (
-    <View position="relative" overflow="hidden" rounded="$3xl" boxShadow="$sm">
+    <View position="relative" overflow="hidden" boxShadow="$sm">
       <View position="absolute" inset={0} bg="$mutedBackground" />
       {isLoading && <Skeleton position="absolute" inset={0} />}
       <Link
@@ -85,6 +91,71 @@ const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
         </TouchableOpacity>
       </Link>
     </View>
+  );
+};
+
+interface CustomOverlayProps {
+  translateX: SharedValue<number>;
+  translateY: SharedValue<number>;
+  thresholdX: number;
+  thresholdY: number;
+}
+
+const CustomOverlay = ({
+  translateX,
+  translateY,
+  thresholdX,
+  thresholdY,
+}: CustomOverlayProps) => {
+  const positive = useDerivedValue(() => {
+    const rigth = interpolate(
+      translateX.value,
+      [0, thresholdX],
+      [0, 1],
+      "clamp",
+    );
+    const top = interpolate(
+      translateY.value,
+      [0, -thresholdY],
+      [0, 1],
+      "clamp",
+    );
+
+    return Math.max(rigth, top);
+  });
+
+  const negative = useDerivedValue(() => {
+    const left = interpolate(
+      translateX.value,
+      [0, -thresholdX],
+      [0, 1],
+      "clamp",
+    );
+    const bottom = interpolate(
+      translateY.value,
+      [0, thresholdY],
+      [0, 1],
+      "clamp",
+    );
+
+    return Math.max(left, bottom);
+  });
+
+  return (
+    <>
+      <Overlay
+        opacity={positive}
+        inputRange={[0, 1]}
+        outputRange={[0, 0.2]}
+        style={{ backgroundColor: "green" }}
+      />
+      <Overlay
+        opacity={negative}
+        inputRange={[0, 1]}
+        outputRange={[0, 0.2]}
+        style={{ backgroundColor: "red" }}
+      />
+    </>
   );
 };
 
@@ -194,22 +265,13 @@ const TryOnPage = memo(() => {
     return tmp;
   }, [length]);
 
-  const worklet = useCallback(() => {
-    "worklet";
-
-    if (activeIndex.value < length) {
-      activeIndex.value++;
-    }
-  }, [activeIndex, length]);
-
   const swipeRight = useCallback(() => {
     const currentIndex = Math.floor(activeIndex.value);
     if (!refs[currentIndex]) {
       return;
     }
     refs[currentIndex].current?.swipeRight();
-    worklet();
-  }, [refs, worklet, activeIndex]);
+  }, [refs, activeIndex]);
 
   const swipeTop = useCallback(() => {
     const currentIndex = Math.floor(activeIndex.value);
@@ -217,8 +279,7 @@ const TryOnPage = memo(() => {
       return;
     }
     refs[currentIndex].current?.swipeTop();
-    worklet();
-  }, [refs, worklet, activeIndex]);
+  }, [refs, activeIndex]);
 
   const swipeLeft = useCallback(() => {
     const currentIndex = Math.floor(activeIndex.value);
@@ -226,8 +287,7 @@ const TryOnPage = memo(() => {
       return;
     }
     refs[currentIndex].current?.swipeLeft();
-    worklet();
-  }, [refs, worklet, activeIndex]);
+  }, [refs, activeIndex]);
 
   const swipeBottom = useCallback(() => {
     const currentIndex = Math.floor(activeIndex.value);
@@ -235,8 +295,7 @@ const TryOnPage = memo(() => {
       return;
     }
     refs[currentIndex].current?.swipeBottom();
-    worklet();
-  }, [refs, worklet, activeIndex]);
+  }, [refs, activeIndex]);
 
   const swipeBack = useCallback(() => {
     if (activeIndex.value < 1) {
@@ -362,10 +421,12 @@ const TryOnPage = memo(() => {
             {items.map((item, index) => {
               return (
                 <SwipeableCard
-                  key={index.toString()}
-                  cardStyle={{
+                  key={item.id}
+                  style={{
                     width: "100%",
                     height: "100%",
+                    borderRadius: 24,
+                    overflow: "hidden",
                   }}
                   index={index}
                   activeIndex={activeIndex}
@@ -375,13 +436,14 @@ const TryOnPage = memo(() => {
                   onSwipeTop={() => onSwipeTop(item.id)}
                   onSwipeBottom={() => onSwipeBottom(item.id)}
                   onSwipeBack={() => onSwipeBack(item.id)}
+                  renderOverlay={CustomOverlay}
                 >
                   <SwipableCardItem vton={item.vton} />
                 </SwipeableCard>
               );
             })}
             <SwipeableCard
-              cardStyle={{
+              style={{
                 width: "100%",
                 height: "100%",
               }}
@@ -396,7 +458,6 @@ const TryOnPage = memo(() => {
                 justify="center"
                 borderWidth={1}
                 borderColor="$borderColor"
-                rounded="$3xl"
                 boxShadow="$sm"
                 gap="$6"
               >
