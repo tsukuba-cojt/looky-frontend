@@ -36,6 +36,7 @@
     "@tamagui/lucide-icons": "^1.126.13",
     "@tamagui/shorthands": "^1.126.13",
     "expo": "~53.0.12",
+    "expo-audio": "~0.4.9",
     "expo-auth-session": "~6.2.0",
     "expo-camera": "~16.1.8",
     "expo-constants": "~17.1.6",

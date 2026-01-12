@@ -29,6 +29,8 @@ import {
   ThumbsDown,
   ThumbsUp,
   UserRound,
+  Volume2,
+  VolumeOff,
   X,
   Zap,
 } from "@tamagui/lucide-icons";
@@ -64,6 +66,8 @@ export const Icons = {
   thumbsDown: ThumbsDown,
   thumbsUp: ThumbsUp,
   userRound: UserRound,
+  volume2: Volume2,
+  volumeOff: VolumeOff,
   x: X,
   zap: Zap,
 };

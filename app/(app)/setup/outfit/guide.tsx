@@ -68,13 +68,13 @@ const GuidePage = memo(() => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    const id = setInterval(() => {
       setProgress((prev) => (prev + 1) % icons.length);
     }, 2000);
 
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
+      if (id) {
+        clearInterval(id);
       }
       setProgress(0);
     };
