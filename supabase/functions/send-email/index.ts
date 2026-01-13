@@ -63,7 +63,6 @@ app.post("/send-email", async (c) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error(error);
 
     return new Response(JSON.stringify({ error }), {
       status: 400,

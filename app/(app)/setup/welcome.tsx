@@ -34,8 +34,7 @@ const WelcomePage = memo(() => {
     ["id"],
     "*",
     {
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
         toast.error(t("welcome.error"));
       },
     },
@@ -61,8 +60,7 @@ const WelcomePage = memo(() => {
     ["id"],
     "*",
     {
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
         toast.error(t("welcome.error"));
       },
     },
@@ -73,22 +71,19 @@ const WelcomePage = memo(() => {
     ["id"],
     "*",
     {
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
         toast.error(t("welcome.error"));
       },
     },
   );
 
   const { trigger: uploadAvatar } = useUpload(supabase.storage.from("avatar"), {
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error(t("welcome.error"));
     },
   });
   const { trigger: uploadBody } = useUpload(supabase.storage.from("body"), {
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error(t("welcome.error"));
     },
   });

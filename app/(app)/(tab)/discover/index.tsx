@@ -179,8 +179,7 @@ const DiscoverPage = memo(() => {
 
         await revalidateTables();
       },
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
         toast.error(t("error"));
       },
     },

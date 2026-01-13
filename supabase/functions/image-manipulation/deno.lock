@@ -1,9 +1,15 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@hono/hono@*": "4.11.4",
     "npm:@imagemagick/magick-wasm@*": "0.0.30",
     "npm:@imagemagick/magick-wasm@0.0.30": "0.0.30",
     "npm:openai@^4.52.5": "4.104.0"
+  },
+  "jsr": {
+    "@hono/hono@4.11.4": {
+      "integrity": "aaf7b9d5a6b2422b0778c091b712ee1f018bc7e82138067d21eb27d7c2e1f5be"
+    }
   },
   "npm": {
     "@imagemagick/magick-wasm@0.0.30": {
