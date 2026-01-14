@@ -160,7 +160,7 @@ const DetailsPage = memo(() => {
                         opacity={0.8}
                         boxShadow="$shadow.xl"
                       >
-                        <Icons.ellipsis size="$5" color="white" />
+                        <Icons.share size="$5" color="white" />
                       </View>
                     </TouchableOpacity>
                   </XStack>
