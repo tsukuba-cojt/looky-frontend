@@ -34,6 +34,7 @@ import {
   X,
   Zap,
 } from "@tamagui/lucide-icons";
+import { Share } from "react-native";
 
 export const Icons = {
   arrowDownWideNarrow: ArrowDownWideNarrow,
