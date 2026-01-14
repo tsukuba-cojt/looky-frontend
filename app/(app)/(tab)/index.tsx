@@ -221,8 +221,7 @@ const TryOnPage = memo(() => {
     ["id"],
     "*",
     {
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
         toast.error(t("error"));
       },
     },
