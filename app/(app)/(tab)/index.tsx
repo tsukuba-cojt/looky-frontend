@@ -221,7 +221,8 @@ const TryOnPage = memo(() => {
     ["id"],
     "*",
     {
-      onError: () => {
+      onError: (error) => {
+        console.error(error);
         toast.error(t("error"));
       },
     },
@@ -446,6 +447,8 @@ const TryOnPage = memo(() => {
               style={{
                 width: "100%",
                 height: "100%",
+                borderRadius: 24,
+                overflow: "hidden",
               }}
               disabled
               index={items.length}
