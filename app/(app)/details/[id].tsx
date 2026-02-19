@@ -12,7 +12,7 @@ import * as Linking from "expo-linking";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
+import { Share, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { H1, ScrollView, Text, View, XStack, YStack } from "tamagui";
@@ -102,7 +102,7 @@ const DetailsPage = memo(() => {
 
   const { data: url, isLoading: isLoadingImage } = useFileUrl(
     supabase.storage.from("clothes"),
-    `${data?.id}.jpg`,
+    `${data?.id}.png`,
     "public",
     {
       ensureExistence: true,
@@ -150,7 +150,15 @@ const DetailsPage = memo(() => {
                         <Icons.chevronLeft size="$5" color="white" />
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.6}>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={async () => {
+                        const url = Linking.createURL(`/details/${data?.id}`);
+                        await Share.share({
+                          message: url,
+                        });
+                      }}
+                    >
                       <View
                         p="$2"
                         items="center"

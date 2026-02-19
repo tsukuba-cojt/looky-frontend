@@ -170,8 +170,8 @@ const CameraPage = memo(() => {
           <Image
             source={require("../../assets/images/outline.png")}
             style={{
-              width: "80%",
-              height: "80%",
+              width: "60%",
+              height: "60%",
               opacity: 0.5,
             }}
             contentFit="contain"

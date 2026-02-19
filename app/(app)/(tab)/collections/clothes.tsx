@@ -21,7 +21,7 @@ interface ClothesItemProps {
 const ClothesItem = memo(({ id }: ClothesItemProps) => {
   const { data: url, isLoading } = useFileUrl(
     supabase.storage.from("clothes"),
-    `${id}.jpg`,
+    `${id}.png`,
     "public",
     {
       ensureExistence: true,

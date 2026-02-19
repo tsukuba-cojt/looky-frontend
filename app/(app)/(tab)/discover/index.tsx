@@ -36,7 +36,7 @@ const ClothesItem = memo(
   ({ id, isLiked, insertLike, deleteLike }: ClothesItemProps) => {
     const { data: url } = useFileUrl(
       supabase.storage.from("clothes"),
-      `${id}.jpg`,
+      `${id}.png`,
       "public",
       {
         ensureExistence: true,
@@ -179,7 +179,8 @@ const DiscoverPage = memo(() => {
 
         await revalidateTables();
       },
-      onError: () => {
+      onError: (error) => {
+        console.error(error);
         toast.error(t("error"));
       },
     },

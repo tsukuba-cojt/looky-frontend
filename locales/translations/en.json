@@ -225,7 +225,8 @@
     "title": "Try On",
     "loading": {
       "title": "Generating...",
-      "description": "We are finding the perfect outfit for you.\nPlease wait a moment."
+      "description": "We are finding the perfect outfit for you.\nIf it is not generated, please press the button below.",
+      "generate": "Generate"
     },
     "error": "Something went wrong. Please try again."
   },
