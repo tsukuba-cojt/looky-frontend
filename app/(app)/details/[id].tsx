@@ -102,7 +102,7 @@ const DetailsPage = memo(() => {
 
   const { data: url, isLoading: isLoadingImage } = useFileUrl(
     supabase.storage.from("clothes"),
-    `${data?.id}.jpg`,
+    `${data?.id}.png`,
     "public",
     {
       ensureExistence: true,

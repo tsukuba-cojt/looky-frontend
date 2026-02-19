@@ -214,7 +214,11 @@ const GalleryPage = () => {
     },
   );
 
-  const { trigger: uploadBody } = useUpload(supabase.storage.from("body"));
+  const { trigger: uploadBody } = useUpload(supabase.storage.from("body"), {
+    onError: () => {
+      toast.error(t("outfit.gallery.error"));
+    },
+  });
 
   useFocusEffect(
     useCallback(() => {

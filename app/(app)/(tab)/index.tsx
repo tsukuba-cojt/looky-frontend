@@ -70,7 +70,7 @@ const SwipableCardItem = ({ vton }: SwipableCardItemProps) => {
   );
 
   return (
-    <View position="relative" overflow="hidden" boxShadow="$sm">
+    <View position="relative" overflow="hidden" boxShadow="$sm" rounded="$3xl">
       <View position="absolute" inset={0} bg="$mutedBackground" />
       {isLoading && <Skeleton position="absolute" inset={0} />}
       <Link
@@ -146,14 +146,14 @@ const CustomOverlay = ({
       <Overlay
         opacity={positive}
         inputRange={[0, 1]}
-        outputRange={[0, 0.2]}
-        style={{ backgroundColor: "green" }}
+        outputRange={[0, 0.4]}
+        style={{ backgroundColor: "green", borderRadius: 24 }}
       />
       <Overlay
         opacity={negative}
         inputRange={[0, 1]}
-        outputRange={[0, 0.2]}
-        style={{ backgroundColor: "red" }}
+        outputRange={[0, 0.4]}
+        style={{ backgroundColor: "red", borderRadius: 24 }}
       />
     </>
   );
@@ -425,8 +425,6 @@ const TryOnPage = memo(() => {
                   style={{
                     width: "100%",
                     height: "100%",
-                    borderRadius: 24,
-                    overflow: "hidden",
                   }}
                   index={index}
                   activeIndex={activeIndex}
@@ -446,8 +444,6 @@ const TryOnPage = memo(() => {
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 24,
-                overflow: "hidden",
               }}
               disabled
               index={items.length}
@@ -460,6 +456,7 @@ const TryOnPage = memo(() => {
                 justify="center"
                 borderWidth={1}
                 borderColor="$borderColor"
+                rounded="$3xl"
                 boxShadow="$sm"
                 gap="$6"
               >
@@ -483,6 +480,27 @@ const TryOnPage = memo(() => {
                   <Text text="center" fontSize="$sm" lineHeight="$sm">
                     {t("loading.description")}
                   </Text>
+                  <Button
+                    variant="link"
+                    onPress={async () => {
+                      await insertTask([
+                        {
+                          id: Crypto.randomUUID(),
+                          user_id: session?.user.id ?? "",
+                          status: "pending",
+                          part: "Upper-body",
+                        },
+                      ]);
+                    }}
+                  >
+                    <Text
+                      color="$primaryBackground"
+                      fontSize="$lg"
+                      fontWeight="$bold"
+                    >
+                      {t("loading.generate")}
+                    </Text>
+                  </Button>
                 </YStack>
               </YStack>
             </SwipeableCard>
