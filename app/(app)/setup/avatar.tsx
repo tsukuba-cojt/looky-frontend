@@ -1,7 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import * as Crypto from "expo-crypto";
 import {
-  Link,
   useLocalSearchParams,
   usePathname,
   useRouter,
@@ -122,11 +121,9 @@ const AvatarPage = memo(() => {
                   <Button.Text>{t("avatar.submit")}</Button.Text>
                 </Button>
               </Form.Trigger>
-              <Link href="/setup/outfit" asChild>
-                <Button variant="ghost">
-                  <Button.Text>{t("avatar.skip")}</Button.Text>
-                </Button>
-              </Link>
+              <Button variant="ghost" onPress={() => router.push("/setup/outfit")}>
+                <Button.Text>{t("avatar.skip")}</Button.Text>
+              </Button>
             </YStack>
           </Form>
         </YStack>

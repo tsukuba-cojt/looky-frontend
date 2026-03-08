@@ -1,5 +1,5 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { memo, useCallback, useState } from "react";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -33,8 +33,8 @@ const GenderPage = memo(() => {
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      router.push("/setup/avatar");
       setValue("gender", data.gender);
+      router.push("/setup/avatar");
     },
     [router, setValue],
   );
@@ -148,11 +148,9 @@ const GenderPage = memo(() => {
                 <Button.Text>{t("setup:gender.submit")}</Button.Text>
               </Button>
             </Form.Trigger>
-            <Link href="/setup/avatar" asChild>
-              <Button variant="ghost">
-                <Button.Text>{t("setup:gender.skip")}</Button.Text>
-              </Button>
-            </Link>
+            <Button variant="ghost" onPress={() => router.push("/setup/avatar")}>
+              <Button.Text>{t("setup:gender.skip")}</Button.Text>
+            </Button>
           </YStack>
         </Form>
       </YStack>

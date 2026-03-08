@@ -1,5 +1,5 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { memo, useCallback } from "react";
 import { Controller, useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -37,10 +37,9 @@ const NamePage = memo(() => {
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      router.push("/setup/gender");
-      setValue("name", data.name);
-
       Keyboard.dismiss();
+      setValue("name", data.name);
+      router.push("/setup/gender");
     },
     [router, setValue],
   );
@@ -100,11 +99,15 @@ const NamePage = memo(() => {
                     <Button.Text>{t("name.submit")}</Button.Text>
                   </Button>
                 </Form.Trigger>
-                <Link href="/setup/gender" asChild>
-                  <Button variant="ghost" onPress={Keyboard.dismiss}>
-                    <Button.Text>{t("name.skip")}</Button.Text>
-                  </Button>
-                </Link>
+                <Button
+                  variant="ghost"
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    router.push("/setup/gender");
+                  }}
+                >
+                  <Button.Text>{t("name.skip")}</Button.Text>
+                </Button>
               </YStack>
             </KeyboardStickyView>
           </Form>
