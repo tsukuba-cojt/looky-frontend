@@ -36,12 +36,19 @@ export default ({ config }: ConfigContext): ExtendedExpoConfig => ({
     },
   },
   android: {
-    package: "com.looky.app",
+    package: "com.looky.clothes",
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#f98f15",
     },
     edgeToEdgeEnabled: true,
+    permissions: [
+      "CAMERA",
+      "RECORD_AUDIO",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE",
+      "VIBRATE",
+    ],
   },
   web: {
     favicon: "./assets/favicon.png",
@@ -49,7 +56,6 @@ export default ({ config }: ConfigContext): ExtendedExpoConfig => ({
   plugins: [
     "expo-audio",
     "expo-image-picker",
-    "expo-dev-client",
     "expo-web-browser",
     "expo-camera",
     "expo-router",
@@ -60,7 +66,7 @@ export default ({ config }: ConfigContext): ExtendedExpoConfig => ({
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
     eas: {
-      projectId: "b3038619-9727-4c51-883f-ce7ef59a3f24",
+      projectId: "1dccc10d-6af7-40da-a3ae-4dcee612a5d8",
     },
   },
 });

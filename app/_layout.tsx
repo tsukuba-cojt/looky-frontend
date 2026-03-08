@@ -1,4 +1,3 @@
-import "expo-dev-client";
 import "@/locales";
 import {
   Inter_400Regular,
