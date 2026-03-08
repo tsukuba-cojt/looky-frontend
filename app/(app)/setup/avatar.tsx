@@ -1,10 +1,6 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import * as Crypto from "expo-crypto";
-import {
-  useLocalSearchParams,
-  usePathname,
-  useRouter,
-} from "expo-router";
+import { useLocalSearchParams, usePathname, useRouter } from "expo-router";
 import { memo, useCallback, useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -121,7 +117,10 @@ const AvatarPage = memo(() => {
                   <Button.Text>{t("avatar.submit")}</Button.Text>
                 </Button>
               </Form.Trigger>
-              <Button variant="ghost" onPress={() => router.push("/setup/outfit")}>
+              <Button
+                variant="ghost"
+                onPress={() => router.push("/setup/outfit")}
+              >
                 <Button.Text>{t("avatar.skip")}</Button.Text>
               </Button>
             </YStack>

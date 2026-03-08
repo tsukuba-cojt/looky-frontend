@@ -148,7 +148,10 @@ const GenderPage = memo(() => {
                 <Button.Text>{t("setup:gender.submit")}</Button.Text>
               </Button>
             </Form.Trigger>
-            <Button variant="ghost" onPress={() => router.push("/setup/avatar")}>
+            <Button
+              variant="ghost"
+              onPress={() => router.push("/setup/avatar")}
+            >
               <Button.Text>{t("setup:gender.skip")}</Button.Text>
             </Button>
           </YStack>
