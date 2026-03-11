@@ -130,11 +130,11 @@ const AvatarPage = memo(() => {
       <ImagePickerSheet
         open={isOpen}
         onOpenChange={setIsOpen}
-        onImagePicked={(uri) => {
+        onImagePicked={(pickedUri) => {
           router.push({
             pathname: "/crop",
             params: {
-              uri,
+              uri: pickedUri,
               from: pathname,
             },
           });
