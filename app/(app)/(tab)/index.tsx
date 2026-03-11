@@ -387,24 +387,27 @@ const TryOnPage = memo(() => {
 
   useFocusEffect(
     useCallback(() => {
+      let cancelled = false;
       (async () => {
         await wait(0.2);
-        setIsVisble(true);
+        if (!cancelled) setIsVisble(true);
       })();
 
       return () => {
+        cancelled = true;
         setIsVisble(false);
       };
     }, []),
   );
 
+  if (!isVisible) return null;
+
   return (
     <AnimatePresence>
       <Portal
-        y={isVisible ? 0 : height}
         animation="quick"
         animateOnly={["opacity"]}
-        opacity={isVisible ? 1 : 0}
+        opacity={1}
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       >
