@@ -123,10 +123,7 @@ const GenderList = memo(
               pressStyle={{ opacity: 0.7 }}
               onPress={() => onChange(option)}
             >
-              <Text
-                color={isActive ? "$accentColor" : "$color"}
-                fontSize="$sm"
-              >
+              <Text color={isActive ? "$accentColor" : "$color"} fontSize="$sm">
                 {t(`common:gender.${option}`)}
               </Text>
               {isActive && <Icons.check size="$4" color="$accentColor" />}
