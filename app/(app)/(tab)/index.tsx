@@ -20,7 +20,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, useWindowDimensions } from "react-native";
+import { TouchableOpacity } from "react-native";
 import {
   interpolate,
   type SharedValue,
@@ -166,7 +166,6 @@ type Item = {
 
 const TryOnPage = memo(() => {
   const { t } = useTranslation("try_on");
-  const { height } = useWindowDimensions();
   const session = useSessionStore((state) => state.session);
   const [items, setItems] = useState<Item[]>([]);
   const [isVisible, setIsVisble] = useState(false);
