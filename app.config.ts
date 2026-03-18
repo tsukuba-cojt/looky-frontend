@@ -66,7 +66,7 @@ export default ({ config }: ConfigContext): ExtendedExpoConfig => ({
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
     eas: {
-      projectId: "1dccc10d-6af7-40da-a3ae-4dcee612a5d8",
+      projectId: "b3038619-9727-4c51-883f-ce7ef59a3f24",
     },
   },
 });
