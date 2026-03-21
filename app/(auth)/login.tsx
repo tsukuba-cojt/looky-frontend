@@ -128,7 +128,7 @@ const LoginPage = memo(() => {
               provider="google"
               onPress={async () => {
                 try {
-                  signInWithOAuth("google");
+                  await signInWithOAuth("google");
                 } catch {
                   toast.error(t("error"));
                 }
@@ -141,7 +141,7 @@ const LoginPage = memo(() => {
               provider="apple"
               onPress={async () => {
                 try {
-                  signInWithOAuth("apple");
+                  await signInWithOAuth("apple");
                 } catch {
                   toast.error(t("error"));
                 }
@@ -154,7 +154,7 @@ const LoginPage = memo(() => {
               provider="twitter"
               onPress={async () => {
                 try {
-                  signInWithOAuth("twitter");
+                  await signInWithOAuth("twitter");
                 } catch {
                   toast.error(t("error"));
                 }

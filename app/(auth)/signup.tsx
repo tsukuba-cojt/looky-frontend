@@ -126,9 +126,9 @@ const SignupPage = memo(() => {
             <OAuthLogInButton
               boxShadow="$shadow.xs"
               provider="google"
-              onPress={() => {
+              onPress={async () => {
                 try {
-                  signInWithOAuth("google");
+                  await signInWithOAuth("google");
                 } catch {
                   toast.error(t("error"));
                 }
@@ -139,9 +139,9 @@ const SignupPage = memo(() => {
             <OAuthLogInButton
               boxShadow="$shadow.xs"
               provider="apple"
-              onPress={() => {
+              onPress={async () => {
                 try {
-                  signInWithOAuth("apple");
+                  await signInWithOAuth("apple");
                 } catch {
                   toast.error(t("error"));
                 }
@@ -152,9 +152,9 @@ const SignupPage = memo(() => {
             <OAuthLogInButton
               boxShadow="$shadow.xs"
               provider="twitter"
-              onPress={() => {
+              onPress={async () => {
                 try {
-                  signInWithOAuth("twitter");
+                  await signInWithOAuth("twitter");
                 } catch {
                   toast.error(t("error"));
                 }
