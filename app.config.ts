@@ -30,7 +30,7 @@ export default ({ config }: ConfigContext): ExtendedExpoConfig => ({
   },
   ios: {
     bundleIdentifier: "com.looky.app",
-    supportsTablet: true,
+    supportsTablet: false,
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
