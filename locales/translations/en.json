@@ -366,6 +366,11 @@
       "ja": "日本語",
       "system": "System"
     },
+    "legal": {
+      "title": "Legal",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy"
+    },
     "signout": {
       "title": "Sign Out",
       "description": "Are you sure you want to sign out?",

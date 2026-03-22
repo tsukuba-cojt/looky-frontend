@@ -366,6 +366,11 @@
       "ja": "日本語",
       "system": "システム"
     },
+    "legal": {
+      "title": "規約・ポリシー",
+      "terms": "利用規約",
+      "privacy": "プライバシーポリシー"
+    },
     "signout": {
       "title": "サインアウト",
       "description": "本当にサインアウトしますか？",

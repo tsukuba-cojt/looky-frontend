@@ -1,6 +1,7 @@
 {
   "name": "looky",
   "version": "1.0.1",
+  "packageManager": "pnpm@10.8.1",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
@@ -41,7 +42,7 @@
     "expo-camera": "~16.1.8",
     "expo-constants": "~17.1.6",
     "expo-crypto": "~14.1.5",
-    "expo-dev-client": "~5.2.1",
+    "expo-dev-client": "^55.0.18",
     "expo-file-system": "~18.1.11",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.3.0",
@@ -73,6 +74,7 @@
     "react-native-screens": "~4.11.1",
     "react-native-svg": "^15.11.2",
     "react-native-url-polyfill": "^2.0.0",
+    "react-native-webview": "13.13.5",
     "remeda": "^2.25.0",
     "sonner-native": "^0.20.0",
     "swr": "^2.3.3",

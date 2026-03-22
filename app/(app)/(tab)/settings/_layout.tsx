@@ -9,6 +9,8 @@ const SettingsLayout = memo(() => {
       <Stack.Screen name="outfit" options={{ presentation: "modal" }} />
       <Stack.Screen name="language" options={{ presentation: "modal" }} />
       <Stack.Screen name="theme" options={{ presentation: "modal" }} />
+      <Stack.Screen name="legal" options={{ presentation: "modal" }} />
+      <Stack.Screen name="webview" options={{ presentation: "modal" }} />
     </Stack>
   );
 });

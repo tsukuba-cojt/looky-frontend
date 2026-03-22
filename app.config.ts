@@ -4,6 +4,7 @@ export type Extra = {
   storybookEnabled: string | undefined;
   SUPABASE_URL: string | undefined;
   SUPABASE_ANON_KEY: string | undefined;
+  siteUrl: string;
   eas: {
     projectId: string;
   };
@@ -65,6 +66,7 @@ export default ({ config }: ConfigContext): ExtendedExpoConfig => ({
     storybookEnabled: process.env.STORYBOOK_ENABLED,
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+    siteUrl: "https://lookypowered.pages.dev",
     eas: {
       projectId: "b3038619-9727-4c51-883f-ce7ef59a3f24",
     },

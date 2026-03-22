@@ -140,6 +140,19 @@ const SettingsPage = memo(() => {
             </Button.Icon>
           </Button>
         </Link>
+        <Link href="/settings/legal" asChild>
+          <Button variant="ghost" justify="space-between">
+            <XStack gap="$3" items="center">
+              <Button.Icon>
+                <Icons.fileText size="$4" />
+              </Button.Icon>
+              <Button.Text>{t("settings:legal.title")}</Button.Text>
+            </XStack>
+            <Button.Icon>
+              <Icons.chevronRight size="$4" />
+            </Button.Icon>
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           onPress={() => {
